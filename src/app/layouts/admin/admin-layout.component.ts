@@ -7,6 +7,7 @@ import { MenuItems } from '../../shared/menu-items/menu-items';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 import { TranslateService } from '@ngx-translate/core';
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
 const SMALL_WIDTH_BREAKPOINT = 991;
 
@@ -26,6 +27,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   private _router: Subscription;
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
 
+  public user: any;
+
   currentLang = 'en';
   options: Options;
   theme = 'light';
@@ -40,14 +43,16 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('sidebar') sidebar;
 
-  constructor (
+  constructor(
     public menuItems: MenuItems,
     private router: Router,
     private route: ActivatedRoute,
     public translate: TranslateService,
     private modalService: NgbModal,
     private titleService: Title,
-    private zone: NgZone) {
+    private zone: NgZone,
+    private localStorage: LocalStorageService,
+    private sessionStorage: SessionStorageService) {
     const browserLang: string = translate.getBrowserLang();
     translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
@@ -60,6 +65,13 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
       this.isOpened = false;
     }
 
+    this.user = this.sessionStorage.retrieve('user');
+
+    this.sessionStorage.observe('user')
+      .subscribe((value) => {
+        this.user = value;
+      });
+
     this._router = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((event: NavigationEnd) => {
       // Scroll to top on view load
       document.querySelector('.main-content').scrollTop = 0;
@@ -67,7 +79,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void  {
+  ngAfterViewInit(): void {
     setTimeout(_ => this.runOnRouteChange());
   }
 
@@ -95,8 +107,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  setTitle( newTitle: string) {
-    this.titleService.setTitle( 'Decima - Bootstrap 4 Angular Admin Template | ' + newTitle );
+  setTitle(newTitle: string) {
+    this.titleService.setTitle('Decima - Bootstrap 4 Angular Admin Template | ' + newTitle);
   }
 
   toogleSidebar(): void {
@@ -111,16 +123,11 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     this.modalService.open(search, { windowClass: 'search', backdrop: false });
   }
 
-  addMenuItem(): void {
-    this.menuItems.add({
-      state: 'menu',
-      name: 'MENU',
-      type: 'sub',
-      icon: 'basic-webpage-txt',
-      children: [
-        {state: 'menu', name: 'MENU'},
-        {state: 'menu', name: 'MENU'}
-      ]
-    });
+  signout() {
+    this.sessionStorage.clear('user');
+    this.sessionStorage.clear('token');
+    this.localStorage.clear('user');
+    this.localStorage.clear('token');
+    this.router.navigate(['/'], { queryParams: { 'refresh': 1 } });
   }
 }

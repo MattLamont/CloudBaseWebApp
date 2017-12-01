@@ -40,6 +40,7 @@ export class SignupComponent implements OnInit {
         .register( this.form.value.uname , this.form.value.password )
         .subscribe(
         (user) => {
+          this.sessionStorage.store( 'user' , user );
           this.loginNewUser( user );
         },
         (error) => {
@@ -52,12 +53,12 @@ export class SignupComponent implements OnInit {
         });
   }
 
-  loginNewUser( user: Any ){
+  loginNewUser( user: any){
     this.authService
         .login( user.email , this.form.value.password )
         .subscribe(
         (user) => {
-          this.localStorage.store( 'token' , user.token );
+          this.sessionStorage.store( 'token' , user.token );
           this.router.navigate ( [ '/' ] );
         },
         (error) => {

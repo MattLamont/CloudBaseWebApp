@@ -33,10 +33,11 @@ export class SigninComponent implements OnInit {
 
           if( this.rememberMe ){
             this.localStorage.store( 'token' , user.token );
+            this.localStorage.store( 'user' , user.user );
           }
-          else{
-            this.sessionStorage.store( 'token' , user.token );
-          }
+
+          this.sessionStorage.store( 'token' , user.token );
+          this.sessionStorage.store( 'user' , user.user );
 
           this.router.navigate ( [ '/' ] );
         },
