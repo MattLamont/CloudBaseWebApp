@@ -8,7 +8,7 @@
       </div>
       <fieldset class="form-group" [ngClass]="{'has-danger': form.controls['uname'].hasError('required') && form.controls['uname'].touched}">
         <label for="username">
-          Choose a username
+          Enter your email
         </label>
         <input type="text" class="form-control" placeholder="username" [formControl]="form.controls['uname']" [ngClass]="{'form-control-danger': form.controls['uname'].hasError('required') && form.controls['uname'].touched}"/>
         <div class="form-control-feedback" *ngIf="form.controls['uname'].hasError('required') && form.controls['uname'].touched">Username is required.</div>
@@ -27,14 +27,20 @@
         <input type="password" class="form-control" placeholder="********" [formControl]="form.controls['confirmPassword']" [ngClass]="{'form-control-danger': form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].touched}"/>
         <div class="form-control-feedback" *ngIf="form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].touched">Confirm your password.</div>
       </fieldset>
+
+      <!--
       <label class="custom-control custom-checkbox mb-1">
         <input type="checkbox" class="custom-control-input">
         <span class="custom-control-indicator"></span>
         <span class="custom-control-description">I have read and agree to the terms of service.</span>
       </label>
+    -->
+
       <div class="block mb-3"></div>
       <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Create</button>
       <a class="btn btn-outline-primary btn-link" [routerLink]="['/authentication/signin']">Login!</a>
     </form>
+
+    <ngb-alert type="danger" *ngIf="errorMessage" (close)="errorMessage = ''" class="mt-3">{{ errorMessage }}</ngb-alert>
   </div>
 </div>
