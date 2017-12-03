@@ -17,12 +17,16 @@ export class AppComponent {
     const browserLang: string = translate.getBrowserLang();
     translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
 
-    let user = this.localStorage.retrieve( 'user' );
-    let token = this.localStorage.retrieve( 'token' );
+    if( !this.sessionStorage.retrieve( 'user' ) && !this.sessionStorage.retrieve( 'token' ) ){
 
-    if( user && token ){
-      this.sessionStorage.store( 'user' , user );
-      this.sessionStorage.store( 'token' , token );
+      let user = this.localStorage.retrieve( 'user' );
+      let token = this.localStorage.retrieve( 'token' );
+
+      if( user && token ){
+        this.sessionStorage.store( 'user' , user );
+        this.sessionStorage.store( 'token' , token );
+      }
     }
+
   }
 }

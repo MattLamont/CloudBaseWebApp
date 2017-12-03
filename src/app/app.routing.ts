@@ -12,6 +12,9 @@ export const AppRoutes: Routes = [{
   }, {
     path: 'email',
     loadChildren: './email/email.module#EmailModule'
+  },{
+    path: 'settings',
+    loadChildren: './settings/settings.module#SettingsModule'
   }, {
     path: 'components',
     loadChildren: './components/components.module#ComponentsModule'
@@ -75,4 +78,3 @@ export const AppRoutes: Routes = [{
   path: '**',
   redirectTo: 'error/404'
 }];
-

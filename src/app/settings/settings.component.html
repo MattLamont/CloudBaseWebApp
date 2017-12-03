@@ -1,0 +1,69 @@
+<div class="card" [hidden]="!sessionUser">
+  <div class="card-header">Profile</div>
+  <div class="card-body">
+    <div class="form-group row">
+      <label class="col-md-2 col-xs-12 col-form-label">Image</label>
+      <div class="col-md-10 col-xs-12">
+        <div>
+          <image-upload (uploadFinished)="imageUploaded($event)" [url]="imageUploadURL" [max]="1" [extensions]="['jpg','png','gif','jpeg']" [headers]="authHeaders">
+          </image-upload>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-md-2 col-xs-12 col-form-label">About Me</label>
+      <div class="col-md-10 col-xs-12">
+        <div>
+          <div class="toolbar" id="toolbar-toolbar">
+            <span class="ql-formats">
+              <select class="ql-size">
+                <option value="small"></option>
+                <option selected=""></option>
+                <option value="large"></option>
+                <option value="huge"></option>
+              </select>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-bold"></button>
+              <button class="ql-italic"></button>
+              <button class="ql-underline"></button>
+              <button class="ql-strike"></button>
+            </span>
+            <span class="ql-formats">
+              <select class="ql-color"></select>
+              <select class="ql-background"></select>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-list" value="ordered"></button>
+              <button class="ql-list" value="bullet"></button>
+              <select class="ql-align">
+                <option selected=""></option>
+                <option value="center"></option>
+                <option value="right"></option>
+                <option value="justify"></option>
+              </select>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-link"></button>
+            </span>
+          </div>
+
+          <div id="editor-container">
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-12">
+        <button type="button" class="btn btn-outline-primary" (click)="submitUserSettings()">Update</button>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-12">
+        <ngb-alert [type]="alertType" *ngIf="alertMessage" (close)="alertMessage = ''">{{ alertMessage }}</ngb-alert>
+      </div>
+    </div>
+  </div>
+</div>

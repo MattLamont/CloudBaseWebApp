@@ -15,7 +15,7 @@
             top: 19px;
             right: 19px;
         }
-        
+
         .page-loading {
             position: fixed;
             left: 0;
@@ -28,7 +28,7 @@
             transition: opacity 1s ease-in-out;
             z-index: -1;
         }
-        
+
         .loading-icon {
             position: absolute;
             left: 50%;
@@ -38,7 +38,7 @@
             margin-left: -19px;
             margin-top: -19px;
         }
-        
+
         app-root:empty~.page-loading {
             opacity: 1;
             z-index: 1;
@@ -78,7 +78,7 @@
                 restartOnPushState: true,
                 restartOnRequestAfter: true,
                 ajax: {
-                    trackMethods: ['POST', 'GET']
+                    trackMethods: ['POST', 'GET' , 'PUT', 'DELETE']
                 }
             };
         })(window);
