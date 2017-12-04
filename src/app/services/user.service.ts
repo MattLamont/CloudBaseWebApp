@@ -19,10 +19,19 @@ export class UserService {
   public updateUser( body: any ){
 
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
-    console.log( this.token );
 
     return this.http
       .put(API_URL + '/user/' + body.id , body , { headers: headers })
+      .map(response => {
+        return response.json();
+      })
+      .catch(this.handleError);
+  }
+
+  public findOneUser( id: Number ){
+
+    return this.http
+      .get(API_URL + '/user/' + id )
       .map(response => {
         return response.json();
       })

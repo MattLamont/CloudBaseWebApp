@@ -1,0 +1,63 @@
+<div class="wrapper" *ngIf="dataLoaded">
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 mb-3">
+              <h4 class="ma-0 text-center"><span class="fw-400"><b>{{user.username}}</b></span></h4>
+            </div>
+            <div class="col-12 p-3">
+              <figure>
+                <div class="text-center">
+                  <div class="avatar-status">
+                    <img src="{{user.image_url || 'assets/images/blank_user.png'}}" alt="" class="rounded-circle img-fluid">
+                  </div>
+                </div>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row text-center">
+            <!--
+            <div class="col">
+              <h2 class="mt-0"><b>23,8K</b></h2>
+              <small>Followers</small>
+            </div>
+          -->
+            <div class="col">
+              <h2 class="mt-0"><b>{{user.recipes.length || 0}}</b></h2>
+              <small>Recipes</small>
+            </div>
+            <!--
+            <div class="col">
+              <h2 class="mt-0"><b>67</b></h2>
+              <small>Following</small>
+            </div>
+          -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <div class="card">
+        <ngb-tabset class="card-tab">
+          <ngb-tab title="Recipes" *ngIf="user.recipes.length > 0">
+            <ng-template ngbTabContent>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab>
+            <ng-template ngbTabTitle>Bio</ng-template>
+            <ng-template ngbTabContent>
+              <div class="card">
+                <div class="card-body" [innerHTML]="user.biography">
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+      </div>
+    </div>
+  </div>
+</div>

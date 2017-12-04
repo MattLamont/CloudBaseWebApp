@@ -28,6 +28,12 @@ const MENUITEMS = [
     icon: 'basic-accelerator'
   },
   {
+    state: 'create/recipe',
+    name: 'Create Recipe',
+    type: 'link',
+    icon: 'basic-todo-pencil'
+  },
+  {
     state: 'email',
     name: 'EMAIL',
     type: 'link',

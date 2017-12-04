@@ -15,6 +15,12 @@ export const AppRoutes: Routes = [{
   },{
     path: 'settings',
     loadChildren: './settings/settings.module#SettingsModule'
+  },{
+    path: 'profile/:id',
+    loadChildren: './profile/profile.module#ProfileModule'
+  },{
+    path: 'create/recipe',
+    loadChildren: './createrecipe/createrecipe.module#CreateRecipeModule'
   }, {
     path: 'components',
     loadChildren: './components/components.module#ComponentsModule'

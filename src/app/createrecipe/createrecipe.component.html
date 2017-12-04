@@ -1,0 +1,150 @@
+<div class="row">
+
+  <!-- Recipe Image Upload -->
+  <div class="col-lg-6 col-xs-12" [hidden]="!sessionUser">
+    <div class="card">
+      <div class="card-header">IMAGE</div>
+      <div class="card-body">
+        <image-upload (uploadFinished)="imageUploaded($event)" [url]="imageUploadURL" [max]="1" [extensions]="['jpg','png','gif','jpeg']" [headers]="authHeaders">
+        </image-upload>
+      </div>
+    </div>
+  </div>
+  <!-- End Recipe Image Upload -->
+
+  <!-- Proportions Chart -->
+  <div class="col-lg-6 col-xs-12" [hidden]="!sessionUser">
+    <div class="card">
+      <div class="card-header">PROPORTIONS</div>
+      <div class="card-body">
+        <div>
+          <ngx-charts-pie-chart class="chart-container" [scheme]="colorScheme" [results]="single" [legend]="showLegend" [explodeSlices]="explodeSlices" [labels]="showLabels" [doughnut]="doughnut" [arcWidth]="arcWidth" (legendLabelClick)="onLegendLabelClick($event)"
+              [gradient]="gradient" [tooltipDisabled]="tooltipDisabled" (select)="select($event)">
+          </ngx-charts-pie-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Proportions Chart -->
+
+  <!-- Flavors List -->
+  <div class="col-lg-6 col-xs-12" [hidden]="!sessionUser">
+    <div class="card">
+      <div class="card-header">FLAVORS</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-xs-12 col-sm-8">
+            <div class="form-row row">
+              <label class="col-12 col-form-label">Flavor</label>
+              <input type="text" class="form-control" [ngbTypeahead]="searchWiki" placeholder="Flavor" />
+              <span *ngIf="searching">searching...</span>
+              <div class="form-control-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-4">
+            <div class="form-row row">
+              <label for="amount" class="col-12 col-form-label">Percent (%)</label>
+              <div class="col-12">
+                <input class="form-control" type="number" value="0" id="amount">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 mt-3">
+              <button type="button" class="btn btn-outline-primary" (click)="submitUserSettings()">Add Flavor</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Flavors List -->
+
+  <!-- Recipe Base -->
+  <div class="col-lg-6 col-xs-12" [hidden]="!sessionUser">
+    <div class="card">
+      <div class="card-header">RECIPE BASE</div>
+      <div class="card-body">
+        <div class="form-row row">
+          <label for="amount" class="col-12 col-form-label">Amount (ml)</label>
+          <div class="col-12">
+            <input class="form-control" type="number" value="10" id="amount">
+          </div>
+        </div>
+        <div class="form-row row">
+          <label for="amount" class="col-12 col-form-label">Propylene Glycol (%)</label>
+          <div class="col-12">
+            <input class="form-control" type="number" value="30" id="amount">
+          </div>
+        </div>
+        <div class="form-row row">
+          <label for="amount" class="col-12 col-form-label">Vegetable Glycerin (%)</label>
+          <div class="col-12">
+            <input class="form-control" type="number" value="70" id="amount">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Recipe Base -->
+
+  <!-- Additional Info -->
+  <div class="col-lg-6 col-xs-12" [hidden]="!sessionUser">
+    <div class="card">
+      <div class="card-header">ADDITIONAL INFO</div>
+      <div class="card-body">
+        <div class="form-row row">
+          <label for="amount" class="col-12 col-form-label">Steep Time (days)</label>
+          <div class="col-12">
+            <input class="form-control" type="number" value="0" id="amount">
+          </div>
+
+          <label class="col-12 col-form-label">Description</label>
+          <div class="col-12">
+            <div>
+              <div class="toolbar" id="toolbar-toolbar">
+                <span class="ql-formats">
+                  <select class="ql-size">
+                    <option value="small"></option>
+                    <option selected=""></option>
+                    <option value="large"></option>
+                    <option value="huge"></option>
+                  </select>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-bold"></button>
+                  <button class="ql-italic"></button>
+                  <button class="ql-underline"></button>
+                  <button class="ql-strike"></button>
+                </span>
+                <span class="ql-formats">
+                  <select class="ql-color"></select>
+                  <select class="ql-background"></select>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-list" value="ordered"></button>
+                  <button class="ql-list" value="bullet"></button>
+                  <select class="ql-align">
+                    <option selected=""></option>
+                    <option value="center"></option>
+                    <option value="right"></option>
+                    <option value="justify"></option>
+                  </select>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-link"></button>
+                </span>
+              </div>
+
+              <div id="editor-container">
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Additional Info -->
+
+</div>

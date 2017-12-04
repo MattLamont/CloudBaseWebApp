@@ -27,7 +27,7 @@
     <nav class="menu">
       <ul class="navigation" appAccordion>
         <li class="navigation-item" appAccordionLink *ngFor="let menuitem of menuItems.getAll()" group="{{menuitem.state}}">
-          <a class="navigation-link" appAccordionToggle [routerLink]="['/', menuitem.state]" *ngIf="menuitem.type === 'link'">
+          <a class="navigation-link" appAccordionToggle [routerLink]="[ '/' + menuitem.state]" *ngIf="menuitem.type === 'link'">
             <i class="icon icon-{{ menuitem.icon }}"></i>
             <span>{{ menuitem.name | translate }}</span>
             <span class="mr-auto"></span>
@@ -106,7 +106,7 @@
               <i class="icon icon-basic-settings mr-3"></i>
               <span>Settings</span>
             </a>
-            <a class="dropdown-item" href="javascript:;">
+            <a class="dropdown-item" [routerLink]="['/profile/' + user.id]">
               <i class="icon icon-basic-postcard mr-3"></i>
               <span>Profile</span>
             </a>
