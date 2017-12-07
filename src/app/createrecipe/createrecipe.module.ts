@@ -5,11 +5,12 @@ import { NgbProgressbarModule, NgbTabsetModule } from '@ng-bootstrap/ng-bootstra
 import {ImageUploadModule} from 'angular2-image-upload';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { FormsModule } from '@angular/forms';
 
 import { CreateRecipeComponent } from './createrecipe.component';
 import { CreateRecipeRoutes } from './createrecipe.routing';
 
-import { UserService } from '../services/user.service';
+import { FlavorService } from '../services/flavor.service';
 
 @NgModule({
   imports: [
@@ -18,13 +19,14 @@ import { UserService } from '../services/user.service';
     NgbProgressbarModule, NgbTabsetModule,
     ImageUploadModule.forRoot(),
     NgbModule,
-    NgxChartsModule
+    NgxChartsModule,
+    FormsModule
   ],
   declarations: [
     CreateRecipeComponent
   ],
   providers: [
-    UserService
+    FlavorService
   ]
 })
 

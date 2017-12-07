@@ -86,7 +86,7 @@ export class WikipediaService {
     params.set('action', 'opensearch');
     params.set('format', 'json');
     params.set('callback', 'JSONP_CALLBACK');
-
+    debugger;
     return this._jsonp
       .get(wikiUrl, {search: params})
       .map(response => <string[]> response.json()[1]);

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import * as Quill from 'quill';
 import { environment } from 'environments/environment';
-import { SessionStorage , LocalStorage } from 'ngx-webstorage';
-import { UserService } from '../services/user.service';
+import { SessionStorage, LocalStorage } from 'ngx-webstorage';
+import { FlavorService } from '../services/flavor.service';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { single } from '../shared/chartData';
-
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -27,7 +27,7 @@ export class CreateRecipeComponent {
   @LocalStorage('user')
   localUser;
 
-  @SessionStorage( 'user' )
+  @SessionStorage('user')
   sessionUser;
 
   @SessionStorage('token')
@@ -38,48 +38,58 @@ export class CreateRecipeComponent {
   public alertMessage = '';
   public alertType = 'success';
 
+  public recipe = {
+    name: '',
+    flavors: {},
+    pg_percent: 30,
+    vg_percent: 70,
+    flavor_percents: [],
+    dilutant: 0,
+    steep_time: 0,
+    description: '',
+    tags: [],
+    image_url: '',
+    category: '',
+  };
+
+  public selectedFlavors = [
+    {
+
+    }
+  ];
+
+  searching = false;
+  searchFailed = false;
+
   single: any[];
-  // options
-  showXAxis = true;
-  showYAxis = true;
-  gradient = false;
-  showLegend = false;
-  showXAxisLabel = true;
-  tooltipDisabled = true;
-  xAxisLabel = 'Country';
-  showYAxisLabel = true;
-  yAxisLabel = 'GDP Per Capita';
-  showGridLines = true;
-  innerPadding = 0;
-  barPadding = 8;
-  groupPadding = 16;
-  roundDomains = false;
-  maxRadius = 10;
-  minRadius = 3;
 
   colorScheme = {
     domain: [
       '#0099cc', '#2ECC71', '#4cc3d9', '#ffc65d', '#d96557', '#ba68c8'
     ]
   };
-  schemeType = 'ordinal';
-
-  // pie
-  showLabels = true;
-  explodeSlices = false;
-  doughnut = false;
-  arcWidth = 0.25;
 
 
   public quill: any;
 
+  categories = [
+    'Tobacco',
+    'Dessert',
+    'Fruit',
+    'Candy',
+    'Food',
+    'Beverage',
+    'Other'
+  ];
+  selectedCategory = null;
+
+
   constructor(
-    private userService: UserService
+    private flavorService: FlavorService
   ) {
     Object.assign(this, {
       single
     });
-    console.log( this.single );
   }
 
   ngOnInit() {
@@ -94,7 +104,6 @@ export class CreateRecipeComponent {
     });
 
     this.authHeaders.Authorization = 'Bearer ' + this.token;
-    this.userService.setAuthToken( this.token );
     this.quill.container.firstChild.innerHTML = this.sessionUser.biography;
   }
 
@@ -107,34 +116,24 @@ export class CreateRecipeComponent {
 
     this.sessionUser.biography = this.quill.container.firstChild.innerHTML;
 
-    if( this.newImageURL ){
+    if (this.newImageURL) {
       this.sessionUser.image_url = this.newImageURL;
     }
-
-    this.userService
-      .updateUser(this.sessionUser)
-      .subscribe(
-      (newUser) => {
-        this.sessionUser = newUser[0];
-
-        if( this.localUser ){
-          this.localUser = this.sessionUser;
-        }
-        this.alertType = 'success';
-        this.alertMessage = "CreateRecipe updated!"
-      },
-      (error) => {
-        this.alertType = 'danger';
-        this.alertMessage = error.message;
-      });
   }
 
+  searchFlavor = (text$: Observable<string>) =>
+    text$
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .switchMap( term =>
+        this.flavorService.searchForFlavor(term)
+          .do((data) => this.searchFailed = false)
+          .catch(() => {
+            this.searchFailed = true;
+            return Observable.of([]);
+          }))
 
-  select(data) {
-    console.log('Item clicked', data);
-  }
-
-  onLegendLabelClick(entry) {
-    console.log('Legend clicked', entry);
-  }
+    print(){
+      console.log( this.recipe.flavors );
+    }
 }
