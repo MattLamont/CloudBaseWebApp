@@ -18,7 +18,7 @@
       <div class="card-header">PROPORTIONS</div>
       <div class="card-body">
         <div>
-          <ngx-charts-pie-chart class="chart-container" [scheme]="colorScheme" [results]="single" [legend]="false" [labels]="true" [doughnut]="true" [arcWidth]="0.25" [tooltipDisabled]="true">
+          <ngx-charts-pie-chart class="chart-container" [scheme]="colorScheme" [results]="chartData" [legend]="false" [labels]="true" [doughnut]="true" [arcWidth]="0.25" [tooltipDisabled]="true">
           </ngx-charts-pie-chart>
         </div>
       </div>
@@ -31,10 +31,10 @@
     <div class="card">
       <div class="card-header">FLAVORS</div>
       <div class="card-body">
-        <div class="form-row">
+        <div class="form-row" *ngFor="let flavor of recipe.flavors; let i = index">
           <div class="form-group col-xs-12 col-sm-8">
-            <label>Flavor</label>
-            <input type="text" class="form-control" [ngbTypeahead]="searchFlavor" placeholder="Flavor" [(ngModel)]="recipe.flavors" [resultTemplate]="flavorTemplate" />
+            <label>{{flavor.manufacturer}}</label>
+            <input type="text" class="form-control" [ngbTypeahead]="searchFlavor" [(ngModel)]="recipe.flavors[i].model" placeholder="Flavor" [resultTemplate]="flavorTemplate" (selectItem)="flavorSelected($event,i)" [inputFormatter]="formatter" />
 
             <ng-template #flavorTemplate let-r="result">
               [{{r.manufacturer}}] {{ r.name }}
@@ -42,15 +42,23 @@
           </div>
 
           <div class="form-group col-xs-12 col-sm-4">
-            <label>Percent (%)</label>
-            <input class="form-control" type="number" value="0">
-          </div>
-
-          <div class="col-12 mt-3">
-            <button type="button" class="btn btn-outline-primary" (click)="print()">Add Flavor</button>
+            <label>Percent</label>
+            <div class="input-group">
+              <input class="form-control" type="number" [(ngModel)]="flavor.percent">
+              <div class="input-group-addon">%</div>
+            </div>
           </div>
 
         </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <div class="col-12 mt-3">
+              <button type="button" class="btn btn-outline-primary" (click)="addAnotherFlavor()">Add Flavor</button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -63,50 +71,63 @@
       <div class="card-body">
 
         <div class="form-row">
-          <div class="form-group col-12">
-            <label>Amount to Make (ml)</label>
-            <input class="form-control" type="number">
+          <div class="form-group col-6">
+            <label>Amount to Make</label>
+            <div class="input-group">
+              <input class="form-control" type="number" [(ngModel)]="recipe.totalVolume">
+              <div class="input-group-addon">ml</div>
+            </div>
+          </div>
+          <div class="form-group col-6">
+            <label>Recipe Strength</label>
+            <div class="input-group">
+              <input class="form-control" type="number" [(ngModel)]="recipe.recipeStrength">
+              <div class="input-group-addon">mg/ml</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label>Propylene Glycol (PG)</label>
+            <div class="input-group">
+              <input class="form-control" type="number" [(ngModel)]="recipe.pg">
+              <div class="input-group-addon">%</div>
+            </div>
+          </div>
+          <div class="form-group col-6">
+            <label>Vegetable Glycerin (VG)</label>
+            <div class="input-group">
+              <input class="form-control" type="number" [(ngModel)]="recipe.vg">
+              <div class="input-group-addon">%</div>
+            </div>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group col-12">
-            <label>Desired Nicotine Strength (mg/ml)</label>
-            <input class="form-control" type="number">
+            <label>Nicotine Strength</label>
+            <div class="input-group">
+              <input class="form-control" type="number" [(ngModel)]="recipe.nicotineStrength" min=0 max=100000>
+              <div class="input-group-addon">mg/ml</div>
+            </div>
           </div>
         </div>
 
         <div class="form-row">
-          <div class="form-group col-12">
-            <label>Propylene Glycol (%)</label>
-            <input class="form-control" type="number" [(ngModel)]="recipe.pg_percent">
+          <div class="form-group col-6">
+            <label>Nicotine PG</label>
+            <div class="input-group">
+              <input class="form-control" type="number" [(ngModel)]="recipe.nicotinePG" (change)="onNicotinePGChange()" min=0 max=100>
+              <div class="input-group-addon">%</div>
+            </div>
           </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group col-12">
-            <label>Vegetable Glycerin (%)</label>
-            <input class="form-control" type="number" [(ngModel)]="recipe.vg_percent">
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group col-8">
-            <label>Nicotine Strength (mg/ml)</label>
-            <input class="form-control" type="number">
-          </div>
-
-          <div class="form-group col-4">
-            <label class="custom-control custom-radio">
-  <input id="radio1" name="radio" type="radio" class="custom-control-input">
-  <span class="custom-control-indicator"></span>
-  <span class="custom-control-description">Toggle this custom radio</span>
-</label>
-<label class="custom-control custom-radio">
-  <input id="radio2" name="radio" type="radio" class="custom-control-input">
-  <span class="custom-control-indicator"></span>
-  <span class="custom-control-description">Or toggle this other custom radio</span>
-</label>
+          <div class="form-group col-6">
+            <label>Nicotine VG</label>
+            <div class="input-group">
+              <input class="form-control" type="number" [(ngModel)]="recipe.nicotineVG" (change)="onNicotineVGChange()" min=0 max=100>
+              <div class="input-group-addon">%</div>
+            </div>
           </div>
         </div>
 
@@ -132,8 +153,11 @@
 
         <div class="form-row">
           <div class="form-group col-12">
-            <label>Steep Time (days)</label>
-            <input class="form-control" type="number" [(ngModel)]="recipe.steep_time">
+            <label>Steep Time</label>
+            <div class="input-group">
+              <input class="form-control" type="number" [(ngModel)]="recipe.steepTime">
+              <div class="input-group-addon">days</div>
+            </div>
           </div>
         </div>
 
@@ -186,5 +210,106 @@
     </div>
   </div>
   <!-- End Additional Info -->
+
+  <!-- Mixing Guide -->
+  <div class="col-lg-6 col-xs-12" [hidden]="!sessionUser">
+    <div class="card">
+      <div class="card-header">MIXING GUIDE</div>
+      <div class="card-body">
+        <div class="no-more-tables">
+          <table class="table table-striped mb-0">
+            <thead class="thead-default">
+              <tr>
+                <th>
+                  Item
+                </th>
+                <th>
+                  Percent
+                </th>
+                <th class="numeric">
+                  Milliliters
+                </th>
+                <th class="numeric">
+                  Grams
+                </th>
+              </tr>
+            </thead>
+            <tbody class="table-hover">
+              <tr class="table-success">
+                <td data-title="Item">
+                  Propylene Glycol (PG)
+                </td>
+                <td data-title="Percent">
+                  0
+                </td>
+                <td data-title="Milliliters" class="numeric">
+                  0
+                </td>
+                <td data-title="Grams" class="numeric">
+                  0
+                </td>
+              </tr>
+              <tr class="table-info">
+                <td data-title="Item">
+                  Vegetable Glycerin (VG)
+                </td>
+                <td data-title="Percent">
+                  0
+                </td>
+                <td data-title="Milliliters" class="numeric">
+                  0
+                </td>
+                <td data-title="Grams" class="numeric">
+                  0
+                </td>
+              </tr>
+              <tr class="table-warning">
+                <td data-title="Item">
+                  Nicotine Solution
+                </td>
+                <td data-title="Percent">
+                  0
+                </td>
+                <td data-title="Milliliters" class="numeric">
+                  0
+                </td>
+                <td data-title="Grams" class="numeric">
+                  0
+                </td>
+              </tr>
+              <tr class="table-danger">
+                <td data-title="Item">
+                  Dilutant
+                </td>
+                <td data-title="Percent">
+                  0
+                </td>
+                <td data-title="Milliliters" class="numeric">
+                  0
+                </td>
+                <td data-title="Grams" class="numeric">
+                  0
+                </td>
+              </tr>
+              <tr *ngFor="let flavor of recipe.flavors">
+                <td data-title="Item" *ngIf="flavor.name">
+                  {{flavor.name}}
+                </td>
+                <td data-title="Percent" *ngIf="flavor.name">
+                  0
+                </td>
+                <td data-title="Milliliters" class="numeric" *ngIf="flavor.name">
+                  0
+                </td>
+                <td data-title="Grams" class="numeric" *ngIf="flavor.name">
+                  0
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>

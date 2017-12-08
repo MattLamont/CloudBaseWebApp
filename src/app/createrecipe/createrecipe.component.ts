@@ -4,7 +4,6 @@ import { environment } from 'environments/environment';
 import { SessionStorage, LocalStorage } from 'ngx-webstorage';
 import { FlavorService } from '../services/flavor.service';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
-import { single } from '../shared/chartData';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
@@ -38,30 +37,30 @@ export class CreateRecipeComponent {
   public alertMessage = '';
   public alertType = 'success';
 
-  public recipe = {
-    name: '',
-    flavors: {},
-    pg_percent: 30,
-    vg_percent: 70,
-    flavor_percents: [],
-    dilutant: 0,
-    steep_time: 0,
-    description: '',
-    tags: [],
-    image_url: '',
-    category: '',
-  };
-
-  public selectedFlavors = [
-    {
-
-    }
-  ];
-
-  searching = false;
   searchFailed = false;
 
-  single: any[];
+  public chartData = [
+    {
+      name: 'Nicotine',
+      value: 10
+    },
+    {
+      name: 'PG',
+      value: 30
+    },
+    {
+      name: 'VG',
+      value: 30
+    },
+    {
+      name: 'Dilutant',
+      value: 10
+    },
+    {
+      name: 'Flavors',
+      value: 10
+    }
+  ];
 
   colorScheme = {
     domain: [
@@ -81,16 +80,31 @@ export class CreateRecipeComponent {
     'Beverage',
     'Other'
   ];
-  selectedCategory = null;
 
+  public recipe = {
+    totalVolume: 10,
+    recipeStrength: 3,
+    pg: 30,
+    vg: 70,
+    nicotineStrength: 100,
+    nicotinePG: 100,
+    nicotineVG: 0,
+    flavors: [
+      {
+        name: '',
+        manufacturer: 'Flavor',
+        id: null,
+        percent: 0,
+        model: null
+      },
+    ],
+    category: '',
+    steepTime: 0
+  };
 
   constructor(
     private flavorService: FlavorService
-  ) {
-    Object.assign(this, {
-      single
-    });
-  }
+  ) {}
 
   ngOnInit() {
     this.quill = new Quill('#editor-container', {
@@ -104,7 +118,7 @@ export class CreateRecipeComponent {
     });
 
     this.authHeaders.Authorization = 'Bearer ' + this.token;
-    this.quill.container.firstChild.innerHTML = this.sessionUser.biography;
+    //this.quill.container.firstChild.innerHTML = this.sessionUser.biography;
   }
 
   imageUploaded(event) {
@@ -121,6 +135,32 @@ export class CreateRecipeComponent {
     }
   }
 
+  addAnotherFlavor(){
+    this.recipe.flavors.push(
+      {
+        name: '',
+        manufacturer: 'Flavor',
+        id: null,
+        percent: 0,
+        model: null
+      });
+      console.log( this.recipe.flavors );
+      console.log( this.recipe );
+  }
+
+  flavorSelected( event , index ){
+    this.recipe.flavors[index] = { ...this.recipe.flavors[index] , ...event.item };
+    console.log( this.recipe.flavors );
+  }
+
+  onNicotinePGChange(){
+    this.recipe.nicotineVG = 100 - this.recipe.nicotinePG;
+  }
+
+  onNicotineVGChange(){
+    this.recipe.nicotinePG = 100 - this.recipe.nicotineVG;
+  }
+
   searchFlavor = (text$: Observable<string>) =>
     text$
       .debounceTime(300)
@@ -133,7 +173,5 @@ export class CreateRecipeComponent {
             return Observable.of([]);
           }))
 
-    print(){
-      console.log( this.recipe.flavors );
-    }
+    formatter = (x: {name: string}) => x.name;
 }
