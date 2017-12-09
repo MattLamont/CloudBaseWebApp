@@ -11,6 +11,8 @@ import { CreateRecipeComponent } from './createrecipe.component';
 import { CreateRecipeRoutes } from './createrecipe.routing';
 
 import { FlavorService } from '../services/flavor.service';
+import { RecipeService } from '../services/recipe.service';
+
 
 @NgModule({
   imports: [
@@ -26,7 +28,8 @@ import { FlavorService } from '../services/flavor.service';
     CreateRecipeComponent
   ],
   providers: [
-    FlavorService
+    FlavorService,
+    RecipeService
   ]
 })
 

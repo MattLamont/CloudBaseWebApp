@@ -19,3 +19,26 @@
   width: 100%;
   display: block;
 }
+
+.customImageSelectClass {
+    background-color: #dd3;
+    border-radius: 5px;
+    margin:5px;
+    width: 500px;
+}
+
+.customImageSelectClass .img-ul-upload {
+    background-color: #000 !important;
+}
+
+.customImageSelectClass .img-ul-clear {
+    background-color: #B819BB !important;
+}
+
+.customImageSelectClass .img-ul-drag-box-msg {
+    color: purple !important;
+}
+
+.customImageSelectClass .img-ul-container {
+    background-color: #FF6CAD !important;
+}
