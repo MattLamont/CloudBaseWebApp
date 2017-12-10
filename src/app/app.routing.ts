@@ -21,6 +21,9 @@ export const AppRoutes: Routes = [{
   },{
     path: 'create/recipe',
     loadChildren: './createrecipe/createrecipe.module#CreateRecipeModule'
+  },{
+    path: 'recipe',
+    loadChildren: './recipe/recipe.module#RecipeModule'
   }, {
     path: 'components',
     loadChildren: './components/components.module#ComponentsModule'

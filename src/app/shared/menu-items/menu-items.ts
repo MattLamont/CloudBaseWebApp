@@ -34,6 +34,12 @@ const MENUITEMS = [
     icon: 'basic-todo-pencil'
   },
   {
+    state: 'recipe',
+    name: 'Recipe',
+    type: 'link',
+    icon: 'basic-todo-pencil'
+  },
+  {
     state: 'email',
     name: 'EMAIL',
     type: 'link',
