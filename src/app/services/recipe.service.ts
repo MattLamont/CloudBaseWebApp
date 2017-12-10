@@ -16,6 +16,18 @@ export class RecipeService {
 
   constructor( private http: Http ) { }
 
+  public findOneRecipe( id: number ){
+
+    return this.http
+      .get(API_URL + '/recipe/' + id )
+      .map(response => {
+        return response.json();
+      })
+      .catch((error) => {
+        return Observable.throw(error);
+      });
+  }
+
   public createRecipe( body: any ){
 
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });

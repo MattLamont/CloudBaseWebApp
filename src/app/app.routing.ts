@@ -19,10 +19,16 @@ export const AppRoutes: Routes = [{
     path: 'profile/:id',
     loadChildren: './profile/profile.module#ProfileModule'
   },{
+    path: 'update/recipe/:id',
+    loadChildren: './createrecipe/createrecipe.module#CreateRecipeModule'
+  },{
+    path: 'view/recipe/:id',
+    loadChildren: './createrecipe/createrecipe.module#CreateRecipeModule'
+  },{
     path: 'create/recipe',
     loadChildren: './createrecipe/createrecipe.module#CreateRecipeModule'
   },{
-    path: 'recipe',
+    path: 'recipe/:id',
     loadChildren: './recipe/recipe.module#RecipeModule'
   }, {
     path: 'components',

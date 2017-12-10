@@ -6,6 +6,7 @@ import { FlavorService } from '../services/flavor.service';
 import { RecipeService } from '../services/recipe.service';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { Observable } from 'rxjs/Observable';
+import { ActivatedRoute , Router } from '@angular/router';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -32,6 +33,10 @@ export class CreateRecipeComponent {
 
   @SessionStorage('token')
   token
+
+  public isUpdateRecipe = false;
+  public isCreateRecipe = false;
+  public isViewRecipe = false;
 
   public newImageURL = '';
 
@@ -132,12 +137,47 @@ export class CreateRecipeComponent {
   };
 
   constructor(
+    private route: ActivatedRoute,
+    private router: Router,
     private flavorService: FlavorService,
     private recipeService: RecipeService,
-    private zone: NgZone
   ) { }
 
   ngOnInit() {
+
+    if( this.router.url.startsWith('/create/recipe')){
+      this.isCreateRecipe = true;
+    }
+
+    if( this.router.url.startsWith('/update/recipe')){
+      this.isUpdateRecipe = true;
+    }
+
+    if( this.router.url.startsWith('/view/recipe')){
+      this.isViewRecipe = true;
+    }
+
+    this.route.params.subscribe(params => {
+      //this.userId = params['id'];
+      console.log( params['id']);
+      /*
+      this.userService
+        .findOneUser(this.userId)
+        .subscribe(
+        (user) => {
+          this.user = user;
+          this.dataLoaded = true;
+        },
+        (error) => {
+          this.router.navigate(['/404']);
+        });*/
+    });
+    console.log( this.router.url );
+
+    this.route.url.subscribe(url => {
+      console.log(url);
+    });
+
     this.quill = new Quill('#editor-container', {
       modules: {
         toolbar: {
