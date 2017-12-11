@@ -4,6 +4,7 @@ import { environment } from 'environments/environment';
 import { SessionStorage, LocalStorage } from 'ngx-webstorage';
 import { FlavorService } from '../services/flavor.service';
 import { RecipeService } from '../services/recipe.service';
+import { AppHeaderService } from '../services/appheader.service';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute , Router } from '@angular/router';
@@ -51,6 +52,7 @@ export class CreateRecipeComponent {
   public submitErrorMessageType = 'danger';
 
   searchFailed = false;
+  appHeader: string;
 
   public chartData = [
     {
@@ -126,6 +128,7 @@ export class CreateRecipeComponent {
     private router: Router,
     private flavorService: FlavorService,
     private recipeService: RecipeService,
+    private appHeaderService: AppHeaderService
   )
   {
     this.recipe= new Recipe();
@@ -136,17 +139,20 @@ export class CreateRecipeComponent {
 
       if( this.router.url.startsWith('/create/recipe')){
         this.isCreateRecipe = true;
+        this.appHeaderService.setAppHeader('Create Recipe');
         this.recipe = new Recipe();
         this.recalculateRecipe();
       }
 
       if( this.router.url.startsWith('/update/recipe')){
         this.isUpdateRecipe = true;
+        this.appHeader = 'Update Recipe | ';
         this.getRecipeDetails( this.recipeId );
       }
 
       if( this.router.url.startsWith('/view/recipe')){
         this.isViewRecipe = true;
+        this.appHeader = 'View Recipe | ';
         this.getRecipeDetails( this.recipeId );
       }
 
@@ -387,6 +393,7 @@ export class CreateRecipeComponent {
       (recipe) => {
 
         this.recipe = recipe;
+        this.appHeaderService.setAppHeader(this.appHeader + this.recipe.name);
         this.quill.container.firstChild.innerHTML = this.recipe.description;
         this.recalculateRecipe();
         this.isLoaded = true;

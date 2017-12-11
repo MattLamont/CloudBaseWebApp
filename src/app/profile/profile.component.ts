@@ -2,6 +2,7 @@ import { Component , OnInit } from '@angular/core';
 import { ActivatedRoute , Router } from '@angular/router';
 
 import { UserService } from '../services/user.service';
+import { AppHeaderService } from '../services/appheader.service';
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +19,8 @@ export class ProfileComponent implements OnInit {
   constructor(
       private route: ActivatedRoute,
       private router: Router,
-      private userService: UserService
+      private userService: UserService,
+      private appHeaderService: AppHeaderService
     )
   {
   }
@@ -33,6 +35,7 @@ export class ProfileComponent implements OnInit {
         .subscribe(
         (user) => {
           this.user = user;
+          this.appHeaderService.setAppHeader('Profile | ' + this.user.username);
           this.dataLoaded = true;
         },
         (error) => {

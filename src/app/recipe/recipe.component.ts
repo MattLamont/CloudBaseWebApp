@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SessionStorage, LocalStorage } from 'ngx-webstorage';
 import { RecipeService } from '../services/recipe.service';
+import { AppHeaderService } from '../services/appheader.service';
 import { ActivatedRoute , Router } from '@angular/router';
 
 
@@ -27,6 +28,7 @@ export class recipeComponent {
     private recipeService: RecipeService,
     private route: ActivatedRoute,
     private router: Router,
+    private appHeaderService: AppHeaderService
   ) { }
 
   ngOnInit() {
@@ -37,6 +39,7 @@ export class recipeComponent {
         .subscribe(
         (recipe) => {
           this.recipe = recipe;
+          this.appHeaderService.setAppHeader('Recipe | ' + this.recipe.name);
         },
         (error) => {
           this.router.navigate(['/404']);

@@ -20,6 +20,8 @@ import { SharedModule } from './shared/shared.module';
 
 import { Ng2Webstorage } from 'ngx-webstorage';
 
+import { AppHeaderService } from './services/appheader.service';
+
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -50,7 +52,9 @@ export function createTranslateLoader(http: HttpClient) {
     AgmCoreModule.forRoot({apiKey: 'YOURAPIKEY'}),
     Ng2Webstorage
   ],
-  providers: [],
+  providers: [
+    AppHeaderService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

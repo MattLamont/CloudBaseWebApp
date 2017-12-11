@@ -1,9 +1,9 @@
 <div class="card" [hidden]="!sessionUser">
   <div class="card-header">Profile</div>
   <div class="card-body">
-    <div class="form-group row">
-      <label class="col-md-2 col-xs-12 col-form-label">Image</label>
-      <div class="col-md-10 col-xs-12">
+    <div class="form-row">
+      <div class="form-group col-12">
+        <label>Image</label>
         <div>
           <image-upload (uploadFinished)="imageUploaded($event)" [url]="imageUploadURL" [max]="1" [extensions]="['jpg','png','gif','jpeg']" [headers]="authHeaders">
           </image-upload>
@@ -11,9 +11,9 @@
       </div>
     </div>
 
-    <div class="form-group row">
-      <label class="col-md-2 col-xs-12 col-form-label">About Me</label>
-      <div class="col-md-10 col-xs-12">
+    <div class="form-row">
+      <div class="form-group col-12">
+        <label>About Me</label>
         <div>
           <div class="toolbar" id="toolbar-toolbar">
             <span class="ql-formats">
@@ -55,15 +55,15 @@
         </div>
       </div>
     </div>
-    <div class="form-group row">
-      <div class="col-12">
+    <div class="form-row">
+      <div class="form-group col-12">
         <button type="button" class="btn btn-outline-primary" (click)="submitUserSettings()">Update</button>
       </div>
     </div>
-    <div class="form-group row">
-      <div class="col-12">
+    <div class="form-row">
+      <div class="form-group col-12">
         <ngb-alert [type]="alertType" *ngIf="alertMessage" (close)="alertMessage = ''">{{ alertMessage }}</ngb-alert>
       </div>
     </div>
+
   </div>
-</div>

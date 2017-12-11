@@ -28,6 +28,18 @@ export class RecipeService {
       });
   }
 
+  public findRecipes(){
+
+    return this.http
+      .get(API_URL + '/recipe' )
+      .map(response => {
+        return response.json();
+      })
+      .catch((error) => {
+        return Observable.throw(error);
+      });
+  }
+
   public createRecipe( body: any ){
 
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });

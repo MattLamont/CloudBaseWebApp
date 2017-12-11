@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 import { TranslateService } from '@ngx-translate/core';
 import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
+import { AppHeaderService } from '../../services/appheader.service';
 
 const SMALL_WIDTH_BREAKPOINT = 991;
 
@@ -41,6 +42,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   _autoCollapseWidth = 991;
   width = window.innerWidth;
 
+  appHeaderSub: Subscription;
+
   @ViewChild('sidebar') sidebar;
 
   constructor(
@@ -52,10 +55,21 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     private titleService: Title,
     private zone: NgZone,
     private localStorage: LocalStorageService,
-    private sessionStorage: SessionStorageService) {
+    private sessionStorage: SessionStorageService,
+    private appHeaderService: AppHeaderService
+  ) {
     const browserLang: string = translate.getBrowserLang();
     translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
+
+    //subscibe to the service that provides the header title for each page
+    this.appHeaderSub = this.appHeaderService.getAppHeader().subscribe(data => {
+      if( this.options ){
+        if (this.options.hasOwnProperty('heading')) {
+          this.options.heading = data.header;
+        }
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -77,6 +91,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
       document.querySelector('.main-content').scrollTop = 0;
       this.runOnRouteChange();
     });
+
   }
 
   ngAfterViewInit(): void {
@@ -105,6 +120,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.setTitle(this.options.heading);
       }
     }
+
   }
 
   setTitle(newTitle: string) {
