@@ -1,7 +1,7 @@
 <div class="row">
 
   <!-- Recipe Base -->
-  <div class="col-lg-6 col-xs-12" [hidden]="!sessionUser">
+  <div class="col-lg-6 col-xs-12">
     <div class="card">
       <div class="card-header">RECIPE BASE</div>
       <div class="card-body">
@@ -10,14 +10,14 @@
           <div class="form-group col-6">
             <label>Amount to Make</label>
             <div class="input-group">
-              <input class="form-control" type="number" [(ngModel)]="recipe.totalVolume" (change)="recalculateRecipe()">
+              <input class="form-control" type="number" [(ngModel)]="basicMixingInfo.totalVolume" (change)="recalculateRecipe()">
               <div class="input-group-addon">ml</div>
             </div>
           </div>
           <div class="form-group col-6">
             <label>Recipe Strength</label>
             <div class="input-group">
-              <input class="form-control" type="number" [(ngModel)]="recipe.recipeStrength" (change)="recalculateRecipe()">
+              <input class="form-control" type="number" [(ngModel)]="basicMixingInfo.recipeStrength" (change)="recalculateRecipe()">
               <div class="input-group-addon">mg/ml</div>
             </div>
           </div>
@@ -27,14 +27,14 @@
           <div class="form-group col-6">
             <label>Propylene Glycol (PG)</label>
             <div class="input-group">
-              <input class="form-control" type="number" [(ngModel)]="recipe.pg" (ngModelChange)="onRecipePGChange($event)" min=0 max=100>
+              <input class="form-control" type="number" [(ngModel)]="recipe.pg_percent" (ngModelChange)="onRecipePGChange($event)" min=0 max=100 [disabled]="isViewRecipe">
               <div class="input-group-addon">%</div>
             </div>
           </div>
           <div class="form-group col-6">
             <label>Vegetable Glycerin (VG)</label>
             <div class="input-group">
-              <input class="form-control" type="number" [(ngModel)]="recipe.vg" (ngModelChange)="onRecipeVGChange($event)" min=0 max=100>
+              <input class="form-control" type="number" [(ngModel)]="recipe.vg_percent" (ngModelChange)="onRecipeVGChange($event)" min=0 max=100 [disabled]="isViewRecipe">
               <div class="input-group-addon">%</div>
             </div>
           </div>
@@ -44,7 +44,7 @@
           <div class="form-group col-12">
             <label>Nicotine Strength</label>
             <div class="input-group">
-              <input class="form-control" type="number" [(ngModel)]="recipe.nicotineStrength" (change)="recalculateRecipe()" min=0 max=100000>
+              <input class="form-control" type="number" [(ngModel)]="basicMixingInfo.nicotineStrength" (change)="recalculateRecipe()" min=0 max=100000>
               <div class="input-group-addon">mg/ml</div>
             </div>
           </div>
@@ -54,14 +54,14 @@
           <div class="form-group col-6">
             <label>Nicotine PG</label>
             <div class="input-group">
-              <input class="form-control" type="number" [(ngModel)]="recipe.nicotinePG" (change)="onNicotinePGChange()" min=0 max=100>
+              <input class="form-control" type="number" [(ngModel)]="basicMixingInfo.nicotinePG" (change)="onNicotinePGChange()" min=0 max=100>
               <div class="input-group-addon">%</div>
             </div>
           </div>
           <div class="form-group col-6">
             <label>Nicotine VG</label>
             <div class="input-group">
-              <input class="form-control" type="number" [(ngModel)]="recipe.nicotineVG" (change)="onNicotineVGChange()" min=0 max=100>
+              <input class="form-control" type="number" [(ngModel)]="basicMixingInfo.nicotineVG" (change)="onNicotineVGChange()" min=0 max=100>
               <div class="input-group-addon">%</div>
             </div>
           </div>
@@ -79,14 +79,15 @@
   <!-- End Recipe Base -->
 
   <!-- Flavors List -->
-  <div class="col-lg-6 col-xs-12" [hidden]="!sessionUser">
+  <div class="col-lg-6 col-xs-12">
     <div class="card">
       <div class="card-header">FLAVORS</div>
       <div class="card-body">
-        <div class="form-row" *ngFor="let flavor of recipe.flavors; let i = index">
+        <div class="form-row" *ngFor="let flavor of recipe.flavors; index as i">
           <div class="form-group col-xs-12 col-sm-8">
             <label>{{flavor.manufacturer}}</label>
-            <input type="text" class="form-control" [ngbTypeahead]="searchFlavor" [(ngModel)]="recipe.flavors[i].model" placeholder="Flavor" [resultTemplate]="flavorTemplate" (selectItem)="flavorSelected($event,i)" [inputFormatter]="formatter" />
+            <input type="text" class="form-control" [editable]="false" [ngbTypeahead]="searchFlavor" [ngModel]="flavor" (selectItem)="flavorSelected($event,i)" placeholder="Flavor" [resultTemplate]="flavorTemplate" [inputFormatter]="formatter" [disabled]="isViewRecipe"
+            />
 
             <ng-template #flavorTemplate let-r="result">
               [{{r.manufacturer}}] {{ r.name }}
@@ -96,14 +97,14 @@
           <div class="form-group col-xs-12 col-sm-4" *ngIf="flavor.name">
             <label>Percent</label>
             <div class="input-group">
-              <input class="form-control" type="number" [(ngModel)]="flavor.percent" (ngModelChange)="onFlavorPercentChange($event)" min=0 max=100>
+              <input class="form-control" type="number" [(ngModel)]="recipe.flavor_percents[i]" (ngModelChange)="onFlavorPercentChange($event)" min=0 max=100 [disabled]="isViewRecipe">
               <div class="input-group-addon">%</div>
             </div>
           </div>
 
         </div>
 
-        <div class="form-row">
+        <div class="form-row" *ngIf="isCreateRecipe || isUpdateRecipe">
           <div class="form-group">
             <div class="col-12 mt-3">
               <button type="button" class="btn btn-outline-primary" (click)="addAnotherFlavor()">Add Flavor</button>
@@ -123,7 +124,7 @@
   <!-- End Flavors List -->
 
   <!-- Proportions Chart -->
-  <div class="col-lg-6 col-xs-12" [hidden]="!sessionUser">
+  <div class="col-lg-6 col-xs-12">
     <div class="card">
       <div class="card-header">PROPORTIONS</div>
       <div class="card-body">
@@ -137,7 +138,7 @@
   <!-- End Proportions Chart -->
 
   <!-- Mixing Guide -->
-  <div class="col-lg-6 col-xs-12" [hidden]="!sessionUser">
+  <div class="col-lg-6 col-xs-12">
     <div class="card">
       <div class="card-header">MIXING GUIDE</div>
       <div class="card-body">
@@ -167,14 +168,14 @@
                   Propylene Glycol (PG)
                 </td>
                 <td data-title="Percent">
-                  {{mixingChart.pg.percent | number:'1.0-2'}}%
+                  {{basicMixingInfo.pg.percent | number:'1.0-2'}}%
                 </td>
                 <td data-title="Milliliters" class="numeric">
-                  {{mixingChart.pg.ml | number:'1.0-2'}}ml
+                  {{basicMixingInfo.pg.ml | number:'1.0-2'}}ml
                 </td>
                 <!--
                 <td data-title="Grams" class="numeric">
-                  {{mixingChart.pg.grams}}
+                  {{basicMixingInfo.pg.grams}}
                 </td>
                 -->
               </tr>
@@ -183,14 +184,14 @@
                   Vegetable Glycerin (VG)
                 </td>
                 <td data-title="Percent">
-                  {{mixingChart.vg.percent | number:'1.0-2'}}%
+                  {{basicMixingInfo.vg.percent | number:'1.0-2'}}%
                 </td>
                 <td data-title="Milliliters" class="numeric">
-                  {{mixingChart.vg.ml | number:'1.0-2'}}ml
+                  {{basicMixingInfo.vg.ml | number:'1.0-2'}}ml
                 </td>
                 <!--
                 <td data-title="Grams" class="numeric">
-                  {{mixingChart.vg.grams}}
+                  {{basicMixingInfo.vg.grams}}
                 </td>
                 -->
               </tr>
@@ -199,14 +200,14 @@
                   Nicotine Solution
                 </td>
                 <td data-title="Percent">
-                  {{mixingChart.nicotine.percent | number:'1.0-2'}}%
+                  {{basicMixingInfo.nicotine.percent | number:'1.0-2'}}%
                 </td>
                 <td data-title="Milliliters" class="numeric">
-                  {{mixingChart.nicotine.ml | number:'1.0-2'}}ml
+                  {{basicMixingInfo.nicotine.ml | number:'1.0-2'}}ml
                 </td>
                 <!--
                 <td data-title="Grams" class="numeric">
-                  {{mixingChart.nicotine.grams}}
+                  {{basicMixingInfo.nicotine.grams}}
                 </td>
                 -->
               </tr>
@@ -215,14 +216,14 @@
                   {{flavor.name}}
                 </td>
                 <td data-title="Percent" *ngIf="flavor.name">
-                  {{mixingChart.flavors[i].percent | number:'1.0-2'}}%
+                  {{basicMixingInfo.flavors[i].percent | number:'1.0-2'}}%
                 </td>
                 <td data-title="Milliliters" class="numeric" *ngIf="flavor.name">
-                  {{mixingChart.flavors[i].ml | number:'1.0-2'}}ml
+                  {{basicMixingInfo.flavors[i].ml | number:'1.0-2'}}ml
                 </td>
                 <!--
                 <td data-title="Grams" class="numeric" *ngIf="flavor.name">
-                  {{mixingChart.flavors[i].grams}}
+                  {{basicMixingInfo.flavors[i].grams}}
                 </td>
                 -->
               </tr>
@@ -234,7 +235,7 @@
   </div>
 
   <!-- Additional Info -->
-  <div class="col-lg-6 col-xs-12" [hidden]="!sessionUser">
+  <div class="col-lg-6 col-xs-12">
     <div class="card">
       <div class="card-header">ADDITIONAL INFO</div>
       <div class="card-body">
@@ -242,14 +243,14 @@
         <div class="form-row">
           <div class="form-group col-12">
             <label>Name</label>
-            <input class="form-control" type="text" [(ngModel)]="recipe.name">
+            <input class="form-control" type="text" [(ngModel)]="recipe.name" [disabled]="isViewRecipe">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group col-12">
             <label>Category</label>
-            <select class="form-control" [(ngModel)]="recipe.category">
+            <select class="form-control" [(ngModel)]="recipe.category" [disabled]="isViewRecipe">
             <option *ngFor="let category of categories">{{category}}</option>
           </select>
           </div>
@@ -259,7 +260,7 @@
           <div class="form-group col-12">
             <label>Steep Time</label>
             <div class="input-group">
-              <input class="form-control" type="number" [(ngModel)]="recipe.steepTime">
+              <input class="form-control" type="number" [(ngModel)]="recipe.steep_time" [disabled]="isViewRecipe">
               <div class="input-group-addon">days</div>
             </div>
           </div>
@@ -316,14 +317,15 @@
   <!-- End Additional Info -->
 
   <!-- Recipe Image Upload -->
-  <div class="col-lg-6 col-xs-12" [hidden]="!sessionUser">
+  <div class="col-lg-6 col-xs-12">
     <div class="card">
       <div class="card-header">IMAGE</div>
       <div class="card-body">
-        <div *ngIf="this.newImageURL" class="pl-4 pr-4 pb-4">
-          <img src="{{this.newImageURL}}" class="img-fluid"/>
+        <div *ngIf="recipe.image_url" class="pl-4 pr-4 pb-4">
+          <img src="{{recipe.image_url}}" class="img-fluid" />
         </div>
-        <image-upload (uploadFinished)="imageUploaded($event)" [url]="imageUploadURL" [max]="1" [extensions]="['jpg','png','gif','jpeg']" [headers]="authHeaders" dropBoxMessage="Drop Images Here" buttonCaption="Select Image" (removed)="onImageRemoved($event)">
+        <image-upload (uploadFinished)="imageUploaded($event)" [url]="imageUploadURL" [max]="1" [extensions]="['jpg','png','gif','jpeg']" [headers]="authHeaders" dropBoxMessage="Drop Images Here" buttonCaption="Select Image" (removed)="onImageRemoved($event)"
+            *ngIf="isCreateRecipe || isUpdateRecipe">
         </image-upload>
       </div>
     </div>
@@ -331,14 +333,23 @@
   <!-- End Recipe Image Upload -->
 
   <!-- Submit Area -->
-  <div class="col-lg-6 col-xs-12" [hidden]="!sessionUser">
+  <div class="col-lg-6 col-xs-12">
     <div class="card">
-      <div class="card-header">SUBMIT</div>
+      <div class="card-header" *ngIf="isCreateRecipe || isUpdateRecipe">SUBMIT</div>
+      <div class="card-header" *ngIf="isViewRecipe">OPTIONS</div>
       <div class="card-body">
         <div class="form-row">
           <div class="form-group">
-            <div class="col-12 mt-3">
+            <div class="col-12 mt-3" *ngIf="isCreateRecipe">
               <button type="button" class="btn btn-outline-primary" [disabled]="recipeBaseErrorMessage && flavorErrorMessage" (click)="submitNewRecipe()">Submit New Recipe</button>
+            </div>
+            <div class="col-12 mt-3" *ngIf="isUpdateRecipe">
+              <button type="button" class="btn btn-outline-primary" [disabled]="recipeBaseErrorMessage && flavorErrorMessage" (click)="updateRecipe()">Update Recipe</button>
+            </div>
+            <div class="col-12 mt-3" *ngIf="isViewRecipe">
+              <a href="{{'/recipe/'+recipe.id}}">
+                <button type="button" class="btn btn-outline-success">View Recipe Page</button>
+              </a>
             </div>
           </div>
         </div>
