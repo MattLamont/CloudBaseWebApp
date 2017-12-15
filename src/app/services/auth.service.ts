@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { Http, Response } from '@angular/http';
+import { Http, Response , Headers } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -40,6 +40,20 @@ export class AuthService {
 
     return this.http
       .post(API_URL + '/register', body)
+      .map(response => {
+        return response.json();
+      })
+      .catch((error) => {
+        return Observable.throw(error);
+      });
+  }
+
+  public validateToken( token: number ){
+
+    const headers = new Headers({ 'Authorization': 'Bearer ' + token });
+
+    return this.http
+      .get(API_URL + '/auth/validate_token', { headers: headers })
       .map(response => {
         return response.json();
       })
