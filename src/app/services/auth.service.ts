@@ -16,10 +16,10 @@ export class AuthService {
 
   }
 
-  public login( username: String , password: String ){
+  public login( email: String , password: String ){
 
     let body = {
-      username: username,
+      email: email,
       password: password
     };
 
@@ -31,11 +31,12 @@ export class AuthService {
       .catch(this.handleError);
   }
 
-  public register( email: String , password: String ){
+  public register( email: String , password: String , username: String ){
 
     let body = {
       email: email,
-      password: password
+      password: password,
+      username: username
     };
 
     return this.http

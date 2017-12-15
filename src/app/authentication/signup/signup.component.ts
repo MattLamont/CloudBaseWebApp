@@ -23,6 +23,7 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group( {
+      email: [null , Validators.compose ( [ Validators.required ] )],
       uname: [null , Validators.compose ( [ Validators.required ] )],
       password: password,
       confirmPassword: confirmPassword
@@ -37,7 +38,7 @@ export class SignupComponent implements OnInit {
     }
 
     this.authService
-        .register( this.form.value.uname , this.form.value.password )
+        .register( this.form.value.email , this.form.value.password , this.form.value.uname )
         .subscribe(
         (user) => {
           this.sessionStorage.store( 'user' , user );

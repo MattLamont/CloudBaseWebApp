@@ -10,6 +10,13 @@
         <label for="username">
           Enter your email
         </label>
+        <input type="text" class="form-control" placeholder="email" [formControl]="form.controls['email']" [ngClass]="{'form-control-danger': form.controls['email'].hasError('required') && form.controls['email'].touched}"/>
+        <div class="form-control-feedback" *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched">Email is required.</div>
+      </fieldset>
+      <fieldset class="form-group" [ngClass]="{'has-danger': form.controls['uname'].hasError('required') && form.controls['uname'].touched}">
+        <label for="username">
+          Enter a username
+        </label>
         <input type="text" class="form-control" placeholder="username" [formControl]="form.controls['uname']" [ngClass]="{'form-control-danger': form.controls['uname'].hasError('required') && form.controls['uname'].touched}"/>
         <div class="form-control-feedback" *ngIf="form.controls['uname'].hasError('required') && form.controls['uname'].touched">Username is required.</div>
       </fieldset>
