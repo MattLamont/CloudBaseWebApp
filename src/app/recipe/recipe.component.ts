@@ -35,7 +35,7 @@ export class recipeComponent {
     this.route.params.subscribe(params => {
       let recipeId = params['id'];
       this.recipeService
-        .findOneRecipe(recipeId)
+        .findOneRecipe( recipeId , ['flavors','owner','likes','dislikes','saves'] )
         .subscribe(
         (recipe) => {
           this.recipe = recipe;

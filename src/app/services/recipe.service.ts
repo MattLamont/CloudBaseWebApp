@@ -16,10 +16,12 @@ export class RecipeService {
 
   constructor( private http: Http ) { }
 
-  public findOneRecipe( id: number ){
+  public findOneRecipe( id: number , populate = [] ){
+
+    let url = this.buildQuery( '/recipe/' + id , populate );
 
     return this.http
-      .get(API_URL + '/recipe/' + id )
+      .get(url)
       .map(response => {
         return response.json();
       })
@@ -28,10 +30,12 @@ export class RecipeService {
       });
   }
 
-  public findRecipes(){
+  public findRecipes( populate = [] ){
+
+    let url = this.buildQuery( '/recipe' , populate );
 
     return this.http
-      .get(API_URL + '/recipe' )
+      .get(url)
       .map(response => {
         return response.json();
       })
@@ -75,6 +79,17 @@ export class RecipeService {
 
   public setAuthToken( token: string ){
     this.token = token;
+  }
+
+  private buildQuery( resource: string , populate = [] ): string{
+    let url = API_URL + resource + '?populate=[';
+
+    populate.map( (element) => {
+      url = url + element + ',';
+    });
+
+    url = url + ']';
+    return url;
   }
 
 }

@@ -388,7 +388,7 @@ export class CreateRecipeComponent {
     }
 
     this.recipeService
-      .findOneRecipe(id)
+      .findOneRecipe(id , ['flavors'])
       .subscribe(
       (recipe) => {
 

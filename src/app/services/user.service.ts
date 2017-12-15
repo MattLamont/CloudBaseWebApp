@@ -28,10 +28,12 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  public findOneUser( id: Number ){
+  public findOneUser( id: Number , populate = [] ){
+
+    let url = this.buildQuery( '/user/' + id , populate );
 
     return this.http
-      .get(API_URL + '/user/' + id )
+      .get(url)
       .map(response => {
         return response.json();
       })
@@ -45,6 +47,17 @@ export class UserService {
   private handleError(error: Response | any) {
     console.error(error);
     return Observable.throw(error.json());
+  }
+
+  private buildQuery( resource: string , populate = [] ): string{
+    let url = API_URL + resource + '?populate=[';
+
+    populate.map( (element) => {
+      url = url + element + ',';
+    });
+
+    url = url + ']';
+    return url;
   }
 
 }
