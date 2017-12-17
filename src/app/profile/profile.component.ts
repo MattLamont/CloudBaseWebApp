@@ -4,6 +4,7 @@ import { ActivatedRoute , Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { AppHeaderService } from '../services/appheader.service';
 
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -31,7 +32,7 @@ export class ProfileComponent implements OnInit {
       this.userId = params['id'];
 
       this.userService
-        .findOneUser(this.userId)
+        .findOneUser(this.userId , ['recipes','liked_recipes','followers','following','saved_recipes'])
         .subscribe(
         (user) => {
           this.user = user;

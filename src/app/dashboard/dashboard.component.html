@@ -1,16 +1,10 @@
 <div class="row">
-  <div class="media-grid col-lg-3 col-sm-6" *ngFor="let recipe of recipes">
-    <figure>
-      <img src="{{recipe.image_url || 'assets/images/unsplash/1.jpg'}}" alt="Card image cap" class="img-fluid recipe-card-image" />
-      <figcaption>
-        <h5 class="media-title fw-300">{{recipe.name}}</h5>
-        <p>
-          <a [routerLink]="'/recipe/' + recipe.id" placement="left" ngbTooltip="Download"><i class="icon icon-basic-server-download"></i></a>
-          <a href="javascript:;" placement="left" ngbTooltip="Like"><i class="icon icon-basic-heart"></i></a>
-          <a href="javascript:;" placement="left" ngbTooltip="Share"><i class="icon icon-basic-share"></i></a>
-          <a href="javascript:;" placement="left" ngbTooltip="Bookmark"><i class="icon icon-basic-bookmark"></i></a>
-        </p>
-      </figcaption>
-    </figure>
+
+  <div class="card-deck">
+      <app-recipe-card *ngFor="let recipe of recipes" class="col-xl-3 col-lg-3 col-md-4 col-sm-6" [recipe]="recipe"></app-recipe-card>
   </div>
+
 </div>
+
+
+<!--<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6" *ngFor="let recipe of recipes">-->

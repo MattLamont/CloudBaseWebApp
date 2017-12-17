@@ -20,40 +20,75 @@
         </div>
         <div class="card-body">
           <div class="row text-center">
-            <!--
-            <div class="col">
-              <h2 class="mt-0"><b>23,8K</b></h2>
-              <small>Followers</small>
-            </div>
-          -->
+
             <div class="col">
               <h2 class="mt-0"><b>{{user.recipes.length || 0}}</b></h2>
               <small>Recipes</small>
             </div>
-            <!--
+
             <div class="col">
-              <h2 class="mt-0"><b>67</b></h2>
+              <h2 class="mt-0"><b>{{user.followers.length || 0}}</b></h2>
+              <small>Followers</small>
+            </div>
+
+            <div class="col">
+              <h2 class="mt-0"><b>{{user.following.length || 0}}</b></h2>
               <small>Following</small>
             </div>
-          -->
+
           </div>
         </div>
       </div>
     </div>
     <div class="col-sm-8">
       <div class="card">
-        <ngb-tabset class="card-tab">
+
+        <ngb-tabset type="pills" class="m-3" >
           <ngb-tab title="Recipes" *ngIf="user.recipes.length > 0">
             <ng-template ngbTabContent>
+              <div class="card-deck mt-3">
+                <app-recipe-card class="col-xl-4 col-lg-6" *ngFor="let recipe of user.recipes" [recipe]="recipe"></app-recipe-card>
+              </div>
             </ng-template>
           </ngb-tab>
+
+          <ngb-tab title="Saved">
+            <ng-template ngbTabContent>
+              <div class="card-deck mt-3">
+                <app-recipe-card class="col-xl-4 col-lg-6" *ngFor="let recipe of user.saved_recipes" [recipe]="recipe"></app-recipe-card>
+              </div>
+            </ng-template>
+          </ngb-tab>
+
+          <ngb-tab title="Liked">
+            <ng-template ngbTabContent>
+              <div class="card-deck mt-3">
+                <app-recipe-card class="col-xl-4 col-lg-6" *ngFor="let recipe of user.liked_recipes" [recipe]="recipe"></app-recipe-card>
+              </div>
+            </ng-template>
+          </ngb-tab>
+
+          <ngb-tab title="Followers">
+            <ng-template ngbTabContent>
+              <div class="card-deck mt-3">
+                <app-user-card class="col-xl-4 col-lg-6" *ngFor="let follower of user.followers" [user]="follower"></app-user-card>
+              </div>
+            </ng-template>
+          </ngb-tab>
+
+          <ngb-tab title="Following">
+            <ng-template ngbTabContent>
+              <div class="card-deck mt-3">
+                <app-user-card class="col-xl-4 col-lg-6" *ngFor="let following of user.following" [user]="following"></app-user-card>
+              </div>
+            </ng-template>
+          </ngb-tab>
+
           <ngb-tab>
             <ng-template ngbTabTitle>Bio</ng-template>
             <ng-template ngbTabContent>
-              <div class="card">
-                <div class="card-body" [innerHTML]="user.biography">
+                <div [innerHTML]="user.biography">
                 </div>
-              </div>
             </ng-template>
           </ngb-tab>
         </ngb-tabset>

@@ -3,3 +3,24 @@
     min-width: 100%;
     padding: 30px;
 }
+
+.no-shadow{
+  box-shadow: none;
+}
+
+.widget-icon:hover{
+  cursor: pointer;
+  color: rgb( 255, 255, 255) !important;
+}
+
+.text-red:hover{
+  background-color: red;
+}
+
+.text-blue:hover{
+  background-color: blue;
+}
+
+.text-green:hover{
+  background-color: green;
+}
