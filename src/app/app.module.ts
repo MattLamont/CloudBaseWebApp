@@ -22,6 +22,7 @@ import { Ng2Webstorage } from 'ngx-webstorage';
 
 import { AppHeaderService } from './services/appheader.service';
 import { AuthService } from './services/auth.service';
+import { UserService } from './services/user.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -55,7 +56,8 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   providers: [
     AppHeaderService,
-    AuthService
+    AuthService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })

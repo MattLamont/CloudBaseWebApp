@@ -16,12 +16,12 @@ export class UserService {
 
   constructor( private http: Http ) { }
 
-  public updateUser( body: any ){
+  public updateUser( id: number , body: any ){
 
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
 
     return this.http
-      .put(API_URL + '/user/' + body.id , body , { headers: headers })
+      .put(API_URL + '/user/' + id , body , { headers: headers })
       .map(response => {
         return response.json();
       })

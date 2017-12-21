@@ -19,11 +19,11 @@
         <div class="row">
           <div class="col-4">
             <div class="card card-body card-widget no-shadow">
-              <div class="widget-icon rounded-circle text-blue icon icon-arrows-circle-up">
+              <div class="widget-icon rounded-circle text-blue icon icon-arrows-circle-up" (click)="onLikeButtonClick()" [ngClass]="{'liked': isRecipeLiked}">
               </div>
               <div class="block ml-3">
                 <h5 class="mb-0 fw-400">
-                {{recipe.likes.length}}
+                {{likes}}
               </h5>
                 <small class="text-muted text-uppercase ">
                 <strong>Likes</strong>
@@ -34,11 +34,11 @@
 
           <div class="col-4">
             <div class="card card-body card-widget no-shadow">
-              <div class="widget-icon rounded-circle text-green icon icon-arrows-circle-down">
+              <div class="widget-icon rounded-circle text-green icon icon-arrows-circle-down" (click)="onDislikeButtonClick()" [ngClass]="{'disliked': isRecipeDisliked}">
               </div>
               <div class="block ml-3">
                 <h5 class="mb-0 fw-400">
-                {{recipe.dislikes.length}}
+                {{dislikes}}
               </h5>
                 <small class="text-muted text-uppercase ">
                 <strong>Dislikes</strong>
@@ -49,11 +49,11 @@
 
           <div class="col-4">
             <div class="card card-body card-widget no-shadow">
-              <div class="widget-icon rounded-circle text-red icon icon-basic-heart">
+              <div class="widget-icon rounded-circle text-red icon icon-basic-heart" (click)="onSaveButtonClick()" [ngClass]="{'saved': isRecipeSaved}">
               </div>
               <div class="block ml-3">
                 <h5 class="mb-0 fw-400">
-                {{recipe.saves.length}}
+                {{saves}}
               </h5>
                 <small class="text-muted text-uppercase ">
                 <strong>saves</strong>

@@ -2,17 +2,31 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
+import { SessionStorage, LocalStorage } from 'ngx-webstorage';
 import { AuthService } from './services/auth.service';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
   template: '<router-outlet></router-outlet>'
 })
 export class AppComponent {
+
+  @LocalStorage('user')
+  localUser;
+
+  @SessionStorage('user')
+  sessionUser;
+
+  @SessionStorage('token')
+  token;
+
+
   constructor(translate: TranslateService,
     private localStorage: LocalStorageService,
     private sessionStorage: SessionStorageService,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {
     translate.addLangs(['en', 'fr']);
     translate.setDefaultLang('en');
@@ -22,16 +36,13 @@ export class AppComponent {
 
     let currentTime = Math.round((new Date()).getTime() / 1000);
 
-    let user = this.localStorage.retrieve('user');
-    if( !user ) user = this.sessionStorage.retrieve('user');
+    let user = this.localUser;
+    if( !user ) user = this.sessionUser;
 
-    let token = this.localStorage.retrieve('token');
-    if( !token ) token = this.sessionStorage.retrieve('token');
-
-    if (user && token) {
+    if (user && this.token) {
 
       this.authService
-        .validateToken(token)
+        .validateToken(this.token)
         .subscribe(
         (res) => {
 
@@ -39,8 +50,8 @@ export class AppComponent {
 
             //if the token still has more than a day to expire, then keep the token
             if ((res.user.exp - currentTime) > 86400) {
-              this.sessionStorage.store('user', user);
-              this.sessionStorage.store('token', token);
+              this.sessionUser = user;
+              this.getUserProfile();
             }
             else {
               this.sessionStorage.clear('user');
@@ -63,5 +74,21 @@ export class AppComponent {
     }
 
 
+  }
+
+  getUserProfile(){
+    this.userService
+      .findOneUser( this.sessionUser.id , ['liked_recipes','disliked_recipes','saved_recipes','followers','following'])
+      .subscribe(
+      (user) => {
+        user.liked_recipes = user.liked_recipes.map( elem => elem.id );
+        user.disliked_recipes = user.disliked_recipes.map( elem => elem.id );
+        user.saved_recipes = user.saved_recipes.map( elem => elem.id );
+        this.localUser = user;
+        this.sessionUser = user;
+      },
+      (error) => {
+
+      });
   }
 }

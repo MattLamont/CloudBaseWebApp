@@ -66,14 +66,15 @@ export class SettingsComponent {
     }
 
     this.userService
-      .updateUser(this.sessionUser)
+      .updateUser(this.sessionUser.id ,
+          {
+            biography: this.sessionUser.biography,
+            image_url: this.sessionUser.image_url
+          }
+        )
       .subscribe(
       (newUser) => {
-        this.sessionUser = newUser[0];
 
-        if( this.localUser ){
-          this.localUser = this.sessionUser;
-        }
         this.alertType = 'success';
         this.alertMessage = "Settings updated!"
       },
