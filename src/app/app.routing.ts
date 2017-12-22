@@ -10,6 +10,9 @@ export const AppRoutes: Routes = [{
     path: '',
     loadChildren: './dashboard/dashboard.module#DashboardModule'
   }, {
+    path: 'categories',
+    loadChildren: './categories/categories.module#CategoriesModule'
+  }, {
     path: 'email',
     loadChildren: './email/email.module#EmailModule'
   },{

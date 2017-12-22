@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { MenuItems } from './menu-items/menu-items';
 import { AccordionAnchorDirective, AccordionLinkDirective, AccordionDirective } from './accordion';
@@ -7,11 +8,13 @@ import { ToggleFullscreenDirective } from './fullscreen/toggle-fullscreen.direct
 
 import { RecipeCardComponent } from './recipe_card/recipe_card.component';
 import { UserCardComponent } from './user-card/user-card.component';
+import { RecipeContainerComponent } from './recipe-container/recipe-container.component';
 
 @NgModule({
   imports:
   [
-    RouterModule
+    RouterModule,
+    CommonModule
   ],
   declarations:
   [
@@ -20,7 +23,8 @@ import { UserCardComponent } from './user-card/user-card.component';
     AccordionDirective,
     ToggleFullscreenDirective,
     RecipeCardComponent,
-    UserCardComponent
+    UserCardComponent,
+    RecipeContainerComponent
   ],
   exports:
   [
@@ -29,7 +33,8 @@ import { UserCardComponent } from './user-card/user-card.component';
     AccordionDirective,
     ToggleFullscreenDirective,
     RecipeCardComponent,
-    UserCardComponent
+    UserCardComponent,
+    RecipeContainerComponent
   ],
   providers:
   [

@@ -28,6 +28,72 @@ const MENUITEMS = [
     icon: 'basic-accelerator'
   },
   {
+    state: 'categories',
+    name: 'Categories',
+    type: 'sub',
+    icon: 'basic-archive-full',
+    children: [
+      {
+        state: 'tobacco',
+        name: 'Tobacco'
+      },
+      {
+        state: 'dessert',
+        name: 'Dessert'
+      },
+      {
+        state: 'fruit',
+        name: 'Fruit'
+      },
+      {
+        state: 'candy',
+        name: 'Candy'
+      },
+      {
+        state: 'food',
+        name: 'Food'
+      },
+      {
+        state: 'beverage',
+        name: 'Beverage'
+      }
+    ]
+  },
+  {
+    state: 'create/recipe',
+    name: 'Create Recipe',
+    type: 'link',
+    icon: 'basic-todo-pencil'
+  },
+  {
+    state: '/',
+    name: 'Saved Recipes',
+    type: 'link',
+    icon: 'basic-bookmark'
+  },
+  {
+    state: '/',
+    name: 'Profile',
+    type: 'link',
+    icon: 'user'
+  },
+  {
+    state: '/',
+    name: 'Settings',
+    type: 'link',
+    icon: 'user'
+  }
+];
+
+/*
+const MENUITEMS = [
+  {
+    state: '/',
+    name: 'HOME',
+    type: 'link',
+    icon: 'basic-accelerator'
+  },
+  {
     state: 'create/recipe',
     name: 'Create Recipe',
     type: 'link',
@@ -434,6 +500,7 @@ const MENUITEMS = [
     icon: 'basic-sheet-txt'
   }
 ];
+*/
 
 @Injectable()
 export class MenuItems {
