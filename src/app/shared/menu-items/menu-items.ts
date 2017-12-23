@@ -64,24 +64,6 @@ const MENUITEMS = [
     name: 'Create Recipe',
     type: 'link',
     icon: 'basic-todo-pencil'
-  },
-  {
-    state: '/',
-    name: 'Saved Recipes',
-    type: 'link',
-    icon: 'basic-bookmark'
-  },
-  {
-    state: '/',
-    name: 'Profile',
-    type: 'link',
-    icon: 'user'
-  },
-  {
-    state: '/',
-    name: 'Settings',
-    type: 'link',
-    icon: 'user'
   }
 ];
 

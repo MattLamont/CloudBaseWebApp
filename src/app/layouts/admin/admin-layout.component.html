@@ -1,13 +1,5 @@
 <ng-sidebar-container class="app" [ngClass]="{'mode-boxed': isBoxed, 'sidebar-opened': isOpened, 'theme-light': theme == 'light', 'theme-dark': theme == 'dark', 'mode-push': _mode == 'push', 'mode-dock': _mode == 'dock', 'mode-over': _mode == 'over', 'mode-slide': _mode == 'slide', 'no-footer': options?.removeFooter, 'map-header': options?.mapHeader}">
-  <ng-sidebar
-    [(opened)]="isOpened"
-    [(mode)]="_mode"
-    [position]="'left'"
-    [dockedSize]="'80px'"
-    [autoCollapseWidth]="'991'"
-    [closeOnClickOutside]="isOver()"
-    [showBackdrop]="isOver()"
-    [sidebarClass]="'sidebar-panel'" #sidebar>
+  <ng-sidebar [(opened)]="isOpened" [(mode)]="_mode" [position]="'left'" [dockedSize]="'80px'" [autoCollapseWidth]="'991'" [closeOnClickOutside]="isOver()" [showBackdrop]="isOver()" [sidebarClass]="'sidebar-panel'" #sidebar>
     <nav class="navbar custom-navbar main-brand">
       <a class="navbar-brand mr-auto" [routerLink]="['/']">
         <img src="assets/images/logo.png" class="navbar-brand-logo" alt="">
@@ -58,7 +50,37 @@
             </li>
           </ul>
         </li>
-        <li class="navigation-item"><hr class="mt-0 mb-0" /></li>
+
+        <li class="navigation-item" appAccordionLink>
+          <a class="navigation-link" appAccordionToggle [routerLink]="[ '/profile' , user.id ]" fragment="saved">
+            <i class="icon icon-basic-bookmark"></i>
+            <span>Saved Recipes</span>
+          </a>
+        </li>
+
+        <!--Following Tab -->
+        <li class="navigation-item" appAccordionLink [open]="true">
+          <a class="navigation-link" appAccordionToggle *ngIf="user">
+            <i class="icon icon-basic-accelerator"></i>
+            <span>Following</span>
+            <span class="mr-auto"></span>
+            <!--<span class="badge badge-{{ badge.type }}">{{ badge.value }}</span>-->
+            <i class="menu-caret icon icon-arrows-right"></i>
+          </a>
+          <ul class="navigation-submenu">
+            <li class="navigation-item" *ngFor="let followed of user.following">
+              <a class="following-link navigation-link" [routerLink]="['/profile' , followed.id ]">
+                <img class="avatar-xxs rounded-circle img-fluid mr-2" src="{{followed.image_url || 'assets/images/blank_user.png'}}" />
+                <span>{{ followed.username }}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- end following tab -->
+
+        <li class="navigation-item">
+          <hr class="mt-0 mb-0" />
+        </li>
 
         <!--
         <li class="navigation-item">
