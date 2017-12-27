@@ -1,1 +1,10 @@
-<app-recipe-container [recipes]="recipes"></app-recipe-container>
+<div class="btn-group mb-2 pull-right">
+  <button type="button" class="btn btn-secondary pull-right" (click)="view_type='cards'">
+    <i class="icon icon-arrows-squares"></i>
+  </button>
+  <button type="button" class="btn btn-secondary pull-right" (click)="view_type='table'">
+    <i class="icon icon-arrows-hamburger1"></i>
+  </button>
+</div>
+
+<app-recipe-container [recipes]="recipes" [type]="view_type"></app-recipe-container>

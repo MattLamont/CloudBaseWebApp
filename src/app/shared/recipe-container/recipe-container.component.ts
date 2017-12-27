@@ -10,6 +10,9 @@ export class RecipeContainerComponent {
   @Input()
   recipes: any;
 
+  @Input()
+  type = 'cards';
+
   constructor() { }
 
   ngOnInit() {

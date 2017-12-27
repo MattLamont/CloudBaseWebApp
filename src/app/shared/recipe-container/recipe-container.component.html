@@ -1,7 +1,45 @@
-<div class="row">
+<div class="row" *ngIf="type == 'cards'">
   <div class="card-deck-wrapper">
     <div class="card-deck">
-  <app-recipe-card *ngFor="let recipe of recipes" class="col-xl-2 col-lg-3 col-md-4 col-sm-6" [recipe]="recipe"></app-recipe-card>
+      <app-recipe-card *ngFor="let recipe of recipes" class="col-xl-2 col-lg-3 col-md-4 col-sm-6" [recipe]="recipe"></app-recipe-card>
+    </div>
+  </div>
 </div>
-</div>
+
+
+<div class="card" *ngIf="type == 'table'">
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th>Name</th>
+          <th>User</th>
+          <th>Category</th>
+          <th>Likes</th>
+          <th>Saves</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let recipe of recipes">
+          <td>
+            <a [routerLink]="[ '/recipe' , recipe.id ]">
+              <img src="{{recipe.image_url || 'assets/images/unsplash/10.jpg'}}" class="avatar-md rounded" alt="">
+            </a>
+          </td>
+          <td>
+            <a [routerLink]="[ '/recipe' , recipe.id ]" class="d-block text-capitalize">{{recipe.name}}</a>
+          </td>
+          <td>
+            <a [routerLink]="[ '/profile' , recipe.owner.id ]">
+            {{recipe.owner.username}}
+            </a>
+          </td>
+          <td>{{recipe.category}}</td>
+          <td>{{recipe.likes_count}}</td>
+          <td>{{recipe.saves_count}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

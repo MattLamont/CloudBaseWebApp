@@ -1,1 +1,19 @@
-<app-recipe-container [recipes]="recipes"></app-recipe-container>
+
+<div class="btn-group mb-2 pull-right">
+  <button type="button" class="btn btn-secondary pull-right" (click)="view_type='cards'">
+    <i class="icon icon-arrows-squares"></i>
+  </button>
+  <button type="button" class="btn btn-secondary pull-right" (click)="view_type='table'">
+    <i class="icon icon-arrows-hamburger1"></i>
+  </button>
+</div>
+
+
+<p class="ff-headers text-uppercase mb-3 mt-4 fw-600">Featured</p>
+<app-recipe-container [recipes]="featured_recipes" [type]="view_type"></app-recipe-container>
+
+<p class="ff-headers text-uppercase mb-3 mt-4 fw-600">Recent</p>
+<app-recipe-container [recipes]="recent_recipes" [type]="view_type"></app-recipe-container>
+
+<p class="ff-headers text-uppercase mb-3 mt-4 fw-600">Popular</p>
+<app-recipe-container [recipes]="popular_recipes" [type]="view_type"></app-recipe-container>

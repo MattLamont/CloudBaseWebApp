@@ -5,7 +5,7 @@
   <div class="card-body">
     <h6 class="card-title">{{recipe.name}}</h6>
   </div>
-  <div class="likes-saves-header card-footer">
+  <div class="likes-saves-header card-footer" *ngIf="recipe.likes_count != null && recipe.saves_count != null">
     <div class="widget-icon rounded-circle text-blue icon icon-arrows-circle-up">
     </div>
     <span>{{ recipe.likes_count }}</span>

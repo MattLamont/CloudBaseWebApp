@@ -25,8 +25,10 @@ export class CategoriesComponent {
   category: string;
   recipes: any;
 
+  view_type = 'cards';
+
   constructor(
-    private categoriesService: RecipeService,
+    private recipeService: RecipeService,
     private route: ActivatedRoute,
     private router: Router,
     private appHeaderService: AppHeaderService,
@@ -46,8 +48,8 @@ export class CategoriesComponent {
 
     this.route.params.subscribe(params => {
       let categoriesId = params['id'];
-      this.categoriesService
-        .findRecipes( [] , 'category=' + this.category )
+      this.recipeService
+        .findRecipes( ['owner'] , 'category=' + this.category )
         .subscribe(
         (recipes) => {
           this.recipes = recipes;

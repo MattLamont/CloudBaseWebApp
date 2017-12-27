@@ -12,20 +12,45 @@ import { RecipeService } from '../services/recipe.service';
 
 export class DashboardComponent {
 
-  recipes: any;
+  featured_recipes: any;
+  recent_recipes: any;
+  popular_recipes: any;
+
+  view_type = 'cards';
 
   constructor(
     private recipeService: RecipeService
   ) {
 
     this.recipeService
-      .findRecipes()
+      .findRecipes(['owner'], 'limit=6')
       .subscribe(
       (recipes) => {
-        this.recipes = recipes;
+        this.featured_recipes = recipes;
+      },
+      (error) => {
+
+      });
+
+    this.recipeService
+      .findRecipes(['owner'], 'sort=updatedAt%20ASC&limit=6')
+      .subscribe(
+      (recipes) => {
+        this.recent_recipes = recipes;
+      },
+      (error) => {
+
+      });
+
+    this.recipeService
+      .findRecipes(['owner'], 'skip=10&limit=6')
+      .subscribe(
+      (recipes) => {
+        this.popular_recipes = recipes;
       },
       (error) => {
 
       });
   }
+
 }
