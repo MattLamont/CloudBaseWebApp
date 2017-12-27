@@ -40,6 +40,78 @@ export class UserService {
       .catch(this.handleError);
   }
 
+  public findOneRecipeLike( userId: number , recipeId: number ){
+
+    let url = API_URL + '/user/' + userId + '/liked_recipes/' + recipeId;
+
+    return this.http
+      .get(url)
+      .map(response => {
+        return response.json();
+      })
+      .catch(this.handleError);
+  }
+
+  public findOneRecipeSave( userId: number , recipeId: number ){
+
+    let url = API_URL + '/user/' + userId + '/saved_recipes/' + recipeId;
+
+    return this.http
+      .get(url)
+      .map(response => {
+        return response.json();
+      })
+      .catch(this.handleError);
+  }
+
+  public addRecipeLike( userId: number , recipeId: number ){
+
+    const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
+
+    return this.http
+      .post(API_URL + '/user/' + userId + '/liked_recipes/' + recipeId , null , { headers: headers })
+      .map(response => {
+        return response.json();
+      })
+      .catch(this.handleError);
+  }
+
+  public addRecipeSave( userId: number , recipeId: number ){
+
+    const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
+
+    return this.http
+      .post(API_URL + '/user/' + userId + '/saved_recipes/' + recipeId , null , { headers: headers })
+      .map(response => {
+        return response.json();
+      })
+      .catch(this.handleError);
+  }
+
+  public removeRecipeLike( userId: number , recipeId: number ){
+
+    const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
+
+    return this.http
+      .delete(API_URL + '/user/' + userId + '/liked_recipes/' + recipeId , { headers: headers })
+      .map(response => {
+        return response.json();
+      })
+      .catch(this.handleError);
+  }
+
+  public removeRecipeSave( userId: number , recipeId: number ){
+
+    const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
+
+    return this.http
+      .delete(API_URL + '/user/' + userId + '/saved_recipes/' + recipeId , { headers: headers })
+      .map(response => {
+        return response.json();
+      })
+      .catch(this.handleError);
+  }
+
   public setAuthToken( token: string ){
     this.token = token;
   }

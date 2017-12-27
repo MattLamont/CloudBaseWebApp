@@ -72,6 +72,18 @@ export class RecipeService {
       });
   }
 
+  public searchForRecipe( name: String ){
+
+    let url = API_URL + '/recipe?where={"name":{"contains":"' + name + '"}}&limit=10';
+
+    return this.http
+      .get( url )
+      .map(response => {
+        return response.json();
+      })
+      .catch(this.handleError);
+  }
+
   private handleError(error: Response | any) {
     console.error(error);
     return Observable.throw(error.json());

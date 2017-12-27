@@ -53,6 +53,14 @@ export const CategoriesRoutes: Routes = [
         {
           heading: 'Beverage'
         }
+      },
+      {
+        path: 'other',
+        component: CategoriesComponent,
+        data:
+        {
+          heading: 'Other'
+        }
       }
     ]
 

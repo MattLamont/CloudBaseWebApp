@@ -51,7 +51,7 @@
           </ul>
         </li>
 
-        <li class="navigation-item" appAccordionLink>
+        <li class="navigation-item" appAccordionLink *ngIf="user">
           <a class="navigation-link" appAccordionToggle [routerLink]="[ '/profile' , user.id ]" fragment="saved">
             <i class="icon icon-basic-bookmark"></i>
             <span>Saved Recipes</span>
@@ -59,8 +59,8 @@
         </li>
 
         <!--Following Tab -->
-        <li class="navigation-item" appAccordionLink [open]="true">
-          <a class="navigation-link" appAccordionToggle *ngIf="user">
+        <li class="navigation-item" appAccordionLink [open]="true" *ngIf="user">
+          <a class="navigation-link" appAccordionToggle>
             <i class="icon icon-basic-accelerator"></i>
             <span>Following</span>
             <span class="mr-auto"></span>
@@ -199,6 +199,8 @@
 
     <div class="main-content">
       <router-outlet></router-outlet>
+
+      <!--
       <nav class="navbar custom-navbar navbar-light main-footer small">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
@@ -213,6 +215,8 @@
           </li>
         </ul>
       </nav>
+    -->
+
     </div>
   </div>
 
@@ -220,12 +224,19 @@
 
 <ng-template #search let-c="close" let-d="dismiss">
   <form class="search__form" action="">
-    <input class="search-input" name="search" type="search" placeholder="Search..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus="true" />
+    <input class="search-input" name="search" type="search" placeholder="Search..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus="true" (input)="onSearchChange($event.target.value)" />
     <p class="text-muted"><small><strong>Hit enter to search or ESC to close</strong></small></p>
   </form>
+  <!--
   <div class="search-suggestions">
     <h6 class="text-uppercase"><strong>Suggestions?</strong></h6>
     <p class="text-primary">#medical #analytics #fitness #transport #ui #dashboard #admin #bootstrap #angular #typescript</p>
+  </div>
+  -->
+  <div>
+    <a *ngFor="let item of searchItems" [routerLink]="[ '/recipe' , item.id]" class="mt-3" (click)="d('Cross click')">
+      <h5>{{item.name}}</h5>
+    </a>
   </div>
   <button type="button" class="search-close" aria-label="Close search form" (click)="d('Cross click')">
     <i class="fi flaticon-close"></i>

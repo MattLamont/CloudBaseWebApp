@@ -463,6 +463,13 @@ export class CreateRecipeComponent {
   }
 
   submitNewRecipe(){
+
+    if( !this.sessionUser ){
+      this.submitErrorMessageType = 'danger';
+      this.submitErrorMessage = 'You must be logged in to create a recipe.';
+      return;
+    }
+
     let newRecipe = this.validateRecipe();
 
     //add the the recipe to database
@@ -482,6 +489,12 @@ export class CreateRecipeComponent {
   }
 
   updateRecipe(){
+
+    if( !this.sessionUser ){
+      this.submitErrorMessageType = 'danger';
+      this.submitErrorMessage = 'You must be logged in to update a recipe.';
+      return;
+    }
 
     if( this.recipe.owner != this.sessionUser.id ){
       this.submitErrorMessageType = 'danger';

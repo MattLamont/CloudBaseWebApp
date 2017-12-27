@@ -4,10 +4,13 @@
   </a>
   <div class="card-body">
     <h6 class="card-title">{{recipe.name}}</h6>
-      <!--
-    <p class="card-text">
-      {{flavor.manufacturer}}
-    </p>
-  -->
+  </div>
+  <div class="likes-saves-header card-footer">
+    <div class="widget-icon rounded-circle text-blue icon icon-arrows-circle-up">
+    </div>
+    <span>{{ recipe.likes_count }}</span>
+    <div class="widget-icon rounded-circle text-red icon icon-basic-heart" (click)="onSaveButtonClick()" [ngClass]="{'saved': isRecipeSaved}">
+    </div>
+    <span>{{ recipe.saves_count }}</span>
   </div>
 </div>

@@ -9,6 +9,7 @@ import 'rxjs/add/operator/filter';
 import { TranslateService } from '@ngx-translate/core';
 import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import { AppHeaderService } from '../../services/appheader.service';
+import { RecipeService } from '../../services/recipe.service';
 
 const SMALL_WIDTH_BREAKPOINT = 991;
 
@@ -44,6 +45,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
   appHeaderSub: Subscription;
 
+  searchItems = [];
+
   @ViewChild('sidebar') sidebar;
 
   constructor(
@@ -56,7 +59,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     private zone: NgZone,
     private localStorage: LocalStorageService,
     private sessionStorage: SessionStorageService,
-    private appHeaderService: AppHeaderService
+    private appHeaderService: AppHeaderService,
+    private recipeService: RecipeService
   ) {
     const browserLang: string = translate.getBrowserLang();
     translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
@@ -145,5 +149,23 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     this.localStorage.clear('user');
     this.localStorage.clear('token');
     this.router.navigate(['/'], { queryParams: { 'refresh': 1 } });
+  }
+
+  onSearchChange( value: string ){
+
+
+    if( value.length < 3 ){
+      return;
+    }
+
+    this.recipeService
+      .searchForRecipe(value)
+      .subscribe(
+      (recipes) => {
+        this.searchItems = recipes;
+      },
+      (error) => {
+
+      });
   }
 }
