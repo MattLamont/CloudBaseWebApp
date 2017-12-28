@@ -12,7 +12,7 @@ import { recipeRoutes } from './recipe.routing';
 
 import { RecipeService } from '../services/recipe.service';
 import { UserService } from '../services/user.service';
-import { MailService } from './email.service';
+import { ReviewService } from '../services/review.service';
 
 
 @NgModule({
@@ -31,7 +31,7 @@ import { MailService } from './email.service';
   providers: [
     RecipeService,
     UserService,
-    MailService
+    ReviewService
   ]
 })
 

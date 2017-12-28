@@ -2,11 +2,11 @@ import { Component , OnInit, AfterContentInit } from '@angular/core';
 import { SessionStorage, LocalStorage } from 'ngx-webstorage';
 import { RecipeService } from '../services/recipe.service';
 import { UserService } from '../services/user.service';
+import { ReviewService } from '../services/review.service';
 import { AppHeaderService } from '../services/appheader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Message } from './message';
-import { MailService } from './email.service';
 import * as Quill from 'quill';
 
 @Component({
@@ -42,7 +42,7 @@ export class recipeComponent implements OnInit, AfterContentInit {
     private router: Router,
     private appHeaderService: AppHeaderService,
     private userService: UserService,
-    private mailService: MailService
+    private reviewService: ReviewService
   ) { }
 
   ngOnInit() {
@@ -52,9 +52,9 @@ export class recipeComponent implements OnInit, AfterContentInit {
         .findOneRecipe(recipeId, ['flavors', 'owner', 'reviews'])
         .subscribe(
         (recipe) => {
-          console.log( recipe.reviews );
           this.recipe = recipe;
           this.appHeaderService.setAppHeader('Recipe | ' + this.recipe.name);
+          this.getRecipeReviews();
           this.initRecipeButtons();
         },
         (error) => {
@@ -69,7 +69,7 @@ export class recipeComponent implements OnInit, AfterContentInit {
     if (this.isOver()) {
       this.isOpened = false;
     }
-    this.getMessages();
+
   }
 
   ngAfterContentInit() {
@@ -185,6 +185,25 @@ export class recipeComponent implements OnInit, AfterContentInit {
       });
   }
 
+  getRecipeReviews(): void{
+
+    this.recipe.reviews.forEach( (review , index ) => {
+
+      this.reviewService
+        .findOneReview( review.id , ['owner'] )
+        .subscribe(
+        (review) => {
+          this.recipe.reviews[index] = review;
+          this.selectedReview = this.recipe.reviews[0];
+        },
+        (error) => {
+
+        });
+
+    });
+
+  }
+
 
   toogleSidebar(): void {
     this.isOpened = !this.isOpened;
@@ -192,13 +211,6 @@ export class recipeComponent implements OnInit, AfterContentInit {
 
   isOver(): boolean {
     return window.matchMedia(`(max-width: 991px)`).matches;
-  }
-
-  getMessages(): void {
-    this.mailService.getMessages().then(messages => {
-      this.messages = messages;
-      this.selectedReview = this.messages[1];
-    });
   }
 
   onSelect(review: any): void {
