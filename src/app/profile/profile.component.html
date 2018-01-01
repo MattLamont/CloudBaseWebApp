@@ -38,6 +38,10 @@
 
           </div>
         </div>
+        <div class="card-body">
+          <p class="ff-headers text-uppercase mb-3"><strong>About Me</strong></p>
+          <p [innerHTML]="user.biography"></p>
+        </div>
       </div>
     </div>
     <div class="col-sm-8">
@@ -47,7 +51,7 @@
           <ngb-tab title="Recipes" *ngIf="user.recipes.length > 0">
             <ng-template ngbTabContent>
               <div class="card-deck mt-3">
-                <app-recipe-card class="col-xl-4 col-lg-6" *ngFor="let recipe of user.recipes" [recipe]="recipe"></app-recipe-card>
+                <app-recipe-card class="col-xl-4 col-lg-6 mb-3" *ngFor="let recipe of user.recipes" [recipe]="recipe"></app-recipe-card>
               </div>
             </ng-template>
           </ngb-tab>
@@ -55,7 +59,7 @@
           <ngb-tab title="Saved">
             <ng-template ngbTabContent>
               <div class="card-deck mt-3">
-                <app-recipe-card class="col-xl-4 col-lg-6" *ngFor="let recipe of user.saved_recipes" [recipe]="recipe"></app-recipe-card>
+                <app-recipe-card class="col-xl-4 col-lg-6 mb-3" *ngFor="let recipe of user.saved_recipes" [recipe]="recipe"></app-recipe-card>
               </div>
             </ng-template>
           </ngb-tab>
@@ -63,7 +67,7 @@
           <ngb-tab title="Liked">
             <ng-template ngbTabContent>
               <div class="card-deck mt-3">
-                <app-recipe-card class="col-xl-4 col-lg-6" *ngFor="let recipe of user.liked_recipes" [recipe]="recipe"></app-recipe-card>
+                <app-recipe-card class="col-xl-4 col-lg-6mb-3" *ngFor="let recipe of user.liked_recipes" [recipe]="recipe"></app-recipe-card>
               </div>
             </ng-template>
           </ngb-tab>
@@ -71,7 +75,7 @@
           <ngb-tab title="Followers">
             <ng-template ngbTabContent>
               <div class="card-deck mt-3">
-                <app-user-card class="col-xl-4 col-lg-6" *ngFor="let follower of user.followers" [user]="follower"></app-user-card>
+                <app-user-card class="col-xl-4 col-lg-6 mb-3" *ngFor="let follower of user.followers" [user]="follower"></app-user-card>
               </div>
             </ng-template>
           </ngb-tab>
@@ -79,18 +83,11 @@
           <ngb-tab title="Following">
             <ng-template ngbTabContent>
               <div class="card-deck mt-3">
-                <app-user-card class="col-xl-4 col-lg-6" *ngFor="let following of user.following" [user]="following"></app-user-card>
+                <app-user-card class="col-xl-4 col-lg-6 mb-3" *ngFor="let following of user.following" [user]="following"></app-user-card>
               </div>
             </ng-template>
           </ngb-tab>
 
-          <ngb-tab>
-            <ng-template ngbTabTitle>Bio</ng-template>
-            <ng-template ngbTabContent>
-                <div [innerHTML]="user.biography">
-                </div>
-            </ng-template>
-          </ngb-tab>
         </ngb-tabset>
       </div>
     </div>

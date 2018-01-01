@@ -44,6 +44,21 @@ export class ReviewService {
       });
   }
 
+  public create( body: any ){
+
+    let url = API_URL + '/review';
+    const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
+
+    return this.http
+      .post(url , body , {headers: headers})
+      .map(response => {
+        return response.json();
+      })
+      .catch((error) => {
+        return Observable.throw(error);
+      });
+  }
+
   private handleError(error: Response | any) {
     console.error(error);
     return Observable.throw(error.json());

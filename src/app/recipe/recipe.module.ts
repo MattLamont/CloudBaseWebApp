@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { NgbProgressbarModule, NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { FormsModule } from '@angular/forms';
+import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 import { SidebarModule } from 'ng-sidebar';
 
 import { recipeComponent } from './recipe.component';
@@ -23,6 +23,7 @@ import { ReviewService } from '../services/review.service';
     NgbModule,
     NgxChartsModule,
     FormsModule,
+    ReactiveFormsModule,
     SidebarModule
   ],
   declarations: [

@@ -109,160 +109,211 @@
 
 <p class="ff-headers text-uppercase mb-3 mt-3 fw-600">Flavors</p>
 <div class="row" *ngIf="recipe">
-  <div class="card-deck-wrapper">
-    <div class="card-deck">
-      <div class="card col-xl-2 col-lg-3 col-sm-4 col-xs-6 flavor-card" *ngFor="let flavor of recipe.flavors">
-        <a href="{{flavor.link}}">
-          <img class="card-img-top flavor-card-img" src="{{flavor.image_url || 'assets/images/unsplash/10.jpg'}}" alt="Card image" />
-        </a>
-        <div class="card-body">
-          <h5 class="card-title">
+      <div *ngFor="let flavor of recipe.flavors" class="col-xl-3 col-lg-4 col-sm-6 mb-3">
+        <div class="card flavor-card h-100">
+          <a href="{{flavor.link}}" class="mt-2">
+            <img class="card-img-top center-cropped" src="{{flavor.image_url || 'assets/images/unsplash/10.jpg'}}" alt="Card image" />
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">
               {{flavor.name}}
             </h5>
-          <p class="card-text">
-            {{flavor.manufacturer}}
-          </p>
+            <p class="card-text">
+              {{flavor.manufacturer}}
+            </p>
+          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
+
 
 <p class="ff-headers text-uppercase mb-3 mt-3 fw-600">Reviews</p>
 <div class="card col-12">
   <!--<div class="card-header">REVIEWS</div>-->
   <div class="card-body">
-    <ng-sidebar-container class="page-height" *ngIf="selectedReview">
-      <ng-sidebar
-        [(opened)]="isOpened"
-        [mode]="isOver() ? 'over' : 'push'"
-        [position]="'left'"
-        [dockedSize]="'50px'"
-        [autoCollapseWidth]="'991'"
-        [closeOnClickOutside]="isOver() ? true : false"
-        [showBackdrop]="isOver() ? true : false"
-        [sidebarClass]="'email-panel'">
-        <div class="scroll-y">
-          <div (click)="onSelect(review)" *ngFor="let review of recipe.reviews; let i = index" [class.selected]="review.id == selectedReview.id" class="list-group-item list-group-item-action border-left-0 border-right-0 flex-column align-items-start">
-            <a class="d-flex b-b w-100" href="javascript:;">
-              <div class="">
-                <img alt="" class="avatar-sm rounded-circle" src="{{review.owner.image_url}}"/>
+    <div class="row">
+
+      <div class="column d-none d-md-block mr-3">
+        <div *ngIf="selectedReview">
+          <div (click)="selectedReview = review" *ngFor="let review of reviewsPage; let i = index" [class.selected]="review.id == selectedReview.id" class="list-group-item list-group-item-action border-bottom-0 border-left-0 border-right-1 border-top-0 flex-column align-items-start">
+            <a class="d-flex b-b w-100">
+              <div>
+                <img alt="" class="avatar-sm rounded-circle" src="{{review.owner.image_url || 'assets/images/blank_user.png'}}" />
               </div>
               <div class="pl-3 w-100">
                 <div class="d-flex justify-content-between align-items-center">
                   <small class="bold ff-headers">
-                    {{review.owner.username}}
-                  </small>
+                  {{review.owner.username}}
+                </small>
                   <small class="bold text-muted time">
-                    {{ review.updatedAt | date: 'MMMM d, y' }}
-                  </small>
+                  {{ review.updatedAt | date: 'MMMM d, y' }}
+                </small>
                 </div>
                 <p class="mb-0">
                   {{review.title}}
                 </p>
+                <ngb-rating [(rate)]="review.rating" [readonly]="true" max="5"></ngb-rating>
               </div>
             </a>
           </div>
         </div>
-      </ng-sidebar>
-      <div ng-sidebar-content class="scroll-y">
-        <nav class="navbar custom-navbar" *ngIf="!isOpened">
-          <div class="nav navbar-nav">
-            <a (click)="toogleSidebar()" class="nav-link d-lg-none d-sm-inline-block" href="javascript:;">
-              <i class="hamburger-icon">
-                <span></span>
-              </i>
+
+        <div *ngIf="!selectedReview" class="list-group-item list-group-item-action border-bottom-0 border-left-0 border-right-1 border-top-0 flex-column align-items-start">
+          No Reviews Yet
+        </div>
+
+
+      </div>
+
+      <div class="col">
+
+        <!-- Buttons Row -->
+        <div class="form-row">
+          <div class="form-group">
+            <a>
+              <button type="button" class="btn btn-primary" (click)="onReviewCreateClick()" [disabled]="false" *ngIf="!isWritingReview">Write A Review</button>
             </a>
-            <!--
-            <a class="nav-item nav-link active" href="javascript:;">
-              Reply
+            <a>
+              <button type="button" class="btn btn-success" (click)="onReviewSubmit()" [disabled]="!form.valid" *ngIf="isWritingReview">Submit</button>
             </a>
-            <a class="nav-item nav-link" href="javascript:;">
-              Forward
+            <a>
+              <button type="button" class="btn btn-danger ml-2" (click)="isWritingReview = false" [disabled]="false" *ngIf="isWritingReview">Cancel</button>
             </a>
-            <a class="nav-item nav-link" href="javascript:;">
-              Flag
-            </a>
-            <a class="nav-item nav-link disabled" href="javascript:;">
-              Delete
-            </a>
-          -->
           </div>
-        </nav>
-        <div class="pl-5 pr-5 pt-3 pb-3">
-          <div *ngIf="selectedReview">
+          <div class="col"></div>
+          <div class="form-group" *ngIf="selectedReview && !isWritingReview">
+            <ngb-pagination [collectionSize]="recipe.reviews.length" [(page)]="reviewPage" [pageSize]="5" (pageChange)="onReviewPageChange($event)"></ngb-pagination>
+          </div>
+        </div>
+        <!-- End buttons row -->
+
+        <div class="pr-5 pt-3 pb-3 col-12 d-none d-md-block" *ngIf="!isWritingReview && selectedReview">
+          <div>
             <div class="d-flex align-items-center mb-3">
-              <div class="">
-                <img alt="" class="avatar-lg rounded-circle" src="{{selectedReview.owner.image_url}}"/>
-              </div>
+              <img alt="" class="avatar-lg rounded-circle" src="{{selectedReview.owner.image_url || 'assets/images/blank_user.png'}}" />
               <div class="pl-3">
                 <div class="date">
                   {{selectedReview.updatedAt | date: 'fullDate'}}
                 </div>
                 <h4 class="lead mt-0">
-                  {{selectedReview.title}}
-                </h4>
-                <!--
-                <p>
-
-                  <b>
-                    {{selectedReview.from}}
-                  </b>
-                  to Jeff &amp; Suzzane
-                </p>
-              -->
+                {{selectedReview.title}}
+              </h4>
+                <small>{{selectedReview.owner.username}}</small>
+                <ngb-rating [(rate)]="selectedReview.rating" [readonly]="true" max="5"></ngb-rating>
               </div>
             </div>
             <div [innerHtml]="selectedReview.description">
             </div>
           </div>
-          <!--
-          <div class="pt-3 pb-3">
-            <div class="toolbar" id="toolbar-toolbar">
-              <span class="ql-formats">
-                <select class="ql-font">
-                  <option selected=""></option>
-                  <option value="serif"></option>
-                  <option value="monospace"></option>
-                </select>
-                <select class="ql-size">
-                  <option value="small"></option>
-                  <option selected=""></option>
-                  <option value="large"></option>
-                  <option value="huge"></option>
-                </select>
-              </span>
-              <span class="ql-formats">
-                <button class="ql-bold"></button>
-                <button class="ql-italic"></button>
-                <button class="ql-underline"></button>
-                <button class="ql-strike"></button>
-              </span>
-              <span class="ql-formats">
-                <select class="ql-color"></select>
-                <select class="ql-background"></select>
-              </span>
-              <span class="ql-formats">
-                <button class="ql-list" value="ordered"></button>
-                <button class="ql-list" value="bullet"></button>
-                <select class="ql-align">
-                  <option selected=""></option>
-                  <option value="center"></option>
-                  <option value="right"></option>
-                  <option value="justify"></option>
-                </select>
-              </span>
-              <span class="ql-formats">
-                <button class="ql-link"></button>
-                <button class="ql-image"></button>
-              </span>
+        </div>
+
+        <!-- Review View for small devices -->
+        <div class="col-12 d-md-none" *ngIf="!isWritingReview && selectedReview">
+          <div *ngFor="let review of reviewsPage">
+            <div class="d-flex align-items-center mb-3">
+              <img alt="" class="avatar-lg rounded-circle" src="{{review.owner.image_url || 'assets/images/blank_user.png'}}" />
+              <div class="pl-3">
+                <div class="date">
+                  {{review.updatedAt | date: 'fullDate'}}
+                </div>
+                <h4 class="lead mt-0">
+                {{review.title}}
+              </h4>
+                <small>{{review.owner.username}}</small>
+                <ngb-rating [(rate)]="selectedReview.rating" [readonly]="true" max="5"></ngb-rating>
+              </div>
             </div>
-            <div id="editor-container">
+            <div [innerHtml]="review.description">
             </div>
           </div>
-        -->
         </div>
+        <!-- end review view for small devices -->
+
+        <!-- Review creation form -->
+        <div class="pt-3" [hidden]="!isWritingReview">
+
+          <!-- Title Field -->
+          <div class="form-row">
+            <fieldset class="form-group col-12" [ngClass]="{'has-danger': form.controls['title'].hasError('required') && form.controls['title'].touched}">
+              <label class="form-control-label">
+              Title
+            </label>
+              <input type="text" class="form-control" placeholder="Title" [formControl]="form.controls['title']" [ngClass]="{'form-control-danger': form.controls['title'].hasError('required') && form.controls['title'].touched}" />
+              <div class="form-control-feedback" *ngIf="form.controls['title'].hasError('required') && form.controls['title'].touched">Make sure to give your review a title!</div>
+            </fieldset>
+          </div>
+          <!-- End Title field -->
+
+          <!-- Title Field -->
+          <div class="form-row">
+            <div class="form-group col-12">
+              <label class="form-control-label">Rating</label>
+              <div [class.has-success]="form.controls['rating'].valid" [class.has-danger]="form.controls['rating'].invalid">
+                <ngb-rating [formControl]="form.controls['rating']" [readonly]="false" min="1" max="5">
+                  <ng-template let-fill="fill">
+                    <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                  </ng-template>
+                </ngb-rating>
+              </div>
+            </div>
+          </div>
+          <!-- End Title field -->
+
+          <!-- Description edit box -->
+          <div class="form-row">
+            <div class="form-group col-12">
+              <label class="">Description</label>
+              <div>
+                <div class="toolbar" id="toolbar-toolbar">
+                  <span class="ql-formats">
+              <select class="ql-font">
+                <option selected=""></option>
+                <option value="serif"></option>
+                <option value="monospace"></option>
+              </select>
+              <select class="ql-size">
+                <option value="small"></option>
+                <option selected=""></option>
+                <option value="large"></option>
+                <option value="huge"></option>
+              </select>
+            </span>
+                  <span class="ql-formats">
+              <button class="ql-bold"></button>
+              <button class="ql-italic"></button>
+              <button class="ql-underline"></button>
+              <button class="ql-strike"></button>
+            </span>
+                  <span class="ql-formats">
+              <select class="ql-color"></select>
+              <select class="ql-background"></select>
+            </span>
+                  <span class="ql-formats">
+              <button class="ql-list" value="ordered"></button>
+              <button class="ql-list" value="bullet"></button>
+              <select class="ql-align">
+                <option selected=""></option>
+                <option value="center"></option>
+                <option value="right"></option>
+                <option value="justify"></option>
+              </select>
+            </span>
+                  <span class="ql-formats">
+              <button class="ql-link"></button>
+            </span>
+                </div>
+                <div id="editor-container">
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end Description edit box -->
+
+        </div>
+        <!-- End of Review Creation Form -->
+
       </div>
-    </ng-sidebar-container>
+    </div>
+
   </div>
 </div>

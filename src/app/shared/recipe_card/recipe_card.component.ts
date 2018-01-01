@@ -13,7 +13,6 @@ export class RecipeCardComponent {
   constructor() { }
 
   ngOnInit() {
-
   }
 
 }

@@ -41,3 +41,18 @@
   color: rgb( 255, 255, 255) !important;
   background-color: red;
 }
+
+.star {
+  font-size: 3rem;
+  color: #b0c4de;
+}
+
+.filled {
+  color: #000000;
+}
+
+.center-cropped {
+  object-fit: scale-down;;
+  object-position: center;
+  height: 300px;
+}

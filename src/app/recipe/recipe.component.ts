@@ -5,6 +5,7 @@ import { UserService } from '../services/user.service';
 import { ReviewService } from '../services/review.service';
 import { AppHeaderService } from '../services/appheader.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { Message } from './message';
 import * as Quill from 'quill';
@@ -14,13 +15,7 @@ import * as Quill from 'quill';
   templateUrl: './recipe.component.html',
   styleUrls: ['./recipe.component.scss']
 })
-export class recipeComponent implements OnInit, AfterContentInit {
-
-  messages: Message[];
-  selectedReview: any;
-  messageOpen = false;
-  isOpened = true;
-  _autoCollapseWidth = 991;
+export class recipeComponent implements OnInit {
 
   @LocalStorage('user')
   localUser;
@@ -36,13 +31,23 @@ export class recipeComponent implements OnInit, AfterContentInit {
   public isRecipeLiked = false;
   public isRecipeSaved = false;
 
+  isWritingReview = false;
+  selectedReview: any;
+  reviewPage = 1;
+  pageStart = 0;
+  pageEnd = 4;
+
+  public form: FormGroup;
+  public quill: any;
+
   constructor(
     private recipeService: RecipeService,
     private route: ActivatedRoute,
     private router: Router,
     private appHeaderService: AppHeaderService,
     private userService: UserService,
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit() {
@@ -64,25 +69,16 @@ export class recipeComponent implements OnInit, AfterContentInit {
 
     if (this.sessionUser) {
       this.userService.setAuthToken(this.token);
+      this.reviewService.setAuthToken( this.token );
     }
 
-    if (this.isOver()) {
-      this.isOpened = false;
-    }
+    this.form = this.formBuilder.group ( {
+      title: [null , Validators.compose ( [ Validators.required ] )],
+      rating: [null , Validators.compose ( [ Validators.required ] )]
+    } );
 
   }
 
-  ngAfterContentInit() {
-    const quill = new Quill('#editor-container', {
-      modules: {
-        toolbar: {
-          container: '#toolbar-toolbar'
-        }
-      },
-      placeholder: 'Compose an epic...',
-      theme: 'snow'
-    });
-  }
 
   onLikeButtonClick() {
 
@@ -187,37 +183,73 @@ export class recipeComponent implements OnInit, AfterContentInit {
 
   getRecipeReviews(): void{
 
-    this.recipe.reviews.forEach( (review , index ) => {
+    let queryParams = 'where={"recipe":' +  this.recipe.id + '}&sort=updatedAt%20DESC';
 
-      this.reviewService
-        .findOneReview( review.id , ['owner'] )
-        .subscribe(
-        (review) => {
-          this.recipe.reviews[index] = review;
-          this.selectedReview = this.recipe.reviews[0];
+    this.reviewService
+      .findReviews( ['owner'] , queryParams )
+      .subscribe(
+      (reviews) => {
+        this.recipe.reviews = reviews;
+        this.selectedReview = this.recipe.reviews[0];
+      },
+      (error) => {
+
+      });
+
+  }
+
+  onReviewCreateClick(){
+
+    this.isWritingReview = true;
+
+    if( !this.quill ){
+
+      this.quill = new Quill('#editor-container', {
+        modules: {
+          toolbar: {
+            container: '#toolbar-toolbar'
+          }
         },
-        (error) => {
+        placeholder: 'Tell us what you thought of this recipe...',
+        theme: 'snow'
+      });
 
-        });
-
-    });
-
-  }
-
-
-  toogleSidebar(): void {
-    this.isOpened = !this.isOpened;
-  }
-
-  isOver(): boolean {
-    return window.matchMedia(`(max-width: 991px)`).matches;
-  }
-
-  onSelect(review: any): void {
-    this.selectedReview = review;
-    if (this.isOver()) {
-      this.isOpened = false;
     }
+
+  }
+
+  onReviewSubmit(){
+
+    this.reviewService
+    .create(
+      {
+        title: this.form.value.title,
+        rating: this.form.value.rating,
+        description: this.quill.container.firstChild.innerHTML,
+        recipe: [this.recipe.id]
+      }
+     )
+     .subscribe(
+       (review) => {
+         review.owner = this.sessionUser;
+         this.recipe.reviews.splice( 0 , 0 , review );
+         this.selectedReview = this.recipe.reviews[0];
+         this.isWritingReview = false;
+         this.reviewPage = 1;
+         this.onReviewPageChange(1);
+       },
+       (error) => {
+
+       });
+  }
+
+  public get reviewsPage(){
+    return this.recipe.reviews.slice( this.pageStart , this.pageEnd + 1 );
+  }
+
+  onReviewPageChange( event: any ){
+    this.pageStart = (event - 1) * 5;
+    this.pageEnd = this.pageStart + 4;
   }
 
 }

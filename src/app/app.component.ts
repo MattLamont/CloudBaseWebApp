@@ -78,12 +78,9 @@ export class AppComponent {
 
   getUserProfile(){
     this.userService
-      .findOneUser( this.sessionUser.id , ['liked_recipes','disliked_recipes','saved_recipes','followers','following'])
+      .findOneUser( this.sessionUser.id , ['following'])
       .subscribe(
       (user) => {
-        user.liked_recipes = user.liked_recipes.map( elem => elem.id );
-        user.disliked_recipes = user.disliked_recipes.map( elem => elem.id );
-        user.saved_recipes = user.saved_recipes.map( elem => elem.id );
         this.localUser = user;
         this.sessionUser = user;
       },
