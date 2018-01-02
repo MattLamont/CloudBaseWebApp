@@ -61,4 +61,12 @@ export class CategoriesComponent {
 
   }
 
+  onScroll(){
+    console.log( 'scrolled');
+  }
+
+  onScrollUp(){
+    console.log( 'scrolled up');
+  }
+
 }
