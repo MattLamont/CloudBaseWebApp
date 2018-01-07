@@ -3,7 +3,7 @@
   <div class="card-body">
     <div class="form-row">
       <div class="form-group col-12">
-        <label>Image</label>
+        <label class="ff-headers">Image</label>
         <div>
           <image-upload (uploadFinished)="imageUploaded($event)" [url]="imageUploadURL" [max]="1" [extensions]="['jpg','png','gif','jpeg']" [headers]="authHeaders">
           </image-upload>
@@ -13,7 +13,7 @@
 
     <div class="form-row">
       <div class="form-group col-12">
-        <label>About Me</label>
+        <label class="ff-headers">About Me</label>
         <div>
           <div class="toolbar" id="toolbar-toolbar">
             <span class="ql-formats">
@@ -55,9 +55,63 @@
         </div>
       </div>
     </div>
+
+    <p class="ff-headers mb-2">Sidebar Type</p>
+    <div class="custom-controls-stacked mb-2">
+      <label class="custom-control custom-checkbox">
+        <input class="custom-control-input" id="push" name="sidebar" type="radio" value="push" [(ngModel)]="settings.sidebar">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">Push mode</span>
+      </label>
+      <label class="custom-control custom-checkbox">
+        <input class="custom-control-input" id="docked" name="sidebar" type="radio" value="dock" [(ngModel)]="settings.sidebar">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">Docked mode</span>
+      </label>
+      <label class="custom-control custom-checkbox">
+        <input class="custom-control-input" id="over" name="sidebar" type="radio" value="over" [(ngModel)]="settings.sidebar">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">Over content mode</span>
+      </label>
+      <label class="custom-control custom-checkbox">
+        <input class="custom-control-input" id="slide" name="sidebar" type="radio" value="slide" [(ngModel)]="settings.sidebar">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">Slide mode</span>
+      </label>
+    </div>
+
+    <p class="ff-headers mb-2">Theme</p>
+    <div class="custom-controls-stacked mb-2">
+      <label class="custom-control custom-checkbox">
+        <input class="custom-control-input" id="light" name="theme" type="radio" value="light" [(ngModel)]="settings.theme">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">Light theme</span>
+      </label>
+      <label class="custom-control custom-checkbox">
+        <input class="custom-control-input" id="dark" name="theme" type="radio" value="dark" [(ngModel)]="settings.theme">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">Dark theme</span>
+        <span class="ml-2"><small style="color:blue;">Beta</small></span>
+      </label>
+    </div>
+
+    <p class="ff-headers mb-2">Default Recipe Display Type</p>
+    <div class="custom-controls-stacked mb-2">
+      <label class="custom-control custom-checkbox">
+        <input class="custom-control-input" id="cards" name="display-type" type="radio" value="cards" [(ngModel)]="settings.recipe_display">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">Cards</span>
+      </label>
+      <label class="custom-control custom-checkbox">
+        <input class="custom-control-input" id="table" name="display-type" type="radio" value="table" [(ngModel)]="settings.recipe_display">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">Table</span>
+      </label>
+    </div>
+
     <div class="form-row">
       <div class="form-group col-12">
-        <button type="button" class="btn btn-outline-primary" (click)="submitUserSettings()">Update</button>
+        <button type="button" class="btn btn-primary" (click)="submitUserSettings()">Update</button>
       </div>
     </div>
     <div class="form-row">

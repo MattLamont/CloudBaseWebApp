@@ -43,3 +43,11 @@
     </table>
   </div>
 </div>
+
+<div *ngIf="showLoadMoreButton">
+  <button type="button" class="btn btn-primary ff-headers" (click)="onLoadMoreClick.emit()">Load More</button>
+</div>
+
+<div *ngIf="showLoadingSpinner">
+  <div class="loader04"></div>
+</div>

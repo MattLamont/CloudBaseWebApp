@@ -7,9 +7,10 @@ import { MenuItems } from '../../shared/menu-items/menu-items';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 import { TranslateService } from '@ngx-translate/core';
-import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
+import {LocalStorageService, LocalStorage , SessionStorageService , SessionStorage} from 'ngx-webstorage';
 import { AppHeaderService } from '../../services/appheader.service';
 import { RecipeService } from '../../services/recipe.service';
+import { SettingsService } from '../../services/settings.service';
 
 const SMALL_WIDTH_BREAKPOINT = 991;
 
@@ -29,13 +30,18 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   private _router: Subscription;
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
 
-  public user: any;
+  @LocalStorage('user')
+  localUser;
 
-  currentLang = 'en';
+  @SessionStorage( 'user' )
+  sessionUser;
+
+  @SessionStorage('token')
+  token
+
   options: Options;
   theme = 'light';
   showSettings = false;
-  isDocked = false;
   isBoxed = false;
   isOpened = true;
   mode = 'push';
@@ -44,6 +50,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   width = window.innerWidth;
 
   appHeaderSub: Subscription;
+  settingsSub: Subscription;
 
   searchItems = [];
 
@@ -60,7 +67,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     private localStorage: LocalStorageService,
     private sessionStorage: SessionStorageService,
     private appHeaderService: AppHeaderService,
-    private recipeService: RecipeService
+    private recipeService: RecipeService,
+    private settingsService: SettingsService
   ) {
     const browserLang: string = translate.getBrowserLang();
     translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
@@ -71,9 +79,19 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
       if( this.options ){
         if (this.options.hasOwnProperty('heading')) {
           this.options.heading = data.header;
+          this.setTitle( data.header );
         }
       }
     });
+
+    //subscibe to the service that provides the user settings
+    this.settingsSub = this.settingsService.getSettings().subscribe(data => {
+      this.theme = data.theme;
+      this._mode = data.sidebar;
+      this.mode = this._mode;
+      this.isOpened = true;
+    });
+  
   }
 
   ngOnInit(): void {
@@ -83,18 +101,21 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
       this.isOpened = false;
     }
 
-    this.user = this.sessionStorage.retrieve('user');
-
-    this.sessionStorage.observe('user')
-      .subscribe((value) => {
-        this.user = value;
-      });
-
     this._router = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((event: NavigationEnd) => {
       // Scroll to top on view load
       document.querySelector('.main-content').scrollTop = 0;
       this.runOnRouteChange();
     });
+
+    //get the user ui settings
+    if( this.sessionUser ){
+      if( this.sessionUser.settings.theme ) this.theme = this.sessionUser.settings.theme;
+
+      if( this.sessionUser.settings.sidebar ){
+        this._mode = this.sessionUser.settings.sidebar;
+        this.mode = this._mode;
+      }
+    }
 
   }
 
@@ -144,9 +165,9 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   signout() {
-    this.sessionStorage.clear('user');
-    this.sessionStorage.clear('token');
-    this.localStorage.clear('user');
+    this.sessionUser = null;
+    this.token = null;
+    this.localUser = null;
     this.localStorage.clear('token');
     this.router.navigate(['/'], { queryParams: { 'refresh': 1 } });
   }

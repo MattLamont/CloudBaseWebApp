@@ -3,6 +3,7 @@ import * as Quill from 'quill';
 import { environment } from 'environments/environment';
 import { SessionStorage , LocalStorage } from 'ngx-webstorage';
 import { UserService } from '../services/user.service';
+import { SettingsService , SettingsModel } from '../services/settings.service';
 
 @Component({
   selector: 'app-settings',
@@ -30,8 +31,14 @@ export class SettingsComponent {
 
   public quill: any;
 
+  public theme = 'light';
+  public sidebarMode = 'push';
+
+  public settings = new SettingsModel();
+
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private settingsService: SettingsService
   ) {
 
   }
@@ -50,6 +57,8 @@ export class SettingsComponent {
     this.authHeaders.Authorization = 'Bearer ' + this.token;
     this.userService.setAuthToken( this.token );
     this.quill.container.firstChild.innerHTML = this.sessionUser.biography;
+
+    this.settings = this.sessionUser.settings;
   }
 
   imageUploaded(event) {
@@ -59,17 +68,22 @@ export class SettingsComponent {
 
   submitUserSettings() {
 
+    this.settingsService.setSettings(this.settings);
+
     this.sessionUser.biography = this.quill.container.firstChild.innerHTML;
 
     if( this.newImageURL ){
       this.sessionUser.image_url = this.newImageURL;
     }
 
+    this.sessionUser.settings = this.settings;
+
     this.userService
       .updateUser(this.sessionUser.id ,
           {
             biography: this.sessionUser.biography,
-            image_url: this.sessionUser.image_url
+            image_url: this.sessionUser.image_url,
+            settings: this.sessionUser.settings
           }
         )
       .subscribe(

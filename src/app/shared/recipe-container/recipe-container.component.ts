@@ -1,4 +1,4 @@
-import { Component , Input } from '@angular/core';
+import { Component , Input , Output , EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-recipe-container',
@@ -12,6 +12,15 @@ export class RecipeContainerComponent {
 
   @Input()
   type = 'cards';
+
+  @Input()
+  showLoadMoreButton = false;
+
+  @Input()
+  showLoadingSpinner = false;
+
+  @Output()
+  onLoadMoreClick = new EventEmitter();
 
   constructor() { }
 

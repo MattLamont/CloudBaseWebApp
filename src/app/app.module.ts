@@ -5,7 +5,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -25,6 +24,7 @@ import { AppHeaderService } from './services/appheader.service';
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
 import { RecipeService } from './services/recipe.service';
+import { SettingsService } from './services/settings.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -55,13 +55,13 @@ export function createTranslateLoader(http: HttpClient) {
     SidebarModule.forRoot(),
     AgmCoreModule.forRoot({apiKey: 'YOURAPIKEY'}),
     Ng2Webstorage,
-    InfiniteScrollModule
   ],
   providers: [
     AppHeaderService,
     AuthService,
     UserService,
-    RecipeService
+    RecipeService,
+    SettingsService
   ],
   bootstrap: [AppComponent]
 })

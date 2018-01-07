@@ -10,10 +10,10 @@
 
 
 <p class="ff-headers text-uppercase mb-3 mt-4 fw-600">Featured</p>
-<app-recipe-container [recipes]="featured_recipes" [type]="view_type"></app-recipe-container>
+<app-recipe-container [recipes]="featured_recipes" [type]="view_type" (onLoadMoreClick)="getMoreFeaturedRecipes()" [showLoadMoreButton]="showFeaturedLoadMoreButton" [showLoadingSpinner]="showFeaturedLoadingSpinner"></app-recipe-container>
 
 <p class="ff-headers text-uppercase mb-3 mt-4 fw-600">Recent</p>
-<app-recipe-container [recipes]="recent_recipes" [type]="view_type"></app-recipe-container>
+<app-recipe-container [recipes]="recent_recipes" [type]="view_type" (onLoadMoreClick)="getMoreRecentRecipes()" [showLoadMoreButton]="showRecentLoadMoreButton" [showLoadingSpinner]="showRecentLoadingSpinner"></app-recipe-container>
 
 <p class="ff-headers text-uppercase mb-3 mt-4 fw-600">Popular</p>
-<app-recipe-container [recipes]="popular_recipes" [type]="view_type"></app-recipe-container>
+<app-recipe-container [recipes]="popular_recipes" [type]="view_type" (onLoadMoreClick)="getMorePopularRecipes()" [showLoadMoreButton]="showPopularLoadMoreButton" [showLoadingSpinner]="showPopularLoadingSpinner"></app-recipe-container>

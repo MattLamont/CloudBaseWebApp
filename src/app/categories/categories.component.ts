@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { HostListener, Component , AfterViewInit } from '@angular/core';
 import { SessionStorage, LocalStorage } from 'ngx-webstorage';
 import { RecipeService } from '../services/recipe.service';
 import { UserService } from '../services/user.service';
@@ -24,8 +24,11 @@ export class CategoriesComponent {
 
   category: string;
   recipes: any;
+  numRecipesShown = 0;
 
   view_type = 'cards';
+  showLoadMoreButton = true;
+  showLoadingSpinner = false;
 
   constructor(
     private recipeService: RecipeService,
@@ -34,6 +37,7 @@ export class CategoriesComponent {
     private appHeaderService: AppHeaderService,
     private userService: UserService
   ) { }
+
 
   ngOnInit() {
 
@@ -45,28 +49,34 @@ export class CategoriesComponent {
     }
 
     this.appHeaderService.setAppHeader('Category | ' + this.category );
+    this.view_type = this.sessionUser.settings.recipe_display;
+
+    this.getMoreRecipes();
+
+  }
+
+  getMoreRecipes(){
+    this.showLoadingSpinner = true;
 
     this.route.params.subscribe(params => {
       let categoriesId = params['id'];
       this.recipeService
-        .findRecipes( ['owner'] , 'category=' + this.category )
+        .findRecipes( ['owner'] , `category=${this.category}&limit=30&skip=${this.numRecipesShown}` )
         .subscribe(
         (recipes) => {
-          this.recipes = recipes;
+          if( !this.recipes ) this.recipes = recipes;
+          else this.recipes = this.recipes.concat( recipes );
+
+          if( recipes.length != 30 ){
+              this.showLoadMoreButton = false;
+          }
+          this.numRecipesShown = this.recipes.length;
+          this.showLoadingSpinner = false;
         },
         (error) => {
           this.router.navigate(['/404']);
         });
     });
-
-  }
-
-  onScroll(){
-    console.log( 'scrolled');
-  }
-
-  onScrollUp(){
-    console.log( 'scrolled up');
   }
 
 }
