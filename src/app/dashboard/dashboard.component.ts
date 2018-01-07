@@ -41,7 +41,10 @@ export class DashboardComponent {
     this.getMoreFeaturedRecipes();
     this.getMoreRecentRecipes();
     this.getMorePopularRecipes();
-    this.view_type = this.sessionUser.settings.recipe_display;
+
+    if( this.sessionUser ){
+      this.view_type = this.sessionUser.settings.recipe_display;
+    }
   }
 
   getMoreFeaturedRecipes(){

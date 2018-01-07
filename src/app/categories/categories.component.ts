@@ -49,7 +49,10 @@ export class CategoriesComponent {
     }
 
     this.appHeaderService.setAppHeader('Category | ' + this.category );
-    this.view_type = this.sessionUser.settings.recipe_display;
+
+    if( this.sessionUser ){
+      this.view_type = this.sessionUser.settings.recipe_display;
+    }
 
     this.getMoreRecipes();
 
