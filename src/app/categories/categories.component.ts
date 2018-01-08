@@ -61,25 +61,22 @@ export class CategoriesComponent {
   getMoreRecipes(){
     this.showLoadingSpinner = true;
 
-    this.route.params.subscribe(params => {
-      let categoriesId = params['id'];
-      this.recipeService
-        .findRecipes( ['owner'] , `category=${this.category}&limit=30&skip=${this.numRecipesShown}` )
-        .subscribe(
-        (recipes) => {
-          if( !this.recipes ) this.recipes = recipes;
-          else this.recipes = this.recipes.concat( recipes );
+    this.recipeService
+      .findRecipes( ['owner'] , `category=${this.category}&limit=30&skip=${this.numRecipesShown}` )
+      .subscribe(
+      (recipes) => {
+        if( !this.recipes ) this.recipes = recipes;
+        else this.recipes = this.recipes.concat( recipes );
 
-          if( recipes.length != 30 ){
-              this.showLoadMoreButton = false;
-          }
-          this.numRecipesShown = this.recipes.length;
-          this.showLoadingSpinner = false;
-        },
-        (error) => {
-          this.router.navigate(['/404']);
-        });
-    });
+        if( recipes.length != 30 ){
+            this.showLoadMoreButton = false;
+        }
+        this.numRecipesShown = this.recipes.length;
+        this.showLoadingSpinner = false;
+      },
+      (error) => {
+        this.router.navigate(['/404']);
+      });
   }
 
 }

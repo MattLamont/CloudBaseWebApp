@@ -28,9 +28,9 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  public findOneUser( id: Number , populate = [] ){
+  public findOneUser( id: Number , attribute = '' , populate = [] , queryParams = ''){
 
-    let url = this.buildQuery( '/user/' + id , populate );
+    let url = this.buildQuery( '/user/' + id , attribute , populate , queryParams );
 
     return this.http
       .get(url)
@@ -121,14 +121,20 @@ export class UserService {
     return Observable.throw(error.json());
   }
 
-  private buildQuery( resource: string , populate = [] ): string{
-    let url = API_URL + resource + '?populate=[';
+  private buildQuery( resource: string , attribute = '' , populate = [] , queryParams = '' ): string{
+    let url = API_URL + resource + attribute + '?';
 
-    populate.map( (element) => {
-      url = url + element + ',';
-    });
+    if( populate.length > 0 ){
+      url += 'populate=[';
 
-    url = url + ']';
+      populate.map( (element) => {
+        url = url + element + ',';
+      });
+
+      url = url + ']&';
+    }
+
+    url += queryParams;
     return url;
   }
 

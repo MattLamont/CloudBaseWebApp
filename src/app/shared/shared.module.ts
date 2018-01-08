@@ -9,6 +9,7 @@ import { ToggleFullscreenDirective } from './fullscreen/toggle-fullscreen.direct
 import { RecipeCardComponent } from './recipe_card/recipe_card.component';
 import { UserCardComponent } from './user-card/user-card.component';
 import { RecipeContainerComponent } from './recipe-container/recipe-container.component';
+import { UserContainerComponent } from './user-container/user-container.component';
 
 @NgModule({
   imports:
@@ -24,7 +25,8 @@ import { RecipeContainerComponent } from './recipe-container/recipe-container.co
     ToggleFullscreenDirective,
     RecipeCardComponent,
     UserCardComponent,
-    RecipeContainerComponent
+    RecipeContainerComponent,
+    UserContainerComponent
   ],
   exports:
   [
@@ -34,7 +36,8 @@ import { RecipeContainerComponent } from './recipe-container/recipe-container.co
     ToggleFullscreenDirective,
     RecipeCardComponent,
     UserCardComponent,
-    RecipeContainerComponent
+    RecipeContainerComponent,
+    UserContainerComponent
   ],
   providers:
   [

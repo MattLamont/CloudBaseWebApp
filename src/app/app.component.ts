@@ -78,7 +78,7 @@ export class AppComponent {
 
   getUserProfile(){
     this.userService
-      .findOneUser( this.sessionUser.id , ['following'])
+      .findOneUser( this.sessionUser.id , '' , ['following'])
       .subscribe(
       (user) => {
         this.localUser = user;

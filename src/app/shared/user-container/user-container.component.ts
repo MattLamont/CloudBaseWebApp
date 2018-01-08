@@ -1,14 +1,14 @@
 import { Component , Input , Output , EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-recipe-container',
-  templateUrl: './recipe-container.component.html',
-  styleUrls: ['./recipe-container.component.scss']
+  selector: 'app-user-container',
+  templateUrl: './user-container.component.html',
+  styleUrls: ['./user-container.component.scss']
 })
-export class RecipeContainerComponent {
+export class UserContainerComponent {
 
   @Input()
-  recipes: any;
+  users: any;
 
   @Input()
   type = 'cards';
