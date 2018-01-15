@@ -214,9 +214,22 @@
     <p class="text-primary">#medical #analytics #fitness #transport #ui #dashboard #admin #bootstrap #angular #typescript</p>
   </div>
   -->
+  <h5 class="ff-headers mt-2" *ngIf="searchRecipeItems.length > 0">Recipes [{{searchRecipeItems.length}}<span *ngIf="searchRecipeItems.length == 20">+</span>]</h5>
   <div>
-    <a *ngFor="let item of searchItems" [routerLink]="[ '/recipe' , item.id]" class="mt-3" (click)="d('Cross click')">
-      <h5>{{item.name}}</h5>
+    <a *ngFor="let item of searchRecipeItems" [routerLink]="[ '/recipe' , item.id]" class="mt-3" (click)="d('Cross click')">
+      <h6>{{item.name}}</h6>
+    </a>
+  </div>
+  <h5 class="ff-headers mt-2" *ngIf="searchUserItems.length > 0">Users [{{searchUserItems.length}}<span *ngIf="searchUserItems.length == 20">+</span>]</h5>
+  <div>
+    <a *ngFor="let item of searchUserItems" [routerLink]="[ '/profile' , item.id]" class="mt-3" (click)="d('Cross click')">
+      <h6>{{item.username}}</h6>
+    </a>
+  </div>
+  <h5 class="ff-headers mt-2" *ngIf="searchFlavorItems.length > 0">Flavors [{{searchFlavorItems.length}}<span *ngIf="searchFlavorItems.length == 20">+</span>]</h5>
+  <div>
+    <a *ngFor="let item of searchFlavorItems" href="{{item.link}}" class="mt-3" (click)="d('Cross click')">
+      <h6>{{item.name}}</h6>
     </a>
   </div>
   <button type="button" class="search-close" aria-label="Close search form" (click)="d('Cross click')">

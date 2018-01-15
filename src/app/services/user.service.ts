@@ -112,6 +112,42 @@ export class UserService {
       .catch(this.handleError);
   }
 
+  public addFollowing( userId: number , followingId: number ){
+
+    const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
+
+    return this.http
+      .post(API_URL + '/user/' + userId + '/following/' + followingId , {} , { headers: headers })
+      .map(response => {
+        return response.json();
+      })
+      .catch(this.handleError);
+  }
+
+  public removeFollowing( userId: number , followingId: number ){
+
+    const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
+
+    return this.http
+      .delete(API_URL + '/user/' + userId + '/following/' + followingId , { headers: headers })
+      .map(response => {
+        return response.json();
+      })
+      .catch(this.handleError);
+  }
+
+  public searchForUser( name: String ){
+
+    let url = API_URL + '/user?where={"username":{"contains":"' + name + '"}}&limit=20';
+
+    return this.http
+      .get( url )
+      .map(response => {
+        return response.json();
+      })
+      .catch(this.handleError);
+  }
+
   public setAuthToken( token: string ){
     this.token = token;
   }

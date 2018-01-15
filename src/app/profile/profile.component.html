@@ -38,6 +38,12 @@
 
           </div>
         </div>
+
+        <div class="card-body" *ngIf="sessionUser && !isOwnUser">
+          <button type="button" class="btn btn-primary" (click)="addFollowing()" *ngIf="!isFollowed">Follow User</button>
+          <button type="button" class="btn btn-danger" (click)="removeFollowing()" *ngIf="isFollowed">Stop Following</button>
+        </div>
+
         <div class="card-body">
           <p class="ff-headers text-uppercase mb-3"><strong>About Me</strong></p>
           <p [innerHTML]="user.biography"></p>

@@ -4,6 +4,8 @@ import { ActivatedRoute , Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { AppHeaderService } from '../services/appheader.service';
 
+import { SessionStorage } from 'ngx-webstorage';
+
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +14,13 @@ import { AppHeaderService } from '../services/appheader.service';
 })
 export class ProfileComponent implements OnInit {
 
-  userId: Number;
+  @SessionStorage( 'user' )
+  sessionUser;
+
+  @SessionStorage( 'token' )
+  token;
+
+  userId: number;
   public user: any;
 
   public dataLoaded = false;
@@ -32,6 +40,9 @@ export class ProfileComponent implements OnInit {
   followingLoadButton = true;
   followingLoadingSpinner = false;
 
+  isFollowed = false;
+  isOwnUser = false;
+
   constructor(
       private route: ActivatedRoute,
       private router: Router,
@@ -45,6 +56,13 @@ export class ProfileComponent implements OnInit {
   ngOnInit(){
     this.route.params.subscribe(params => {
       this.userId = params['id'];
+
+      this.userService.setAuthToken( this.token );
+
+      if( this.sessionUser ){
+        if( this.sessionUser.id == this.userId ) this.isOwnUser = true;
+        else this.isOwnUser = false;
+      }
 
       this.userService
         .findOneUser(this.userId , '' , ['recipes','liked_recipes','followers','following','saved_recipes'])
@@ -63,7 +81,21 @@ export class ProfileComponent implements OnInit {
         (error) => {
           this.router.navigate(['/404']);
         });
+
+        if( this.sessionUser ){
+          this.userService
+            .findOneUser(this.sessionUser.id , '/following/' + this.userId )
+            .subscribe(
+            (following) => {
+              if( following[0] ) this.isFollowed = true;
+              else this.isFollowed = false;
+            },
+            (error) => {
+
+            });
+        }
     });
+
   }
 
   getUserRecipes(){
@@ -189,6 +221,30 @@ export class ProfileComponent implements OnInit {
       },
       (error) => {
         this.followingLoadButton = false;
+      });
+  }
+
+  addFollowing(){
+    this.userService
+      .addFollowing( this.sessionUser.id , this.userId  )
+      .subscribe(
+      (following) => {
+        this.isFollowed = true;
+      },
+      (error) => {
+
+      });
+  }
+
+  removeFollowing(){
+    this.userService
+      .removeFollowing( this.sessionUser.id , this.userId  )
+      .subscribe(
+      (following) => {
+        this.isFollowed = false;
+      },
+      (error) => {
+
       });
   }
 }

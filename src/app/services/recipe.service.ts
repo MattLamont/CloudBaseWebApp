@@ -74,7 +74,7 @@ export class RecipeService {
 
   public searchForRecipe( name: String ){
 
-    let url = API_URL + '/recipe?where={"name":{"contains":"' + name + '"}}&limit=10';
+    let url = API_URL + '/recipe?where={"name":{"contains":"' + name + '"}}&limit=20';
 
     return this.http
       .get( url )

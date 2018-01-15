@@ -171,7 +171,7 @@
         <div class="form-row">
           <div class="form-group">
             <a>
-              <button type="button" class="btn btn-primary" (click)="onReviewCreateClick()" [disabled]="false" *ngIf="!isWritingReview">Write A Review</button>
+              <button type="button" class="btn btn-primary" (click)="onReviewCreateClick()" [disabled]="false" *ngIf="!isWritingReview && sessionUser">Write A Review</button>
             </a>
             <a>
               <button type="button" class="btn btn-success" (click)="getRecipeReviews()" *ngIf="!isWritingReview && showLoadMoreReviewButton">Load More</button>

@@ -10,6 +10,7 @@ import { AppHeaderService } from '../../services/appheader.service';
 import { RecipeService } from '../../services/recipe.service';
 import { SettingsService } from '../../services/settings.service';
 import { UserService } from '../../services/user.service';
+import { FlavorService } from '../../services/flavor.service';
 
 const SMALL_WIDTH_BREAKPOINT = 991;
 
@@ -51,7 +52,9 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   appHeaderSub: Subscription;
   settingsSub: Subscription;
 
-  searchItems = [];
+  searchRecipeItems = [];
+  searchUserItems = [];
+  searchFlavorItems = [];
 
   categories = [
     {
@@ -98,6 +101,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     private recipeService: RecipeService,
     private settingsService: SettingsService,
     private userService: UserService,
+    private flavorService: FlavorService,
   ) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
 
@@ -222,7 +226,27 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
       .searchForRecipe(value)
       .subscribe(
       (recipes) => {
-        this.searchItems = recipes;
+        this.searchRecipeItems = recipes;
+      },
+      (error) => {
+
+      });
+
+    this.flavorService
+      .searchForFlavor(value)
+      .subscribe(
+      (flavors) => {
+        this.searchFlavorItems = flavors;
+      },
+      (error) => {
+
+      });
+
+    this.userService
+      .searchForUser(value)
+      .subscribe(
+      (users) => {
+        this.searchUserItems = users;
       },
       (error) => {
 
