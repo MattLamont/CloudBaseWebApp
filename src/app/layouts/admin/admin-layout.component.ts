@@ -3,14 +3,13 @@ import { Title } from '@angular/platform-browser';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
-import { MenuItems } from '../../shared/menu-items/menu-items';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
-import { TranslateService } from '@ngx-translate/core';
 import {LocalStorageService, LocalStorage , SessionStorageService , SessionStorage} from 'ngx-webstorage';
 import { AppHeaderService } from '../../services/appheader.service';
 import { RecipeService } from '../../services/recipe.service';
 import { SettingsService } from '../../services/settings.service';
+import { UserService } from '../../services/user.service';
 
 const SMALL_WIDTH_BREAKPOINT = 991;
 
@@ -54,13 +53,42 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
   searchItems = [];
 
+  categories = [
+    {
+      link: 'tobacco',
+      name: 'Tobacco'
+    },
+    {
+      link: 'dessert',
+      name: 'Dessert'
+    },
+    {
+      link: 'fruit',
+      name: 'Fruit'
+    },
+    {
+      link: 'candy',
+      name: 'Candy'
+    },
+    {
+      link: 'food',
+      name: 'Food'
+    },
+    {
+      link: 'beverage',
+      name: 'Beverage'
+    },
+    {
+      link: 'other',
+      name: 'Other'
+    }
+  ];
+
   @ViewChild('sidebar') sidebar;
 
   constructor(
-    public menuItems: MenuItems,
     private router: Router,
     private route: ActivatedRoute,
-    public translate: TranslateService,
     private modalService: NgbModal,
     private titleService: Title,
     private zone: NgZone,
@@ -68,10 +96,9 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     private sessionStorage: SessionStorageService,
     private appHeaderService: AppHeaderService,
     private recipeService: RecipeService,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private userService: UserService,
   ) {
-    const browserLang: string = translate.getBrowserLang();
-    translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
 
     //subscibe to the service that provides the header title for each page
@@ -91,7 +118,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
       this.mode = this._mode;
       this.isOpened = true;
     });
-  
+
   }
 
   ngOnInit(): void {
@@ -114,6 +141,18 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
       if( this.sessionUser.settings.sidebar ){
         this._mode = this.sessionUser.settings.sidebar;
         this.mode = this._mode;
+      }
+
+      if( !this.sessionUser.following ){
+        this.userService
+          .findOneUser(this.sessionUser.id , '/following' )
+          .subscribe(
+          (following) => {
+            this.sessionUser.following = following;
+          },
+          (error) => {
+
+          });
       }
     }
 

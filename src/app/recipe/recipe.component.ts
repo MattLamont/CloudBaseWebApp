@@ -33,9 +33,7 @@ export class recipeComponent implements OnInit {
 
   isWritingReview = false;
   selectedReview: any;
-  reviewPage = 1;
-  pageStart = 0;
-  pageEnd = 4;
+  showLoadMoreReviewButton = true;
 
   public form: FormGroup;
   public quill: any;
@@ -54,7 +52,7 @@ export class recipeComponent implements OnInit {
     this.route.params.subscribe(params => {
       let recipeId = params['id'];
       this.recipeService
-        .findOneRecipe(recipeId, ['flavors', 'owner', 'reviews'])
+        .findOneRecipe(recipeId, ['flavors', 'owner'])
         .subscribe(
         (recipe) => {
           this.recipe = recipe;
@@ -183,14 +181,24 @@ export class recipeComponent implements OnInit {
 
   getRecipeReviews(): void{
 
-    let queryParams = 'where={"recipe":' +  this.recipe.id + '}&sort=updatedAt%20DESC';
+    if( !this.showLoadMoreReviewButton ) return;
+
+    let numReviews = 0;
+    if( this.recipe.reviews ) numReviews = this.recipe.reviews.length;
+
+    let queryParams = 'where={"recipe":' +  this.recipe.id + `}&skip=${numReviews}&limit=5&sort=updatedAt%20DESC`;
 
     this.reviewService
       .findReviews( ['owner'] , queryParams )
       .subscribe(
       (reviews) => {
-        this.recipe.reviews = reviews;
-        this.selectedReview = this.recipe.reviews[0];
+
+        if( !this.recipe.reviews ) this.recipe.reviews = reviews;
+        else this.recipe.reviews = this.recipe.reviews.concat( reviews );
+
+        this.selectedReview = reviews[0];
+
+        if( reviews.length != 5 ) this.showLoadMoreReviewButton = false;
       },
       (error) => {
 
@@ -235,21 +243,10 @@ export class recipeComponent implements OnInit {
          this.recipe.reviews.splice( 0 , 0 , review );
          this.selectedReview = this.recipe.reviews[0];
          this.isWritingReview = false;
-         this.reviewPage = 1;
-         this.onReviewPageChange(1);
        },
        (error) => {
 
        });
-  }
-
-  public get reviewsPage(){
-    return this.recipe.reviews.slice( this.pageStart , this.pageEnd + 1 );
-  }
-
-  onReviewPageChange( event: any ){
-    this.pageStart = (event - 1) * 5;
-    this.pageEnd = this.pageStart + 4;
   }
 
 }

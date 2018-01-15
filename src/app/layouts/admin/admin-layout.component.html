@@ -18,60 +18,50 @@
     <!-- main navigation -->
     <nav class="menu">
       <ul class="navigation" appAccordion>
-        <li class="navigation-item" appAccordionLink *ngFor="let menuitem of menuItems.getAll()" group="{{menuitem.state}}">
-          <a class="navigation-link" appAccordionToggle [routerLink]="[ '/' + menuitem.state]" *ngIf="menuitem.type === 'link'">
-            <i class="icon icon-{{ menuitem.icon }}"></i>
-            <span>{{ menuitem.name | translate }}</span>
+        <li class="navigation-item" appAccordionLink>
+          <a class="navigation-link" appAccordionToggle [routerLink]="[ '/' ]">
+            <i class="icon icon-basic-accelerator"></i>
+            <span>Home</span>
             <span class="mr-auto"></span>
-            <span class="badge badge-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
           </a>
-          <a class="navigation-link" appAccordionToggle href="{{menuitem.state}}" *ngIf="menuitem.type === 'extLink'">
-            <i class="icon icon-{{ menuitem.icon }}"></i>
-            <span>{{ menuitem.name | translate }}</span>
+        </li>
+
+        <li class="navigation-item" appAccordionLink>
+          <a class="navigation-link" appAccordionToggle>
+            <i class="icon icon-basic-archive-full"></i>
+            <span>Categories</span>
             <span class="mr-auto"></span>
-            <span class="badge badge-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
-          </a>
-          <a class="navigation-link" appAccordionToggle href="{{menuitem.state}}" target="_blank" *ngIf="menuitem.type === 'extTabLink'">
-            <i class="icon icon-{{ menuitem.icon }}"></i>
-            <span>{{ menuitem.name | translate }}</span>
-            <span class="mr-auto"></span>
-            <span class="badge badge-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
-          </a>
-          <a class="navigation-link" appAccordionToggle href="javascript:;" *ngIf="menuitem.type === 'sub'">
-            <i class="icon icon-{{ menuitem.icon }}"></i>
-            <span>{{ menuitem.name | translate }}</span>
-            <span class="mr-auto"></span>
-            <span class="badge badge-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
             <i class="menu-caret icon icon-arrows-right"></i>
           </a>
-          <ul class="navigation-submenu" *ngIf="menuitem.type === 'sub'">
-            <li class="navigation-item" *ngFor="let childitem of menuitem.children" routerLinkActive="open">
-              <a [routerLink]="['/', menuitem.state, childitem.state ]" class="navigation-link relative">{{ childitem.name | translate }}</a>
+          <ul class="navigation-submenu">
+            <li class="navigation-item" *ngFor="let category of categories" routerLinkActive="open">
+              <a [routerLink]="['/categories', category.link ]" class="navigation-link relative">{{ category.name }}</a>
             </li>
           </ul>
         </li>
 
-        <li class="navigation-item" appAccordionLink *ngIf="sessionUser">
-          <a class="navigation-link" appAccordionToggle [routerLink]="[ '/profile' , sessionUser.id ]" fragment="saved">
-            <i class="icon icon-basic-bookmark"></i>
-            <span>Saved Recipes</span>
+        <li class="navigation-item" appAccordionLink>
+          <a class="navigation-link" appAccordionToggle [routerLink]="[ '/create' , 'recipe' ]">
+            <i class="icon icon-basic-todo-pencil"></i>
+            <span>Create Recipe</span>
+            <span class="mr-auto"></span>
           </a>
         </li>
 
         <!--Following Tab -->
-        <li class="navigation-item" appAccordionLink [open]="true" *ngIf="sessionUser">
-          <a class="navigation-link" appAccordionToggle>
-            <i class="icon icon-basic-accelerator"></i>
+        <li class="navigation-item" *ngIf="sessionUser">
+          <a class="navigation-link">
+            <i class="icon-people"></i>
             <span>Following</span>
             <span class="mr-auto"></span>
             <!--<span class="badge badge-{{ badge.type }}">{{ badge.value }}</span>-->
-            <i class="menu-caret icon icon-arrows-right"></i>
+            <!--<i class="menu-caret icon icon-arrows-right"></i>-->
           </a>
-          <ul class="navigation-submenu">
-            <li class="navigation-item" *ngFor="let followed of sessionUser.following">
+          <ul class="">
+            <li class="navigation-item" *ngFor="let followed of sessionUser.following" routerLinkActive="open">
               <a class="following-link navigation-link" [routerLink]="['/profile' , followed.id ]">
                 <img class="avatar-xxs rounded-circle img-fluid mr-2" src="{{followed.image_url || 'assets/images/blank_user.png'}}" />
-                <span>{{ followed.username }}</span>
+                <span class="text-truncate">{{ followed.username }}</span>
               </a>
             </li>
           </ul>
@@ -81,17 +71,8 @@
         <li class="navigation-item">
           <hr class="mt-0 mb-0" />
         </li>
-
-        <!--
-        <li class="navigation-item">
-          <a class="navigation-link" (click)="addMenuItem()">
-            <i class="icon icon-basic-add"></i>
-            <span>Add</span>
-          </a>
-        </li>
-        -->
-
       </ul>
+
     </nav>
     <!-- /main navigation -->
   </ng-sidebar>

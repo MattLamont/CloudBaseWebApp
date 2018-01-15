@@ -72,7 +72,7 @@ export class DashboardComponent {
   getMoreRecentRecipes(){
     this.showRecentLoadingSpinner = true;
     this.recipeService
-      .findRecipes(['owner'], `limit=6&sort=updatedAt%20ASC&skip=${this.numRecentRecipes}`)
+      .findRecipes(['owner'], `limit=6&sort=updatedAt%20DESC&skip=${this.numRecentRecipes}`)
       .subscribe(
       (recipes) => {
 
@@ -94,7 +94,7 @@ export class DashboardComponent {
   getMorePopularRecipes(){
     this.showPopularLoadingSpinner = true;
     this.recipeService
-      .findRecipes(['owner'], `limit=6&skip=${this.numPopularRecipes}`)
+      .findRecipes(['owner'], `sort=likes_count%20DESC&limit=6&skip=${this.numPopularRecipes}`)
       .subscribe(
       (recipes) => {
 
