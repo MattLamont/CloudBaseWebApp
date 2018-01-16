@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 
 import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import { SessionStorage, LocalStorage } from 'ngx-webstorage';
@@ -22,17 +21,12 @@ export class AppComponent {
   token;
 
 
-  constructor(translate: TranslateService,
+  constructor(
     private localStorage: LocalStorageService,
     private sessionStorage: SessionStorageService,
     private authService: AuthService,
     private userService: UserService
   ) {
-    translate.addLangs(['en', 'fr']);
-    translate.setDefaultLang('en');
-
-    const browserLang: string = translate.getBrowserLang();
-    translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
 
     let currentTime = Math.round((new Date()).getTime() / 1000);
 

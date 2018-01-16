@@ -15,7 +15,7 @@
     </div>
   </div>
   <a [routerLink]="'/recipe/' + recipe.id">
-    <img class="card-img-top img-fluid" src="{{recipe.image_url || 'assets/images/unsplash/10.jpg'}}" alt="Card image" />
+    <img class="card-img-top img-fluid" src="{{recipe.image_url || 'assets/images/recipe-defaults/other.jpg'}}" alt="Card image" />
   </a>
   <div class="card-body recipe-body">
     <h6 class="card-title bold ff-headers">{{recipe.name}}</h6>

@@ -2,7 +2,7 @@
 
   <div class="col-lg-6 col-xs-12">
     <div class="card">
-      <img class="card-img-top img-fluid" src="{{recipe.image_url || 'assets/images/unsplash/1.jpg'}}" alt="Card image cap" />
+      <img class="card-img-top img-fluid" src="{{recipe.image_url || 'assets/images/recipe-defaults/other.jpg'}}" alt="Card image cap" />
       <div class="card-body">
         <h4 class="card-title ff-headers">
           {{recipe.name}}
@@ -112,7 +112,7 @@
       <div *ngFor="let flavor of recipe.flavors" class="col-xl-3 col-lg-4 col-sm-6 mb-3">
         <div class="card flavor-card h-100">
           <a href="{{flavor.link}}" class="mt-2">
-            <img class="card-img-top center-cropped" src="{{flavor.image_url || 'assets/images/unsplash/10.jpg'}}" alt="Card image" />
+            <img class="card-img-top center-cropped" src="{{flavor.image_url || 'assets/images/recipe-defaults/other.jpg'}}" alt="Card image" />
           </a>
           <div class="card-body">
             <h5 class="card-title">

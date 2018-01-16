@@ -1,6 +1,6 @@
 {
-  "name": "decima",
-  "version": "0.0.0",
+  "name": "CloudBase",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -12,7 +12,6 @@
   },
   "private": true,
   "dependencies": {
-    "@agm/core": "1.0.0-beta.2",
     "@angular/animations": "^4.0.0",
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",

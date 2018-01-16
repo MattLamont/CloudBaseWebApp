@@ -6,11 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SidebarModule } from 'ng-sidebar';
-import { AgmCoreModule } from '@agm/core';
 
 import { AppRoutes } from './app.routing';
 import { AppComponent } from './app.component';
@@ -27,9 +24,6 @@ import { RecipeService } from './services/recipe.service';
 import { SettingsService } from './services/settings.service';
 import { FlavorService } from './services/flavor.service';
 
-export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
 
 @NgModule({
   declarations: [
@@ -45,16 +39,8 @@ export function createTranslateLoader(http: HttpClient) {
     FormsModule,
     HttpClientModule,
     HttpModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
-    }),
     NgbModule.forRoot(),
     SidebarModule.forRoot(),
-    AgmCoreModule.forRoot({apiKey: 'YOURAPIKEY'}),
     Ng2Webstorage,
   ],
   providers: [
