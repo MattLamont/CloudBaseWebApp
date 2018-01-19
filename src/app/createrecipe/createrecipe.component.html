@@ -107,7 +107,7 @@
         <div class="form-row" *ngIf="isCreateRecipe || isUpdateRecipe">
           <div class="form-group">
             <div class="col-12 mt-3">
-              <button type="button" class="btn btn-outline-primary" (click)="addAnotherFlavor()">Add Flavor</button>
+              <button type="button" class="btn btn-primary" (click)="addAnotherFlavor()">Add Flavor</button>
             </div>
           </div>
         </div>
@@ -311,6 +311,7 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -321,12 +322,30 @@
     <div class="card">
       <div class="card-header">IMAGE</div>
       <div class="card-body">
-        <div *ngIf="recipe.image_url" class="pl-4 pr-4 pb-4">
-          <img src="{{recipe.image_url}}" class="img-fluid" />
-        </div>
+
+        <!--
         <image-upload (uploadFinished)="imageUploaded($event)" [url]="imageUploadURL" [max]="1" [extensions]="['jpg','png','gif','jpeg']" [headers]="authHeaders" dropBoxMessage="Drop Images Here" buttonCaption="Select Image" (removed)="onImageRemoved($event)"
             *ngIf="isCreateRecipe || isUpdateRecipe">
         </image-upload>
+        -->
+
+        <div class="mb-2" *ngIf="isCreateRecipe || isUpdateRecipe">
+          <label class="btn btn-primary btn-file">Upload Image
+            <input id="custom-input" style="display:none;" type="file" (change)="fileChangeListener($event)" accept=".png, .jpg, .jpeg .gif">
+          </label>
+          <button class="btn btn-danger" *ngIf="imageCropperLoaded" (click)="cancelImageUpload()">Cancel</button>
+        </div>
+
+        <div #imageContainer>
+          <div *ngIf="imageCropperLoaded">
+            <img-cropper #cropper [image]="imageData" [settings]="cropperSettings"></img-cropper><br>
+          </div>
+        </div>
+
+        <div *ngIf="recipe.image_url && !imageCropperLoaded" >
+          <img src="{{recipe.image_url}}" class="img-fluid" />
+        </div>
+
       </div>
     </div>
   </div>
@@ -338,17 +357,34 @@
       <div class="card-header" *ngIf="isCreateRecipe || isUpdateRecipe">SUBMIT</div>
       <div class="card-header" *ngIf="isViewRecipe">OPTIONS</div>
       <div class="card-body">
+        <!-- Private / Public Recipe option
+        <div class="form-row" *ngIf="isCreateRecipe || isUpdateRecipe">
+          <div class="form-group col-12">
+            <p class="mb-2">Recipe Privacy</p>
+            <label class="custom-control custom-checkbox">
+              <input id="radio1" name="radio" type="radio" class="custom-control-input" [checked]="recipe.isPrivate" (change)="recipe.isPrivate = !recipe.isPrivate">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Private</span>
+            </label>
+            <label class="custom-control custom-checkbox">
+              <input id="radio2" name="radio" type="radio" class="custom-control-input" [checked]="!recipe.isPrivate" (change)="recipe.isPrivate = !recipe.isPrivate">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Public</span>
+            </label>
+          </div>
+        </div>
+        -->
         <div class="form-row">
           <div class="form-group">
             <div class="col-12 mt-3" *ngIf="isCreateRecipe">
-              <button type="button" class="btn btn-outline-primary" [disabled]="recipeBaseErrorMessage && flavorErrorMessage" (click)="submitNewRecipe()">Submit New Recipe</button>
+              <button type="button" class="btn btn-primary" [disabled]="recipeBaseErrorMessage && flavorErrorMessage" (click)="submitNewRecipe()">Submit New Recipe</button>
             </div>
             <div class="col-12 mt-3" *ngIf="isUpdateRecipe">
-              <button type="button" class="btn btn-outline-primary" [disabled]="recipeBaseErrorMessage && flavorErrorMessage" (click)="updateRecipe()">Update Recipe</button>
+              <button type="button" class="btn btn-primary" [disabled]="recipeBaseErrorMessage && flavorErrorMessage" (click)="updateRecipe()">Update Recipe</button>
             </div>
             <div class="col-12 mt-3" *ngIf="isViewRecipe">
               <a href="{{'/recipe/'+recipe.id}}">
-                <button type="button" class="btn btn-outline-success">View Recipe Page</button>
+                <button type="button" class="btn btn-success">View Recipe Page</button>
               </a>
             </div>
           </div>

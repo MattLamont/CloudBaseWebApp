@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgbProgressbarModule, NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
-import {ImageUploadModule} from 'angular2-image-upload';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { FormsModule } from '@angular/forms';
@@ -12,6 +11,9 @@ import { CreateRecipeRoutes } from './createrecipe.routing';
 
 import { FlavorService } from '../services/flavor.service';
 import { RecipeService } from '../services/recipe.service';
+import { UploadService } from '../services/upload.service';
+
+import {ImageCropperComponent, CropperSettings, Bounds} from 'ng2-img-cropper';
 
 
 @NgModule({
@@ -19,17 +21,18 @@ import { RecipeService } from '../services/recipe.service';
     CommonModule,
     RouterModule.forChild(CreateRecipeRoutes),
     NgbProgressbarModule, NgbTabsetModule,
-    ImageUploadModule.forRoot(),
     NgbModule,
     NgxChartsModule,
     FormsModule
   ],
   declarations: [
-    CreateRecipeComponent
+    CreateRecipeComponent,
+    ImageCropperComponent
   ],
   providers: [
     FlavorService,
-    RecipeService
+    RecipeService,
+    UploadService
   ]
 })
 

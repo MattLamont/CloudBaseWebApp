@@ -14,11 +14,14 @@ export class AppComponent {
   @LocalStorage('user')
   localUser;
 
+  @LocalStorage('token')
+  localToken;
+
   @SessionStorage('user')
   sessionUser;
 
   @SessionStorage('token')
-  token;
+  sessionToken;
 
 
   constructor(
@@ -30,13 +33,16 @@ export class AppComponent {
 
     let currentTime = Math.round((new Date()).getTime() / 1000);
 
+    let token = this.localToken;
+    if( !token ) token = this.sessionToken;
+
     let user = this.localUser;
     if( !user ) user = this.sessionUser;
 
-    if (user && this.token) {
+    if (user && token) {
 
       this.authService
-        .validateToken(this.token)
+        .validateToken(token)
         .subscribe(
         (res) => {
 

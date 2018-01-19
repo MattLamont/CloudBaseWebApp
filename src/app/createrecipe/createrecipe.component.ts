@@ -1,16 +1,18 @@
-import { Component, NgZone  } from '@angular/core';
+import { Component, NgZone , ViewChild , AfterViewInit , ElementRef  } from '@angular/core';
 import * as Quill from 'quill';
 import { environment } from 'environments/environment';
 import { SessionStorage, LocalStorage } from 'ngx-webstorage';
 import { FlavorService } from '../services/flavor.service';
 import { RecipeService } from '../services/recipe.service';
+import { UploadService } from '../services/upload.service';
 import { AppHeaderService } from '../services/appheader.service';
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute , Router } from '@angular/router';
 import { Recipe } from '../models/recipe';
 import { Flavor } from '../models/flavor';
-import {NgbTypeahead} from "@ng-bootstrap/ng-bootstrap";
+import { NgbTypeahead } from "@ng-bootstrap/ng-bootstrap";
+import { ImageCropperComponent, CropperSettings, Bounds } from 'ng2-img-cropper';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -19,6 +21,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/switchMap';
 
+
 @Component({
   selector: 'app-createrecipe',
   templateUrl: './createrecipe.component.html',
@@ -26,8 +29,11 @@ import 'rxjs/add/operator/switchMap';
 })
 export class CreateRecipeComponent {
 
-  public imageUploadURL = environment.cloudBaseApiURL + '/upload?type=recipe';
-  public authHeaders = { Authorization: '' };
+  imageData: any;
+  cropperSettings: CropperSettings;
+  imageCropperLoaded = false;
+  @ViewChild('imageContainer') imageContainer : ElementRef;
+  @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
 
   @LocalStorage('user')
   localUser;
@@ -128,7 +134,8 @@ export class CreateRecipeComponent {
     private router: Router,
     private flavorService: FlavorService,
     private recipeService: RecipeService,
-    private appHeaderService: AppHeaderService
+    private appHeaderService: AppHeaderService,
+    private uploadService: UploadService
   )
   {
     this.recipe= new Recipe();
@@ -159,6 +166,23 @@ export class CreateRecipeComponent {
     });
   }
 
+  ngAfterViewInit(){
+
+    let width = this.imageContainer.nativeElement.clientWidth;
+    let height = (width * 3) / 4;
+
+    this.cropperSettings = new CropperSettings();
+    this.cropperSettings.width = 640;
+    this.cropperSettings.height = 480;
+    this.cropperSettings.croppedWidth = width;
+    this.cropperSettings.croppedHeight = height;
+    this.cropperSettings.canvasWidth = width;
+    this.cropperSettings.canvasHeight = height;
+    this.cropperSettings.noFileInput = true;
+
+    this.imageData = {};
+  }
+
   ngOnInit() {
 
     let quillReadOnly = false;
@@ -179,19 +203,19 @@ export class CreateRecipeComponent {
       theme: 'snow'
     });
 
-    this.authHeaders.Authorization = 'Bearer ' + this.token;
     this.recipeService.setAuthToken( this.token );
+    this.uploadService.setAuthToken( this.token );
 
     //this.recalculateRecipe();
   }
 
-  imageUploaded(event) {
-    let res = JSON.parse(event.serverResponse._body);
-    this.recipe.image_url = res.url;
-  }
-
   onImageRemoved() {
     this.recipe.image_url = '';
+  }
+
+  cancelImageUpload(){
+    this.imageCropperLoaded = false;
+    this.imageData = {};
   }
 
   recalculateRecipe() {
@@ -391,7 +415,6 @@ export class CreateRecipeComponent {
       .findOneRecipe(id , ['flavors'])
       .subscribe(
       (recipe) => {
-
         this.recipe = recipe;
         this.appHeaderService.setAppHeader(this.appHeader + this.recipe.name);
         this.quill.container.firstChild.innerHTML = this.recipe.description;
@@ -403,7 +426,7 @@ export class CreateRecipeComponent {
       });
   }
 
-  validateRecipe() : any {
+  validateRecipe( callback ) : any {
 
     let newRecipe = new Recipe();
 
@@ -459,7 +482,17 @@ export class CreateRecipeComponent {
     delete newRecipe.dislikes;
     delete newRecipe.views;
 
-    return newRecipe;
+    this.uploadService
+      .uploadRecipeImage( this.imageData.image )
+      .subscribe(
+      (upload) => {
+        newRecipe.image_url = upload.url;
+        callback( null , newRecipe );
+      },
+      (error) => {
+        callback( error , null );
+      });
+
   }
 
   submitNewRecipe(){
@@ -470,22 +503,28 @@ export class CreateRecipeComponent {
       return;
     }
 
-    let newRecipe = this.validateRecipe();
+    this.validateRecipe( ( err , newRecipe ) => {
 
-    //add the the recipe to database
-    this.recipeService
-      .createRecipe(newRecipe)
-      .subscribe(
-      (recipe) => {
-        console.log( recipe );
-        this.submitErrorMessageType = 'success';
-        this.submitErrorMessage = "Recipe Created!"
-        this.router.navigate(['/recipe/' + recipe.id]);
-      },
-      (error) => {
-        this.submitErrorMessageType = 'danger';
-        this.submitErrorMessage = error.message;
-      });
+      if( err ){
+        this.submitErrorMessage = 'Image upload failed. Try again.';
+        return;
+      }
+
+      //add the the recipe to database
+      this.recipeService
+        .createRecipe(newRecipe)
+        .subscribe(
+        (recipe) => {
+          this.submitErrorMessageType = 'success';
+          this.submitErrorMessage = "Recipe Created!"
+          this.router.navigate(['/recipe/' + recipe.id]);
+        },
+        (error) => {
+          this.submitErrorMessageType = 'danger';
+          this.submitErrorMessage = error.message;
+        });
+
+    });
   }
 
   updateRecipe(){
@@ -501,22 +540,28 @@ export class CreateRecipeComponent {
       this.submitErrorMessage = "Cannot update recipe. You do not own this recipe";
     }
 
-    let newRecipe = this.validateRecipe();
+    this.validateRecipe( ( err , newRecipe ) => {
 
-    //update the the recipe to database
-    this.recipeService
-      .updateRecipe(newRecipe , this.recipeId )
-      .subscribe(
-      (recipe) => {
-        console.log( recipe );
-        this.submitErrorMessageType = 'success';
-        this.submitErrorMessage = "Recipe Updated!"
-        this.router.navigate(['/recipe/' + recipe.id]);
-      },
-      (error) => {
-        this.submitErrorMessageType = 'danger';
-        this.submitErrorMessage = error.message;
-      });
+      if( err ){
+        this.submitErrorMessage = 'Image upload failed. Try again.';
+        return;
+      }
+
+      //update the the recipe to database
+      this.recipeService
+        .updateRecipe(newRecipe , this.recipeId )
+        .subscribe(
+        (recipe) => {
+          this.submitErrorMessageType = 'success';
+          this.submitErrorMessage = "Recipe Updated!"
+          this.router.navigate(['/recipe/' + recipe.id]);
+        },
+        (error) => {
+          this.submitErrorMessageType = 'danger';
+          this.submitErrorMessage = error.message;
+        });
+
+    });
   }
 
   searchFlavor = (text$: Observable<string>) =>
@@ -532,4 +577,21 @@ export class CreateRecipeComponent {
           }))
 
   formatter = (x: { name: string }) => x.name;
+
+
+  fileChangeListener($event) {
+    console.log( 'here');
+      this.imageCropperLoaded = true;
+      var image:any = new Image();
+      var file:File = $event.target.files[0];
+      var myReader:FileReader = new FileReader();
+      var that = this;
+      myReader.onloadend = function(loadEvent:any) {
+          image.src = loadEvent.target.result;
+          that.cropper.setImage(image);
+      };
+
+      myReader.readAsDataURL(file);
+  }
+
 }
