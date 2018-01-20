@@ -107,6 +107,11 @@ export class CreateRecipeComponent {
     nicotineStrength: 100,
     nicotinePG: 50,
     nicotineVG: 50,
+    dilutant: {
+      percent: 0,
+      ml: 0,
+      grams: 0
+    },
     nicotine: {
       percent: 0,
       ml: 0,
@@ -168,19 +173,21 @@ export class CreateRecipeComponent {
 
   ngAfterViewInit(){
 
-    let width = this.imageContainer.nativeElement.clientWidth;
-    let height = (width * 3) / 4;
+    if( this.imageContainer ){
+      let width = this.imageContainer.nativeElement.clientWidth;
+      let height = (width * 3) / 4;
 
-    this.cropperSettings = new CropperSettings();
-    this.cropperSettings.width = 640;
-    this.cropperSettings.height = 480;
-    this.cropperSettings.croppedWidth = width;
-    this.cropperSettings.croppedHeight = height;
-    this.cropperSettings.canvasWidth = width;
-    this.cropperSettings.canvasHeight = height;
-    this.cropperSettings.noFileInput = true;
+      this.cropperSettings = new CropperSettings();
+      this.cropperSettings.width = 640;
+      this.cropperSettings.height = 480;
+      this.cropperSettings.croppedWidth = width;
+      this.cropperSettings.croppedHeight = height;
+      this.cropperSettings.canvasWidth = width;
+      this.cropperSettings.canvasHeight = height;
+      this.cropperSettings.noFileInput = true;
 
-    this.imageData = {};
+      this.imageData = {};
+    }
   }
 
   ngOnInit() {
@@ -238,6 +245,12 @@ export class CreateRecipeComponent {
       grams: 0
     };
 
+    this.basicMixingInfo.dilutant = {
+      percent: 0,
+      ml: 0,
+      grams: 0
+    };
+
     //variables to keep track of the pg and vg content as we calculate the recipe
     let vgMlCount = 0;
     let pgMlCount = 0;
@@ -262,6 +275,13 @@ export class CreateRecipeComponent {
 
     if (this.basicMixingInfo.nicotinePG != 0) {
       pgMlCount = pgMlCount + (this.basicMixingInfo.nicotine.ml * (this.basicMixingInfo.nicotinePG / 100));
+    }
+
+    //find the amount of dilutant to add
+    if (this.recipe.dilutant != 0) {
+      this.basicMixingInfo.dilutant.percent = this.recipe.dilutant;
+      this.basicMixingInfo.dilutant.ml = (this.recipe.dilutant / 100) * this.basicMixingInfo.totalVolume;
+      volumeLeft = volumeLeft - this.basicMixingInfo.dilutant.ml;
     }
 
     //find the amount of each flavor to use
@@ -332,7 +352,9 @@ export class CreateRecipeComponent {
     this.chartData[0].value = this.basicMixingInfo.nicotine.percent;
     this.chartData[1].value = this.basicMixingInfo.pg.percent;
     this.chartData[2].value = this.basicMixingInfo.vg.percent;
-    this.chartData[3].value = 100 - (this.basicMixingInfo.nicotine.percent + this.basicMixingInfo.pg.percent + this.basicMixingInfo.vg.percent);
+    this.chartData[3].value = 100 - (this.basicMixingInfo.nicotine.percent + this.basicMixingInfo.pg.percent + this.basicMixingInfo.vg.percent + this.basicMixingInfo.dilutant.percent);
+    this.chartData[4].value = this.basicMixingInfo.dilutant.percent;
+
     this.chartData = [...this.chartData];
   }
 
@@ -390,6 +412,15 @@ export class CreateRecipeComponent {
       return;
     }
     this.recipe.pg_percent = 100 - this.recipe.vg_percent;
+    this.recalculateRecipe();
+  }
+
+  onRecipeDilutantChange(event) {
+    if (this.recipe.dilutant > 100 || this.recipe.dilutant < 0) {
+      this.recipeBaseErrorMessage = 'Error: Dilutant must be 0-100';
+      this.recipe.dilutant = 0;
+      return;
+    }
     this.recalculateRecipe();
   }
 
@@ -455,6 +486,13 @@ export class CreateRecipeComponent {
     }
     newRecipe.vg_percent = this.recipe.vg_percent;
 
+    //validated and add in the recipe dilutant
+    if( this.recipe.dilutant == null ){
+      this.submitErrorMessage = 'Error: Dilutant percent is invalid';
+      return;
+    }
+    newRecipe.dilutant = this.recipe.dilutant;
+
     //validate for non-null values and flavor names
     this.recipe.flavors.forEach((flavor, i) => {
 
@@ -482,16 +520,22 @@ export class CreateRecipeComponent {
     delete newRecipe.dislikes;
     delete newRecipe.views;
 
-    this.uploadService
-      .uploadRecipeImage( this.imageData.image )
-      .subscribe(
-      (upload) => {
-        newRecipe.image_url = upload.url;
-        callback( null , newRecipe );
-      },
-      (error) => {
-        callback( error , null );
-      });
+    if( this.imageCropperLoaded ){
+      this.uploadService
+        .uploadRecipeImage( this.imageData.image )
+        .subscribe(
+        (upload) => {
+          newRecipe.image_url = upload.url;
+          callback( null , newRecipe );
+        },
+        (error) => {
+          callback( error , null );
+        });
+    }
+    else{
+      callback( null , newRecipe );
+    }
+
 
   }
 
@@ -580,7 +624,6 @@ export class CreateRecipeComponent {
 
 
   fileChangeListener($event) {
-    console.log( 'here');
       this.imageCropperLoaded = true;
       var image:any = new Image();
       var file:File = $event.target.files[0];

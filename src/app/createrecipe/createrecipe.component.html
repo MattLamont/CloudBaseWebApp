@@ -42,6 +42,16 @@
 
         <div class="form-row">
           <div class="form-group col-12">
+            <label>Dilutant</label>
+            <div class="input-group">
+              <input class="form-control" type="number" [(ngModel)]="recipe.dilutant" (change)="onRecipeDilutantChange($event)" min=0 max=100>
+              <div class="input-group-addon">%</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-12">
             <label>Nicotine Strength</label>
             <div class="input-group">
               <input class="form-control" type="number" [(ngModel)]="basicMixingInfo.nicotineStrength" (change)="recalculateRecipe()" min=0 max=100000>
@@ -188,6 +198,22 @@
                 </td>
                 <td data-title="Milliliters" class="numeric">
                   {{basicMixingInfo.vg.ml | number:'1.0-2'}}ml
+                </td>
+                <!--
+                <td data-title="Grams" class="numeric">
+                  {{basicMixingInfo.vg.grams}}
+                </td>
+                -->
+              </tr>
+              <tr class="table-danger">
+                <td data-title="Item">
+                  Dilutant
+                </td>
+                <td data-title="Percent">
+                  {{basicMixingInfo.dilutant.percent | number:'1.0-2'}}%
+                </td>
+                <td data-title="Milliliters" class="numeric">
+                  {{basicMixingInfo.dilutant.ml | number:'1.0-2'}}ml
                 </td>
                 <!--
                 <td data-title="Grams" class="numeric">

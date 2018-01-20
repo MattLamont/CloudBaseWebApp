@@ -35,6 +35,7 @@ export class AppComponent {
 
     let token = this.localToken;
     if( !token ) token = this.sessionToken;
+    else this.sessionToken = token;
 
     let user = this.localUser;
     if( !user ) user = this.sessionUser;
