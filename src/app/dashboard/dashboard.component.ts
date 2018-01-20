@@ -42,7 +42,7 @@ export class DashboardComponent {
     this.getMoreRecentRecipes();
     this.getMorePopularRecipes();
 
-    if( this.sessionUser ){
+    if ( this.sessionUser ){
       this.view_type = this.sessionUser.settings.recipe_display;
     }
   }
@@ -54,10 +54,10 @@ export class DashboardComponent {
       .subscribe(
       (recipes) => {
 
-        if( !this.featured_recipes ) this.featured_recipes = recipes;
+        if ( !this.featured_recipes ) this.featured_recipes = recipes;
         else this.featured_recipes = this.featured_recipes.concat( recipes );
 
-        if( recipes.length != 6 ){
+        if ( recipes.length != 6 ){
           this.showFeaturedLoadMoreButton = false;
         }
 
@@ -76,10 +76,10 @@ export class DashboardComponent {
       .subscribe(
       (recipes) => {
 
-        if( !this.recent_recipes ) this.recent_recipes = recipes;
+        if ( !this.recent_recipes ) this.recent_recipes = recipes;
         else this.recent_recipes = this.recent_recipes.concat( recipes );
 
-        if( recipes.length != 6 ){
+        if ( recipes.length != 6 ){
           this.showRecentLoadMoreButton = false;
         }
 
@@ -98,10 +98,10 @@ export class DashboardComponent {
       .subscribe(
       (recipes) => {
 
-        if( !this.popular_recipes ) this.popular_recipes = recipes;
+        if ( !this.popular_recipes ) this.popular_recipes = recipes;
         else this.popular_recipes = this.popular_recipes.concat( recipes );
 
-        if( recipes.length != 6 ){
+        if ( recipes.length != 6 ){
           this.showPopularLoadMoreButton = false;
         }
 

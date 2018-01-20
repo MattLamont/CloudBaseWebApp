@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
@@ -17,9 +17,9 @@ export class SettingsService {
 
 export class SettingsModel {
 
-  constructor(){
+  constructor() {
 
-  };
+  }
 
   public themeType = {
     light: 'light',

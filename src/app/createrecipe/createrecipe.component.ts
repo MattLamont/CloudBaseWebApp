@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute , Router } from '@angular/router';
 import { Recipe } from '../models/recipe';
 import { Flavor } from '../models/flavor';
-import { NgbTypeahead } from "@ng-bootstrap/ng-bootstrap";
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { ImageCropperComponent, CropperSettings, Bounds } from 'ng2-img-cropper';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
@@ -32,8 +32,8 @@ export class CreateRecipeComponent {
   imageData: any;
   cropperSettings: CropperSettings;
   imageCropperLoaded = false;
-  @ViewChild('imageContainer') imageContainer : ElementRef;
-  @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
+  @ViewChild('imageContainer') imageContainer: ElementRef;
+  @ViewChild('cropper', undefined) cropper: ImageCropperComponent;
 
   @LocalStorage('user')
   localUser;
@@ -42,7 +42,7 @@ export class CreateRecipeComponent {
   sessionUser;
 
   @SessionStorage('token')
-  token
+  token;
 
   public isUpdateRecipe = false;
   public isCreateRecipe = false;
@@ -143,26 +143,26 @@ export class CreateRecipeComponent {
     private uploadService: UploadService
   )
   {
-    this.recipe= new Recipe();
+    this.recipe = new Recipe();
 
     this.route.params.subscribe(params => {
 
       this.recipeId = params['id'];
 
-      if( this.router.url.startsWith('/create/recipe')){
+      if ( this.router.url.startsWith('/create/recipe')){
         this.isCreateRecipe = true;
         this.appHeaderService.setAppHeader('Create Recipe');
         this.recipe = new Recipe();
         this.recalculateRecipe();
       }
 
-      if( this.router.url.startsWith('/update/recipe')){
+      if ( this.router.url.startsWith('/update/recipe')){
         this.isUpdateRecipe = true;
         this.appHeader = 'Update Recipe | ';
         this.getRecipeDetails( this.recipeId );
       }
 
-      if( this.router.url.startsWith('/view/recipe')){
+      if ( this.router.url.startsWith('/view/recipe')){
         this.isViewRecipe = true;
         this.appHeader = 'View Recipe | ';
         this.getRecipeDetails( this.recipeId );
@@ -173,9 +173,9 @@ export class CreateRecipeComponent {
 
   ngAfterViewInit(){
 
-    if( this.imageContainer ){
-      let width = this.imageContainer.nativeElement.clientWidth;
-      let height = (width * 3) / 4;
+    if ( this.imageContainer ){
+      const width = this.imageContainer.nativeElement.clientWidth;
+      const height = (width * 3) / 4;
 
       this.cropperSettings = new CropperSettings();
       this.cropperSettings.width = 640;
@@ -194,7 +194,7 @@ export class CreateRecipeComponent {
 
     let quillReadOnly = false;
     let quillPlaceholder = 'Write about your recipe here...';
-    if( this.isViewRecipe ){
+    if ( this.isViewRecipe ){
       quillReadOnly = true;
       quillPlaceholder = '';
     }
@@ -259,7 +259,7 @@ export class CreateRecipeComponent {
     let volumeLeft = this.basicMixingInfo.totalVolume;
 
     //find amount of nicotine in mg
-    let amountOfNicotine = this.basicMixingInfo.recipeStrength * this.basicMixingInfo.totalVolume;
+    const amountOfNicotine = this.basicMixingInfo.recipeStrength * this.basicMixingInfo.totalVolume;
 
     //find the amount of diluted nicotine to use
     if (this.basicMixingInfo.nicotineStrength != 0) {
@@ -287,7 +287,7 @@ export class CreateRecipeComponent {
     //find the amount of each flavor to use
     this.recipe.flavor_percents.forEach((flavor_percent, i) => {
 
-      let mixingFlavor = {
+      const mixingFlavor = {
         percent: 0,
         ml: 0,
         grams: 0
@@ -306,7 +306,7 @@ export class CreateRecipeComponent {
 
     });
 
-    let baseVolume = pgMlCount + vgMlCount + volumeLeft;
+    const baseVolume = pgMlCount + vgMlCount + volumeLeft;
 
     let pgToAdd = 0;
     let vgToAdd = 0;
@@ -332,17 +332,17 @@ export class CreateRecipeComponent {
     this.basicMixingInfo.vg.percent = (vgToAdd / this.basicMixingInfo.totalVolume) * 100;
 
     if ((((pgMlCount + pgToAdd) / this.basicMixingInfo.totalVolume) * 100) > this.recipe.pg_percent) {
-      this.recipeBaseErrorMessage = "Error: PG/VG ratio invalid";
+      this.recipeBaseErrorMessage = 'Error: PG/VG ratio invalid';
       return;
     }
 
     if ((((vgMlCount + vgToAdd) / this.basicMixingInfo.totalVolume) * 100) > this.recipe.vg_percent) {
-      this.recipeBaseErrorMessage = "Error: PG/VG ratio invalid";
+      this.recipeBaseErrorMessage = 'Error: PG/VG ratio invalid';
       return;
     }
 
     if (this.basicMixingInfo.nicotine.ml > this.basicMixingInfo.totalVolume) {
-      this.recipeBaseErrorMessage = "Error: Nicotine ratio invalid";
+      this.recipeBaseErrorMessage = 'Error: Nicotine ratio invalid';
       return;
     }
 
@@ -438,7 +438,7 @@ export class CreateRecipeComponent {
 
   getRecipeDetails( id: number ){
 
-    if( id == null ){
+    if ( id == null ){
       this.router.navigate(['/404']);
     }
 
@@ -457,22 +457,22 @@ export class CreateRecipeComponent {
       });
   }
 
-  validateRecipe( callback ) : any {
+  validateRecipe( callback ): any {
 
-    let newRecipe = new Recipe();
+    const newRecipe = new Recipe();
 
     this.submitErrorMessage = '';
     this.submitErrorMessageType = 'danger';
 
     //validate and add in recipe Name
-    if( this.recipe.name.length < 2 ){
+    if ( this.recipe.name.length < 2 ){
       this.submitErrorMessage = 'Name must be more than 2 characters long.';
       return;
     }
     newRecipe.name = this.recipe.name;
 
     //validate and add in the recipe vg
-    if( this.recipe.pg_percent == null ){
+    if ( this.recipe.pg_percent == null ){
 
       this.submitErrorMessage = 'Error: PG percent is invalid';
       return;
@@ -480,14 +480,14 @@ export class CreateRecipeComponent {
     newRecipe.pg_percent = this.recipe.pg_percent;
 
     //validated and add in the recipe pg
-    if( this.recipe.vg_percent == null ){
+    if ( this.recipe.vg_percent == null ){
       this.submitErrorMessage = 'Error: PG percent is invalid';
       return;
     }
     newRecipe.vg_percent = this.recipe.vg_percent;
 
     //validated and add in the recipe dilutant
-    if( this.recipe.dilutant == null ){
+    if ( this.recipe.dilutant == null ){
       this.submitErrorMessage = 'Error: Dilutant percent is invalid';
       return;
     }
@@ -496,8 +496,8 @@ export class CreateRecipeComponent {
     //validate for non-null values and flavor names
     this.recipe.flavors.forEach((flavor, i) => {
 
-      if( !flavor.name || this.recipe.flavor_percents[i] == 0 ){
-        return
+      if ( !flavor.name || this.recipe.flavor_percents[i] == 0 ){
+        return;
       }
 
       newRecipe.flavors.push( flavor.id );
@@ -505,7 +505,7 @@ export class CreateRecipeComponent {
     });
 
     //Validate recipe description
-    if( this.quill.getLength() > 1 ){
+    if ( this.quill.getLength() > 1 ){
       newRecipe.description = this.quill.container.firstChild.innerHTML;
     }
     else{
@@ -520,7 +520,7 @@ export class CreateRecipeComponent {
     delete newRecipe.dislikes;
     delete newRecipe.views;
 
-    if( this.imageCropperLoaded ){
+    if ( this.imageCropperLoaded ){
       this.uploadService
         .uploadRecipeImage( this.imageData.image )
         .subscribe(
@@ -541,7 +541,7 @@ export class CreateRecipeComponent {
 
   submitNewRecipe(){
 
-    if( !this.sessionUser ){
+    if ( !this.sessionUser ){
       this.submitErrorMessageType = 'danger';
       this.submitErrorMessage = 'You must be logged in to create a recipe.';
       return;
@@ -549,7 +549,7 @@ export class CreateRecipeComponent {
 
     this.validateRecipe( ( err , newRecipe ) => {
 
-      if( err ){
+      if ( err ){
         this.submitErrorMessage = 'Image upload failed. Try again.';
         return;
       }
@@ -560,7 +560,7 @@ export class CreateRecipeComponent {
         .subscribe(
         (recipe) => {
           this.submitErrorMessageType = 'success';
-          this.submitErrorMessage = "Recipe Created!"
+          this.submitErrorMessage = 'Recipe Created!';
           this.router.navigate(['/recipe/' + recipe.id]);
         },
         (error) => {
@@ -573,20 +573,20 @@ export class CreateRecipeComponent {
 
   updateRecipe(){
 
-    if( !this.sessionUser ){
+    if ( !this.sessionUser ){
       this.submitErrorMessageType = 'danger';
       this.submitErrorMessage = 'You must be logged in to update a recipe.';
       return;
     }
 
-    if( this.recipe.owner != this.sessionUser.id ){
+    if ( this.recipe.owner != this.sessionUser.id ){
       this.submitErrorMessageType = 'danger';
-      this.submitErrorMessage = "Cannot update recipe. You do not own this recipe";
+      this.submitErrorMessage = 'Cannot update recipe. You do not own this recipe';
     }
 
     this.validateRecipe( ( err , newRecipe ) => {
 
-      if( err ){
+      if ( err ){
         this.submitErrorMessage = 'Image upload failed. Try again.';
         return;
       }
@@ -597,7 +597,7 @@ export class CreateRecipeComponent {
         .subscribe(
         (recipe) => {
           this.submitErrorMessageType = 'success';
-          this.submitErrorMessage = "Recipe Updated!"
+          this.submitErrorMessage = 'Recipe Updated!';
           this.router.navigate(['/recipe/' + recipe.id]);
         },
         (error) => {
@@ -625,11 +625,11 @@ export class CreateRecipeComponent {
 
   fileChangeListener($event) {
       this.imageCropperLoaded = true;
-      var image:any = new Image();
-      var file:File = $event.target.files[0];
-      var myReader:FileReader = new FileReader();
-      var that = this;
-      myReader.onloadend = function(loadEvent:any) {
+      const image: any = new Image();
+      const file: File = $event.target.files[0];
+      const myReader: FileReader = new FileReader();
+      const that = this;
+      myReader.onloadend = function(loadEvent: any) {
           image.src = loadEvent.target.result;
           that.cropper.setImage(image);
       };

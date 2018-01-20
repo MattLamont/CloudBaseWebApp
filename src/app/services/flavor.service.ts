@@ -14,9 +14,9 @@ export class FlavorService {
 
   constructor( private http: Http ) { }
 
-  public searchForFlavor( name: String ){
+  public searchForFlavor( name: String ) {
 
-    let url = API_URL + '/flavor?where={"name":{"contains":"' + name + '"}}&limit=20';
+    const url = API_URL + '/flavor?where={"name":{"contains":"' + name + '"}}&limit=20';
 
     return this.http
       .get( url )

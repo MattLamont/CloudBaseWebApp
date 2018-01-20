@@ -41,8 +41,8 @@ export class CategoriesComponent {
 
   ngOnInit() {
 
-    if( this.route.snapshot.data.heading ){
-      this.category = this.route.snapshot.data.heading
+    if ( this.route.snapshot.data.heading ){
+      this.category = this.route.snapshot.data.heading;
     }
     else{
       this.router.navigate(['404']);
@@ -50,7 +50,7 @@ export class CategoriesComponent {
 
     this.appHeaderService.setAppHeader('Category | ' + this.category );
 
-    if( this.sessionUser ){
+    if ( this.sessionUser ){
       this.view_type = this.sessionUser.settings.recipe_display;
     }
 
@@ -65,10 +65,10 @@ export class CategoriesComponent {
       .findRecipes( ['owner'] , `category=${this.category}&limit=30&skip=${this.numRecipesShown}` )
       .subscribe(
       (recipes) => {
-        if( !this.recipes ) this.recipes = recipes;
+        if ( !this.recipes ) this.recipes = recipes;
         else this.recipes = this.recipes.concat( recipes );
 
-        if( recipes.length != 30 ){
+        if ( recipes.length != 30 ){
             this.showLoadMoreButton = false;
         }
         this.numRecipesShown = this.recipes.length;

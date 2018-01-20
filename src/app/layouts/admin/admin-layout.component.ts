@@ -37,7 +37,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   sessionUser;
 
   @SessionStorage('token')
-  token
+  token;
 
   options: Options;
   theme = 'light';
@@ -105,9 +105,9 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
 
-    //subscibe to the service that provides the header title for each page
+    // subscibe to the service that provides the header title for each page
     this.appHeaderSub = this.appHeaderService.getAppHeader().subscribe(data => {
-      if( this.options ){
+      if ( this.options ){
         if (this.options.hasOwnProperty('heading')) {
           this.options.heading = data.header;
           this.setTitle( data.header );
@@ -115,7 +115,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    //subscibe to the service that provides the user settings
+    // subscibe to the service that provides the user settings
     this.settingsSub = this.settingsService.getSettings().subscribe(data => {
       this.theme = data.theme;
       this._mode = data.sidebar;
@@ -138,16 +138,16 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
       this.runOnRouteChange();
     });
 
-    //get the user ui settings
-    if( this.sessionUser ){
-      if( this.sessionUser.settings.theme ) this.theme = this.sessionUser.settings.theme;
+    // get the user ui settings
+    if ( this.sessionUser ) {
+      if ( this.sessionUser.settings.theme ) this.theme = this.sessionUser.settings.theme;
 
-      if( this.sessionUser.settings.sidebar ){
+      if ( this.sessionUser.settings.sidebar ){
         this._mode = this.sessionUser.settings.sidebar;
         this.mode = this._mode;
       }
 
-      if( !this.sessionUser.following ){
+      if ( !this.sessionUser.following ) {
         this.userService
           .findOneUser(this.sessionUser.id , '/following' )
           .subscribe(
@@ -215,10 +215,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate(['/'], { queryParams: { 'refresh': 1 } });
   }
 
-  onSearchChange( value: string ){
+  onSearchChange( value: string ) {
 
 
-    if( value.length < 3 ){
+    if ( value.length < 3 ){
       return;
     }
 

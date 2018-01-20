@@ -32,7 +32,7 @@ export class SigninComponent implements OnInit {
         .subscribe(
         (user) => {
 
-          if( this.rememberMe ){
+          if ( this.rememberMe ){
             this.localStorage.store( 'token' , user.token );
             this.localStorage.store( 'user' , user.user );
           }
@@ -44,7 +44,7 @@ export class SigninComponent implements OnInit {
         },
         (error) => {
 
-          if( error.message == 'invalidLogin' ){
+          if ( error.message == 'invalidLogin' ){
             this.errorMessage = 'Invalid email or password. Try Again';
           }
           else{

@@ -31,14 +31,14 @@ export class AppComponent {
     private userService: UserService
   ) {
 
-    let currentTime = Math.round((new Date()).getTime() / 1000);
+    const currentTime = Math.round((new Date()).getTime() / 1000);
 
     let token = this.localToken;
-    if( !token ) token = this.sessionToken;
+    if ( !token ) token = this.sessionToken;
     else this.sessionToken = token;
 
     let user = this.localUser;
-    if( !user ) user = this.sessionUser;
+    if ( !user ) user = this.sessionUser;
 
     if (user && token) {
 

@@ -50,7 +50,7 @@ export class recipeComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      let recipeId = params['id'];
+      const recipeId = params['id'];
       this.recipeService
         .findOneRecipe(recipeId, ['flavors', 'owner'])
         .subscribe(
@@ -158,7 +158,7 @@ export class recipeComponent implements OnInit {
       .findOneRecipeLike(this.sessionUser.id, this.recipe.id)
       .subscribe(
       (likes) => {
-        if( likes[0] ){
+        if ( likes[0] ){
           this.isRecipeLiked = true;
         }
       },
@@ -170,7 +170,7 @@ export class recipeComponent implements OnInit {
       .findOneRecipeSave(this.sessionUser.id, this.recipe.id)
       .subscribe(
       (saves) => {
-        if( saves[0] ){
+        if ( saves[0] ){
           this.isRecipeSaved = true;
         }
       },
@@ -181,24 +181,24 @@ export class recipeComponent implements OnInit {
 
   getRecipeReviews(): void{
 
-    if( !this.showLoadMoreReviewButton ) return;
+    if ( !this.showLoadMoreReviewButton ) return;
 
     let numReviews = 0;
-    if( this.recipe.reviews ) numReviews = this.recipe.reviews.length;
+    if ( this.recipe.reviews ) numReviews = this.recipe.reviews.length;
 
-    let queryParams = 'where={"recipe":' +  this.recipe.id + `}&skip=${numReviews}&limit=5&sort=updatedAt%20DESC`;
+    const queryParams = 'where={"recipe":' +  this.recipe.id + `}&skip=${numReviews}&limit=5&sort=updatedAt%20DESC`;
 
     this.reviewService
       .findReviews( ['owner'] , queryParams )
       .subscribe(
       (reviews) => {
 
-        if( !this.recipe.reviews ) this.recipe.reviews = reviews;
+        if ( !this.recipe.reviews ) this.recipe.reviews = reviews;
         else this.recipe.reviews = this.recipe.reviews.concat( reviews );
 
         this.selectedReview = reviews[0];
 
-        if( reviews.length != 5 ) this.showLoadMoreReviewButton = false;
+        if ( reviews.length != 5 ) this.showLoadMoreReviewButton = false;
       },
       (error) => {
 
@@ -210,7 +210,7 @@ export class recipeComponent implements OnInit {
 
     this.isWritingReview = true;
 
-    if( !this.quill ){
+    if ( !this.quill ){
 
       this.quill = new Quill('#editor-container', {
         modules: {

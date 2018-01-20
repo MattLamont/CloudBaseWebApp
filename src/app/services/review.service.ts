@@ -18,7 +18,7 @@ export class ReviewService {
 
   public findReviews( populate = [] , queryParams = '' ){
 
-    let url = this.buildQuery( '/review' , populate , queryParams );
+    const url = this.buildQuery( '/review' , populate , queryParams );
 
     return this.http
       .get(url)
@@ -32,7 +32,7 @@ export class ReviewService {
 
   public findOneReview( id: number , populate = [] ){
 
-    let url = this.buildQuery( '/review/' + id , populate );
+    const url = this.buildQuery( '/review/' + id , populate );
 
     return this.http
       .get(url)
@@ -46,7 +46,7 @@ export class ReviewService {
 
   public create( body: any ){
 
-    let url = API_URL + '/review';
+    const url = API_URL + '/review';
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
 
     return this.http
@@ -77,11 +77,11 @@ export class ReviewService {
 
     url = url + ']';
 
-    if( queryParams && populate ){
+    if ( queryParams && populate ){
       url = url + '&' + queryParams;
     }
 
-    if( queryParams && !populate ){
+    if ( queryParams && !populate ){
       url = url + '?' + queryParams;
     }
 

@@ -18,7 +18,7 @@ export class UploadService {
 
   public uploadRecipeImage( image: any ){
 
-    let formData = this.buildFormData( image );
+    const formData = this.buildFormData( image );
 
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
 
@@ -34,14 +34,14 @@ export class UploadService {
 
   private buildFormData( image: any ): FormData{
 
-    var binary = atob( image.split(',')[1] );
-    var binary_array = [];
-    for(var i = 0; i< binary.length; i++){
+    const binary = atob( image.split(',')[1] );
+    const binary_array = [];
+    for (let i = 0; i < binary.length; i++){
       binary_array.push(binary.charCodeAt(i));
     }
 
-    var blob = new Blob([new Uint8Array(binary_array)], {type: 'image/jpeg'});
-    let formData = new FormData();
+    const blob = new Blob([new Uint8Array(binary_array)], {type: 'image/jpeg'});
+    const formData = new FormData();
     formData.append('image', blob);
     return formData;
   }

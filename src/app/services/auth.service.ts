@@ -18,7 +18,7 @@ export class AuthService {
 
   public login( email: String , password: String ){
 
-    let body = {
+    const body = {
       email: email,
       password: password
     };
@@ -33,7 +33,7 @@ export class AuthService {
 
   public register( email: String , password: String , username: String ){
 
-    let body = {
+    const body = {
       email: email,
       password: password,
       username: username

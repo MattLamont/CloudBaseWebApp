@@ -16,23 +16,9 @@ export class RecipeService {
 
   constructor( private http: Http ) { }
 
-  public findOneRecipe( id: number , populate = [] , queryParams = '' ){
+  public findOneRecipe( id: number , populate = [] , queryParams = '' ) {
 
-    let url = this.buildQuery( '/recipe/' + id , populate , queryParams );
-
-    return this.http
-      .get(url)
-      .map(response => {
-        return response.json();
-      })
-      .catch((error) => {
-        return Observable.throw(error);
-      });
-  }
-
-  public findRecipes( populate = [] , queryParams = '' ){
-
-    let url = this.buildQuery( '/recipe' , populate , queryParams );
+    const url = this.buildQuery( '/recipe/' + id , populate , queryParams );
 
     return this.http
       .get(url)
@@ -44,7 +30,21 @@ export class RecipeService {
       });
   }
 
-  public createRecipe( body: any ){
+  public findRecipes( populate = [] , queryParams = '' ) {
+
+    const url = this.buildQuery( '/recipe' , populate , queryParams );
+
+    return this.http
+      .get(url)
+      .map(response => {
+        return response.json();
+      })
+      .catch((error) => {
+        return Observable.throw(error);
+      });
+  }
+
+  public createRecipe( body: any ) {
 
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
 
@@ -58,7 +58,7 @@ export class RecipeService {
       });
   }
 
-  public updateRecipe( body: any , id: number ){
+  public updateRecipe( body: any , id: number ) {
 
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
 
@@ -72,9 +72,9 @@ export class RecipeService {
       });
   }
 
-  public searchForRecipe( name: String ){
+  public searchForRecipe( name: String ) {
 
-    let url = API_URL + '/recipe?where={"name":{"contains":"' + name + '"}}&limit=20';
+    const url = API_URL + '/recipe?where={"name":{"contains":"' + name + '"}}&limit=20';
 
     return this.http
       .get( url )
@@ -89,11 +89,11 @@ export class RecipeService {
     return Observable.throw(error.json());
   }
 
-  public setAuthToken( token: string ){
+  public setAuthToken( token: string ) {
     this.token = token;
   }
 
-  private buildQuery( resource: string , populate = [] , queryParams = '' ): string{
+  private buildQuery( resource: string , populate = [] , queryParams = '' ): string {
     let url = API_URL + resource + '?populate=[';
 
     populate.map( (element) => {
@@ -102,11 +102,11 @@ export class RecipeService {
 
     url = url + ']';
 
-    if( queryParams && populate ){
+    if ( queryParams && populate ) {
       url = url + '&' + queryParams;
     }
 
-    if( queryParams && !populate ){
+    if ( queryParams && !populate ) {
       url = url + '?' + queryParams;
     }
 

@@ -59,35 +59,35 @@ export class ProfileComponent implements OnInit {
 
       this.userService.setAuthToken( this.token );
 
-      if( this.sessionUser ){
-        if( this.sessionUser.id == this.userId ) this.isOwnUser = true;
+      if ( this.sessionUser ){
+        if ( this.sessionUser.id == this.userId ) this.isOwnUser = true;
         else this.isOwnUser = false;
       }
 
       this.userService
-        .findOneUser(this.userId , '' , ['recipes','liked_recipes','followers','following','saved_recipes'])
+        .findOneUser(this.userId , '' , ['recipes', 'liked_recipes', 'followers', 'following', 'saved_recipes'])
         .subscribe(
         (user) => {
           this.user = user;
           this.appHeaderService.setAppHeader('Profile | ' + this.user.username);
           this.dataLoaded = true;
 
-          if( this.user.recipes == null || this.user.recipes.length < 30 ) this.recipesLoadButton = false;
-          if( this.user.saved_recipes == null || this.user.saved_recipes.length < 30 ) this.savedLoadButton = false;
-          if( this.user.liked_recipes == null || this.user.liked_recipes.length < 30 ) this.likedLoadButton = false;
-          if( this.user.followers == null || this.user.followers.length < 30 ) this.followersLoadButton = false;
-          if( this.user.following == null || this.user.following.length < 30 ) this.followingLoadButton = false;
+          if ( this.user.recipes == null || this.user.recipes.length < 30 ) this.recipesLoadButton = false;
+          if ( this.user.saved_recipes == null || this.user.saved_recipes.length < 30 ) this.savedLoadButton = false;
+          if ( this.user.liked_recipes == null || this.user.liked_recipes.length < 30 ) this.likedLoadButton = false;
+          if ( this.user.followers == null || this.user.followers.length < 30 ) this.followersLoadButton = false;
+          if ( this.user.following == null || this.user.following.length < 30 ) this.followingLoadButton = false;
         },
         (error) => {
           this.router.navigate(['/404']);
         });
 
-        if( this.sessionUser ){
+        if ( this.sessionUser ){
           this.userService
             .findOneUser(this.sessionUser.id , '/following/' + this.userId )
             .subscribe(
             (following) => {
-              if( following[0] ) this.isFollowed = true;
+              if ( following[0] ) this.isFollowed = true;
               else this.isFollowed = false;
             },
             (error) => {
@@ -103,7 +103,7 @@ export class ProfileComponent implements OnInit {
     this.recipesLoadingSpinner = true;
 
     let numRecipes = 0;
-    if( this.user.recipes ){
+    if ( this.user.recipes ){
       numRecipes = this.user.recipes.length;
     }
 
@@ -111,10 +111,10 @@ export class ProfileComponent implements OnInit {
       .findOneUser( this.userId , '/recipes' , [] , `limit=30&skip=${numRecipes}` )
       .subscribe(
       (recipes) => {
-        if( !this.user.recipes ) this.user.recipes = recipes;
+        if ( !this.user.recipes ) this.user.recipes = recipes;
         else this.user.recipes = this.user.recipes.concat( recipes );
 
-        if( recipes.length != 30 ){
+        if ( recipes.length != 30 ){
             this.recipesLoadButton = false;
         }
         this.recipesLoadingSpinner = false;
@@ -128,7 +128,7 @@ export class ProfileComponent implements OnInit {
     this.savedLoadingSpinner = true;
 
     let numRecipes = 0;
-    if( this.user.saved_recipes ){
+    if ( this.user.saved_recipes ){
       numRecipes = this.user.saved_recipes.length;
     }
 
@@ -136,10 +136,10 @@ export class ProfileComponent implements OnInit {
       .findOneUser( this.userId , '/saved_recipes' , [] , `limit=30&skip=${numRecipes}` )
       .subscribe(
       (recipes) => {
-        if( !this.user.saved_recipes ) this.user.saved_recipes = recipes;
+        if ( !this.user.saved_recipes ) this.user.saved_recipes = recipes;
         else this.user.saved_recipes = this.user.saved_recipes.concat( recipes );
 
-        if( recipes.length != 30 ){
+        if ( recipes.length != 30 ){
             this.savedLoadButton = false;
         }
         this.savedLoadingSpinner = false;
@@ -153,7 +153,7 @@ export class ProfileComponent implements OnInit {
     this.likedLoadingSpinner = true;
 
     let numRecipes = 0;
-    if( this.user.liked_recipes ){
+    if ( this.user.liked_recipes ){
       numRecipes = this.user.liked_recipes.length;
     }
 
@@ -161,10 +161,10 @@ export class ProfileComponent implements OnInit {
       .findOneUser( this.userId , '/liked_recipes' , [] , `limit=30&skip=${numRecipes}` )
       .subscribe(
       (recipes) => {
-        if( !this.user.liked_recipes ) this.user.liked_recipes = recipes;
+        if ( !this.user.liked_recipes ) this.user.liked_recipes = recipes;
         else this.user.liked_recipes = this.user.liked_recipes.concat( recipes );
 
-        if( recipes.length != 30 ){
+        if ( recipes.length != 30 ){
             this.likedLoadButton = false;
         }
         this.likedLoadingSpinner = false;
@@ -178,7 +178,7 @@ export class ProfileComponent implements OnInit {
     this.followersLoadingSpinner = true;
 
     let numFollowers = 0;
-    if( this.user.followers ){
+    if ( this.user.followers ){
       numFollowers = this.user.followers.length;
     }
 
@@ -186,10 +186,10 @@ export class ProfileComponent implements OnInit {
       .findOneUser( this.userId , '/followers' , [] , `limit=30&skip=${numFollowers}` )
       .subscribe(
       (followers) => {
-        if( !this.user.followers ) this.user.followers = followers;
+        if ( !this.user.followers ) this.user.followers = followers;
         else this.user.followers = this.user.followers.concat( followers );
 
-        if( followers.length != 30 ){
+        if ( followers.length != 30 ){
             this.followersLoadButton = false;
         }
         this.followersLoadingSpinner = false;
@@ -203,7 +203,7 @@ export class ProfileComponent implements OnInit {
     this.followingLoadingSpinner = true;
 
     let numFollowing = 0;
-    if( this.user.following ){
+    if ( this.user.following ){
       numFollowing = this.user.following.length;
     }
 
@@ -211,10 +211,10 @@ export class ProfileComponent implements OnInit {
       .findOneUser( this.userId , '/following' , [] , `limit=30&skip=${numFollowing}` )
       .subscribe(
       (following) => {
-        if( !this.user.following ) this.user.following = following;
+        if ( !this.user.following ) this.user.following = following;
         else this.user.following = this.user.following.concat( following );
 
-        if( following.length != 30 ){
+        if ( following.length != 30 ){
             this.followingLoadButton = false;
         }
         this.followingLoadingSpinner = false;

@@ -32,8 +32,8 @@ export class SignupComponent implements OnInit {
 
   onSubmit() {
 
-    if( this.form.value.password !== this.form.value.confirmPassword ){
-      this.errorMessage = 'Password and confirm password do not match!'
+    if ( this.form.value.password !== this.form.value.confirmPassword ){
+      this.errorMessage = 'Password and confirm password do not match!';
       return;
     }
 
@@ -45,7 +45,7 @@ export class SignupComponent implements OnInit {
           this.loginNewUser( user );
         },
         (error) => {
-          if( error._body != null ){
+          if ( error._body != null ){
             this.errorMessage = error._body;
           }
           else{

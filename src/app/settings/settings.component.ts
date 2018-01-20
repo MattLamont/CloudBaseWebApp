@@ -22,12 +22,12 @@ export class SettingsComponent {
   sessionUser;
 
   @SessionStorage('token')
-  token
+  token;
 
   public newImageURL = '';
 
   public alertMessage = '';
-  public alertType = 'success'
+  public alertType = 'success';
 
   public quill: any;
 
@@ -62,7 +62,7 @@ export class SettingsComponent {
   }
 
   imageUploaded(event) {
-    let res = JSON.parse(event.serverResponse._body);
+    const res = JSON.parse(event.serverResponse._body);
     this.newImageURL = res.url;
   }
 
@@ -72,7 +72,7 @@ export class SettingsComponent {
 
     this.sessionUser.biography = this.quill.container.firstChild.innerHTML;
 
-    if( this.newImageURL ){
+    if ( this.newImageURL ){
       this.sessionUser.image_url = this.newImageURL;
     }
 
@@ -90,7 +90,7 @@ export class SettingsComponent {
       (newUser) => {
 
         this.alertType = 'success';
-        this.alertMessage = "Settings updated!"
+        this.alertMessage = 'Settings updated!';
       },
       (error) => {
         this.alertType = 'danger';

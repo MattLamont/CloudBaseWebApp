@@ -16,7 +16,7 @@ export class UserService {
 
   constructor( private http: Http ) { }
 
-  public updateUser( id: number , body: any ){
+  public updateUser( id: number , body: any ) {
 
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
 
@@ -28,21 +28,9 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  public findOneUser( id: Number , attribute = '' , populate = [] , queryParams = ''){
+  public findOneUser( id: Number , attribute = '' , populate = [] , queryParams = '') {
 
-    let url = this.buildQuery( '/user/' + id , attribute , populate , queryParams );
-
-    return this.http
-      .get(url)
-      .map(response => {
-        return response.json();
-      })
-      .catch(this.handleError);
-  }
-
-  public findOneRecipeLike( userId: number , recipeId: number ){
-
-    let url = API_URL + '/user/' + userId + '/liked_recipes/' + recipeId;
+    const url = this.buildQuery( '/user/' + id , attribute , populate , queryParams );
 
     return this.http
       .get(url)
@@ -52,9 +40,9 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  public findOneRecipeSave( userId: number , recipeId: number ){
+  public findOneRecipeLike( userId: number , recipeId: number ) {
 
-    let url = API_URL + '/user/' + userId + '/saved_recipes/' + recipeId;
+    const url = API_URL + '/user/' + userId + '/liked_recipes/' + recipeId;
 
     return this.http
       .get(url)
@@ -64,7 +52,19 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  public addRecipeLike( userId: number , recipeId: number ){
+  public findOneRecipeSave( userId: number , recipeId: number ) {
+
+    const url = API_URL + '/user/' + userId + '/saved_recipes/' + recipeId;
+
+    return this.http
+      .get(url)
+      .map(response => {
+        return response.json();
+      })
+      .catch(this.handleError);
+  }
+
+  public addRecipeLike( userId: number , recipeId: number ) {
 
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
 
@@ -76,7 +76,7 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  public addRecipeSave( userId: number , recipeId: number ){
+  public addRecipeSave( userId: number , recipeId: number ) {
 
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
 
@@ -88,7 +88,7 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  public removeRecipeLike( userId: number , recipeId: number ){
+  public removeRecipeLike( userId: number , recipeId: number ) {
 
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
 
@@ -100,7 +100,7 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  public removeRecipeSave( userId: number , recipeId: number ){
+  public removeRecipeSave( userId: number , recipeId: number ) {
 
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
 
@@ -112,7 +112,7 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  public addFollowing( userId: number , followingId: number ){
+  public addFollowing( userId: number , followingId: number ) {
 
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
 
@@ -124,7 +124,7 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  public removeFollowing( userId: number , followingId: number ){
+  public removeFollowing( userId: number , followingId: number ) {
 
     const headers = new Headers({ 'Authorization': 'Bearer ' + this.token });
 
@@ -136,9 +136,9 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  public searchForUser( name: String ){
+  public searchForUser( name: String ) {
 
-    let url = API_URL + '/user?where={"username":{"contains":"' + name + '"}}&limit=20';
+    const url = API_URL + '/user?where={"username":{"contains":"' + name + '"}}&limit=20';
 
     return this.http
       .get( url )
@@ -148,7 +148,7 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  public setAuthToken( token: string ){
+  public setAuthToken( token: string ) {
     this.token = token;
   }
 
@@ -157,10 +157,10 @@ export class UserService {
     return Observable.throw(error.json());
   }
 
-  private buildQuery( resource: string , attribute = '' , populate = [] , queryParams = '' ): string{
+  private buildQuery( resource: string , attribute = '' , populate = [] , queryParams = '' ): string {
     let url = API_URL + resource + attribute + '?';
 
-    if( populate.length > 0 ){
+    if ( populate.length > 0 ) {
       url += 'populate=[';
 
       populate.map( (element) => {
