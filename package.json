@@ -17,6 +17,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-devkit/core": "0.0.28",
     "@angular/core": "^4.0.0",
     "@angular/cli": "1.5.2",
     "@angular/compiler-cli": "^4.0.0",
