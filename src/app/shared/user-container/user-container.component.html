@@ -20,7 +20,7 @@
         <tr *ngFor="let user of users">
           <td>
             <a [routerLink]="[ '/profile' , user.id ]">
-              <img src="{{user.image_url || 'assets/images/blank_user.png'}}" class="avatar-md rounded" alt="">
+              <img src="{{user.image_url || 'assets/images/blank_user.png'}}" onError="this.src='assets/images/blank_user.png';" class="avatar-md rounded" alt="">
             </a>
           </td>
           <td data-title="Username">

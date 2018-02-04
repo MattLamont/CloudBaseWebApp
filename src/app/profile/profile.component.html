@@ -11,7 +11,7 @@
               <figure>
                 <div class="text-center">
                   <div class="avatar-status">
-                    <img src="{{user.image_url || 'assets/images/blank_user.png'}}" alt="" class="rounded-circle img-fluid">
+                    <img src="{{user.image_url || 'assets/images/blank_user.png'}}" onError="this.src='assets/images/blank_user.png';" alt="" class="rounded-circle img-fluid">
                   </div>
                 </div>
               </figure>
