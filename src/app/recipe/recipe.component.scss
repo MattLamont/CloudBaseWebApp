@@ -1,0 +1,58 @@
+@import "../../assets/styles/scss/components/email";
+
+.flavor-card-img{
+    max-height: 300px;
+    //min-width: 100%;
+    padding: 30px;
+}
+
+.no-shadow{
+  box-shadow: none;
+}
+
+.widget-icon:hover{
+  cursor: pointer;
+  color: rgb( 255, 255, 255) !important;
+}
+
+.text-red:hover{
+  background-color: red;
+}
+
+.text-blue:hover{
+  background-color: blue;
+}
+
+.text-green:hover{
+  background-color: green;
+}
+
+.liked{
+  color: rgb( 255, 255, 255) !important;
+  background-color: blue;
+}
+
+.disliked{
+  color: rgb( 255, 255, 255) !important;
+  background-color: green;
+}
+
+.saved{
+  color: rgb( 255, 255, 255) !important;
+  background-color: red;
+}
+
+.star {
+  font-size: 3rem;
+  color: #b0c4de;
+}
+
+.filled {
+  color: #000000;
+}
+
+.center-cropped {
+  object-fit: scale-down;;
+  object-position: center;
+  height: 300px;
+}

@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import * as shape from 'd3-shape';
-import { colorSets  } from '@swimlane/ngx-charts/release/utils/color-sets';
-import {
-  single,
-  generateData
-} from '../shared/chartData';
+
+import { RecipeService } from '../services/recipe.service';
+import { SessionStorage } from 'ngx-webstorage';
+
+
 
 @Component({
   selector: 'app-dashboard',
@@ -13,65 +12,105 @@ import {
 })
 
 export class DashboardComponent {
-  single: any[];
-  graph: {
-    links: any[],
-    nodes: any[]
-  };
-  dateData: any[];
-  // options
-  showXAxis = true;
-  showYAxis = true;
-  gradient = false;
-  showLegend = false;
-  showXAxisLabel = false;
-  tooltipDisabled = false;
-  xAxisLabel = 'Country';
-  showYAxisLabel = false;
-  yAxisLabel = 'GDP Per Capita';
-  showGridLines = true;
-  roundDomains = false;
-  colorScheme = {
-    domain: [
-    '#0099cc', '#2ECC71', '#4cc3d9', '#ffc65d', '#d96557', '#ba68c8'
-    ]
-  };
-  schemeType = 'ordinal';
-  // line interpolation
-  curve = shape.curveLinear;
-  // line, area
-  timeline = false;
-  // margin
-  margin = false;
-  marginTop = 40;
-  marginRight = 40;
-  marginBottom = 40;
-  marginLeft = 40;
-  // gauge
-  gaugeMin = 0;
-  gaugeMax = 50;
-  gaugeLargeSegments = 10;
-  gaugeSmallSegments = 5;
-  gaugeTextValue = '';
-  gaugeUnits = 'alerts';
-  gaugeAngleSpan = 240;
-  gaugeStartAngle = -120;
-  gaugeShowAxis = true;
-  gaugeValue = 50; // linear gauge value
-  gaugePreviousValue = 70;
 
-  constructor() {
-    Object.assign(this, {
-      single
-    });
-    this.dateData = generateData(5, false);
+  @SessionStorage( 'user' )
+  sessionUser;
+
+  featured_recipes: any;
+  recent_recipes: any;
+  popular_recipes: any;
+
+  view_type = 'cards';
+
+  showFeaturedLoadMoreButton = true;
+  showFeaturedLoadingSpinner = false;
+  numFeaturedRecipes = 0;
+
+  showRecentLoadMoreButton = true;
+  showRecentLoadingSpinner = false;
+  numRecentRecipes = 0;
+
+  showPopularLoadMoreButton = true;
+  showPopularLoadingSpinner = false;
+  numPopularRecipes = 0;
+
+  constructor(
+    private recipeService: RecipeService
+  ) {
+
+    this.getMoreFeaturedRecipes();
+    this.getMoreRecentRecipes();
+    this.getMorePopularRecipes();
+
+    if ( this.sessionUser ){
+      this.view_type = this.sessionUser.settings.recipe_display;
+    }
   }
 
-  select(data) {
-    console.log('Item clicked', data);
+  getMoreFeaturedRecipes(){
+    this.showFeaturedLoadingSpinner = true;
+    this.recipeService
+      .findRecipes(['owner'], `limit=6&skip=${this.numFeaturedRecipes}`)
+      .subscribe(
+      (recipes) => {
+
+        if ( !this.featured_recipes ) this.featured_recipes = recipes;
+        else this.featured_recipes = this.featured_recipes.concat( recipes );
+
+        if ( recipes.length != 6 ){
+          this.showFeaturedLoadMoreButton = false;
+        }
+
+        this.numFeaturedRecipes = this.featured_recipes.length;
+        this.showFeaturedLoadingSpinner = false;
+      },
+      (error) => {
+
+      });
   }
 
-  onLegendLabelClick(entry) {
-    console.log('Legend clicked', entry);
+  getMoreRecentRecipes(){
+    this.showRecentLoadingSpinner = true;
+    this.recipeService
+      .findRecipes(['owner'], `limit=6&sort=updatedAt%20DESC&skip=${this.numRecentRecipes}`)
+      .subscribe(
+      (recipes) => {
+
+        if ( !this.recent_recipes ) this.recent_recipes = recipes;
+        else this.recent_recipes = this.recent_recipes.concat( recipes );
+
+        if ( recipes.length != 6 ){
+          this.showRecentLoadMoreButton = false;
+        }
+
+        this.numRecentRecipes = this.recent_recipes.length;
+        this.showRecentLoadingSpinner = false;
+      },
+      (error) => {
+
+      });
   }
+
+  getMorePopularRecipes(){
+    this.showPopularLoadingSpinner = true;
+    this.recipeService
+      .findRecipes(['owner'], `sort=likes_count%20DESC&limit=6&skip=${this.numPopularRecipes}`)
+      .subscribe(
+      (recipes) => {
+
+        if ( !this.popular_recipes ) this.popular_recipes = recipes;
+        else this.popular_recipes = this.popular_recipes.concat( recipes );
+
+        if ( recipes.length != 6 ){
+          this.showPopularLoadMoreButton = false;
+        }
+
+        this.numPopularRecipes = this.popular_recipes.length;
+        this.showPopularLoadingSpinner = false;
+      },
+      (error) => {
+
+      });
+  }
+
 }

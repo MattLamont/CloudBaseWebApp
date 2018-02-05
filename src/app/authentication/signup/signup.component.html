@@ -3,38 +3,62 @@
   <div class="card card-body mb-0 rounded-0 p-5 col-sm-12 col-md-6 col-lg-4">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="mb-3">
-        <img src="assets/images/logo.png" class="avatar-xs mb-1" alt="">
+        <img src="assets/images/logos/cloud-base-logo-black.png" class="avatar-xs mb-1" alt="">
         <p class="ff-headers text-uppercase">Create an account</p>
       </div>
       <fieldset class="form-group" [ngClass]="{'has-danger': form.controls['uname'].hasError('required') && form.controls['uname'].touched}">
         <label for="username">
-          Choose a username
+          Enter your email
         </label>
-        <input type="text" class="form-control" placeholder="username" [formControl]="form.controls['uname']" [ngClass]="{'form-control-danger': form.controls['uname'].hasError('required') && form.controls['uname'].touched}"/>
-        <div class="form-control-feedback" *ngIf="form.controls['uname'].hasError('required') && form.controls['uname'].touched">Username is required.</div>
+        <input type="text" class="form-control" placeholder="email" [formControl]="form.controls['email']" [ngClass]="{'form-control-danger': form.controls['email'].hasError('required') && form.controls['email'].touched}"/>
+        <div class="form-control-feedback" *ngIf="(form.controls['email'].hasError('required') || form.controls['email'].hasError('email')) && form.controls['email'].touched">
+          <p class="text-danger mb-0">Email is required</p>
+        </div>
+      </fieldset>
+      <fieldset class="form-group" [ngClass]="{'has-danger': form.controls['uname'].hasError('required') && form.controls['uname'].touched}">
+        <label for="username">
+          Enter a username
+        </label>
+        <input type="text" class="form-control" minLength=3 maxLength=30 placeholder="username" [formControl]="form.controls['uname']" [ngClass]="{'form-control-danger': (form.controls['uname'].hasError('minlength') || form.controls['uname'].hasError('required')) && form.controls['uname'].touched}"/>
+        <div class="form-control-feedback" *ngIf="form.controls['uname'].hasError('required') && form.controls['uname'].touched">
+          <p class="text-danger mb-0">Username is required</p>
+        </div>
+        <div class="form-control-feedback" *ngIf="form.controls['uname'].hasError('minlength') && form.controls['uname'].touched">
+          <p class="text-danger mb-0">Username must be at least 3 characters</p>
+        </div>
       </fieldset>
       <fieldset class="form-group" [ngClass]="{'has-danger': form.controls['password'].hasError('required') && form.controls['password'].touched}">
         <label for="password">
           Enter your password
         </label>
         <input type="password" class="form-control" placeholder="********" [formControl]="form.controls['password']" [ngClass]="{'form-control-danger': form.controls['password'].hasError('required') && form.controls['password'].touched}"/>
-        <div class="form-control-feedback" *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched">Password is required.</div>
+        <div class="form-control-feedback" *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched">
+          <p class="text-danger mb-0">Password is required</p>
+        </div>
       </fieldset>
       <fieldset class="form-group" [ngClass]="{'has-danger': form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].touched}">
         <label for="password">
           Confirm your password
         </label>
         <input type="password" class="form-control" placeholder="********" [formControl]="form.controls['confirmPassword']" [ngClass]="{'form-control-danger': form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].touched}"/>
-        <div class="form-control-feedback" *ngIf="form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].touched">Confirm your password.</div>
+        <div class="form-control-feedback" *ngIf="form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].touched">
+          <p class="text-danger mb-0">Confirm your password</p>
+        </div>
       </fieldset>
+
+      <!--
       <label class="custom-control custom-checkbox mb-1">
         <input type="checkbox" class="custom-control-input">
         <span class="custom-control-indicator"></span>
         <span class="custom-control-description">I have read and agree to the terms of service.</span>
       </label>
+    -->
+
       <div class="block mb-3"></div>
       <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Create</button>
       <a class="btn btn-outline-primary btn-link" [routerLink]="['/authentication/signin']">Login!</a>
     </form>
+
+    <ngb-alert type="danger" *ngIf="errorMessage" (close)="errorMessage = ''" class="mt-3">{{ errorMessage }}</ngb-alert>
   </div>
 </div>

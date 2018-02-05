@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  cloudBaseApiURL: 'https://cloud-base-server-prod.herokuapp.com'
 };

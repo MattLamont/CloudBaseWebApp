@@ -1,6 +1,8 @@
 {
   "HOME": "Home",
 
+  "SETTINGS": "Settings",
+
   "EMAIL": "Email",
 
   "COMPONENTS": "Components",
@@ -29,7 +31,7 @@
     "SLI": "Simple Line Icons",
 
   "TASKBOARD": "Taskboard",
-  
+
   "CARDS": "Cards",
     "BASIC": "Basic",
     "PORTLETS": "Portlets",
@@ -78,7 +80,7 @@
     "SIGNUP": "Signup",
     "FORGOT": "Forgot",
     "LOCKSCREEN": "Lockscreen",
-  
+
   "ERROR": "Error",
     "404": "404",
     "500": "500",

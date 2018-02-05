@@ -10,53 +10,26 @@ export const AppRoutes: Routes = [{
     path: '',
     loadChildren: './dashboard/dashboard.module#DashboardModule'
   }, {
-    path: 'email',
-    loadChildren: './email/email.module#EmailModule'
+    path: 'categories',
+    loadChildren: './categories/categories.module#CategoriesModule'
   }, {
-    path: 'components',
-    loadChildren: './components/components.module#ComponentsModule'
+    path: 'settings',
+    loadChildren: './settings/settings.module#SettingsModule'
   }, {
-    path: 'icons',
-    loadChildren: './icons/icons.module#IconsModule'
+    path: 'profile/:id',
+    loadChildren: './profile/profile.module#ProfileModule'
   }, {
-    path: 'cards',
-    loadChildren: './cards/cards.module#CardsModule'
+    path: 'update/recipe/:id',
+    loadChildren: './createrecipe/createrecipe.module#CreateRecipeModule'
   }, {
-    path: 'forms',
-    loadChildren: './form/form.module#FormModule'
+    path: 'view/recipe/:id',
+    loadChildren: './createrecipe/createrecipe.module#CreateRecipeModule'
   }, {
-    path: 'tables',
-    loadChildren: './tables/tables.module#TablesModule'
+    path: 'create/recipe',
+    loadChildren: './createrecipe/createrecipe.module#CreateRecipeModule'
   }, {
-    path: 'datatable',
-    loadChildren: './datatable/datatable.module#DatatableModule'
-  }, {
-    path: 'charts',
-    loadChildren: './charts/charts.module#ChartsModule'
-  }, {
-    path: 'maps',
-    loadChildren: './maps/maps.module#MapsModule'
-  }, {
-    path: 'pages',
-    loadChildren: './pages/pages.module#PagesModule'
-  }, {
-    path: 'taskboard',
-    loadChildren: './taskboard/taskboard.module#TaskboardModule'
-  }, {
-    path: 'calendar',
-    loadChildren: './fullcalendar/fullcalendar.module#FullcalendarModule'
-  }, {
-    path: 'media',
-    loadChildren: './media/media.module#MediaModule'
-  }, {
-    path: 'widgets',
-    loadChildren: './widgets/widgets.module#WidgetsModule'
-  }, {
-    path: 'social',
-    loadChildren: './social/social.module#SocialModule'
-  }, {
-    path: 'docs',
-    loadChildren: './docs/docs.module#DocsModule'
+    path: 'recipe/:id',
+    loadChildren: './recipe/recipe.module#RecipeModule'
   }]
 }, {
   path: '',
@@ -67,12 +40,8 @@ export const AppRoutes: Routes = [{
   }, {
     path: 'error',
     loadChildren: './error/error.module#ErrorModule'
-  }, {
-    path: 'landing',
-    loadChildren: './landing/landing.module#LandingModule'
   }]
 }, {
   path: '**',
   redirectTo: 'error/404'
 }];
-

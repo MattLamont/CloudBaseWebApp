@@ -12,15 +12,15 @@
 
   .list-group-item {
     &.selected {
-      background-color: lighten(theme-color("warning"), 40%);
+      background-color: rgba( 0 , 0 , 0 , 0.10 );
       border-color: rgba(theme-color("warning"),.2);
       + .list-group-item {
-        border-color: rgba(theme-color("warning"),.2);
+        border-color: rgba( 0 , 0 , 0 , 0.10 );
       }
       &:hover,
       &:focus,
       &:active {
-        background-color: lighten(theme-color("warning"), 40%);
+        background-color: rgba( 0 , 0 , 0 , 0.10 );
       }
     }
     a .time {

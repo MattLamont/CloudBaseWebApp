@@ -1,0 +1,41 @@
+<div class="row" *ngIf="type == 'cards'">
+  <div class="card-deck-wrapper">
+    <div class="card-deck">
+      <app-user-card *ngFor="let user of users" class="{{gridClass}} mb-3" [user]="user"></app-user-card>
+    </div>
+  </div>
+</div>
+
+
+<div class="card" *ngIf="type == 'table'">
+  <div class="no-more-tables">
+    <table class="table table-striped table-bordered align-middle mb-0">
+      <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>
+            <a [routerLink]="[ '/profile' , user.id ]">
+              <img src="{{user.image_url || 'assets/images/blank_user.png'}}" onError="this.src='assets/images/blank_user.png';" class="avatar-md rounded" alt="">
+            </a>
+          </td>
+          <td data-title="Username">
+            <a [routerLink]="[ '/profile' , user.id ]" class="d-block text-capitalize">{{user.username}}</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="showLoadMoreButton">
+  <button type="button" class="btn btn-primary ff-headers" (click)="onLoadMoreClick.emit()">Load More</button>
+</div>
+
+<div *ngIf="showLoadingSpinner">
+  <div class="loader04"></div>
+</div>

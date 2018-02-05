@@ -3,26 +3,32 @@
   <div class="card card-body mb-0 rounded-0 p-5 col-sm-12 col-md-6 col-lg-4">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="mb-3">
-        <img src="assets/images/logo.png" class="avatar-xs mb-1" alt="">
+        <img src="assets/images/logos/cloud-base-logo-black.png" class="avatar-xs mb-1" alt="">
         <p class="ff-headers text-uppercase">Sign in to your account</p>
       </div>
       <fieldset class="form-group" [ngClass]="{'has-danger': form.controls['uname'].hasError('required') && form.controls['uname'].touched}">
         <label for="username" class="form-control-label">
-          Enter your username
+          Enter your email
         </label>
-        <input type="text" class="form-control" placeholder="username" [formControl]="form.controls['uname']" [ngClass]="{'form-control-danger': form.controls['uname'].hasError('required') && form.controls['uname'].touched}"/>
-        <div class="form-control-feedback" *ngIf="form.controls['uname'].hasError('required') && form.controls['uname'].touched">Username is required.</div>
+        <input type="email" class="form-control" placeholder="email" [formControl]="form.controls['uname']" [ngClass]="{'form-control-danger': form.controls['uname'].hasError('required') && form.controls['uname'].touched}"/>
+        <div class="form-control-feedback" *ngIf="(form.controls['uname'].hasError('required') || form.controls['uname'].hasError('email')) && form.controls['uname'].touched">
+          <p class="text-danger mb-0">Email is required</p>
+        </div>
       </fieldset>
       <fieldset class="form-group" [ngClass]="{'has-danger': form.controls['password'].hasError('required') && form.controls['password'].touched}">
         <label for="password" class="form-control-label">
           Enter your password
         </label>
         <input type="password" class="form-control" placeholder="********" [formControl]="form.controls['password']" [ngClass]="{'form-control-danger': form.controls['password'].hasError('required') && form.controls['password'].touched}"/>
-        <div class="form-control-feedback" *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched">Password is required.</div>
-        <a [routerLink]="['/authentication/forgot']" class="form-text"><small>Recover password</small></a>
+        <div class="form-control-feedback" *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched">
+          <p class="text-danger mb-0">Password is required.</p>
+        </div>
+
+        <!--<a [routerLink]="['/authentication/forgot']" class="form-text"><small>Recover password</small></a>-->
+
       </fieldset>
       <label class="custom-control custom-checkbox mb-3">
-        <input type="checkbox" class="custom-control-input">
+        <input type="checkbox" class="custom-control-input" (change)="rememberMe = !rememberMe">
         <span class="custom-control-indicator"></span>
         <span class="custom-control-description">Stay logged in</span>
       </label>
@@ -30,5 +36,7 @@
       <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Login</button>
       <a class="btn btn-outline-primary btn-link" [routerLink]="['/authentication/signup']">Create an account!</a>
     </form>
+
+    <ngb-alert type="danger" *ngIf="errorMessage" (close)="errorMessage = ''" class="mt-3">{{ errorMessage }} <p class="mb-0"><a [routerLink]="['/authentication/signup']">Create an account!</a></p></ngb-alert>
   </div>
 </div>
