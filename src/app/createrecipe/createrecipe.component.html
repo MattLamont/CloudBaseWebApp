@@ -96,7 +96,7 @@
         <div class="form-row" *ngFor="let flavor of recipe.flavors; index as i">
           <div class="form-group col-xs-12 col-sm-8">
             <label>{{flavor.manufacturer}}</label>
-            <input type="text" class="form-control" [showHint]="true" [editable]="false" [ngbTypeahead]="searchFlavor" [ngModel]="flavor" (selectItem)="flavorSelected($event,i)" placeholder="Flavor" [resultTemplate]="flavorTemplate" [inputFormatter]="formatter" [disabled]="isViewRecipe"
+            <input type="text" class="form-control" [showHint]="false" [editable]="false" [ngbTypeahead]="searchFlavor" [ngModel]="flavor" (selectItem)="flavorSelected($event,i)" placeholder="Flavor" [resultTemplate]="flavorTemplate" [inputFormatter]="formatter" [disabled]="isViewRecipe"
             />
 
             <ng-template #flavorTemplate let-r="result">
