@@ -1,4 +1,5 @@
 export class Flavor {
+  id: number;
   name: string;
   manufacturer: string;
   link: string;
@@ -9,6 +10,7 @@ export class Flavor {
   category: string;
 
   constructor(){
+    this.id = null;
     this.name = '';
     this.manufacturer = 'Flavor';
     this.link = '';

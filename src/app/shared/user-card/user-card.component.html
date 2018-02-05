@@ -1,6 +1,6 @@
 <div class="card">
   <a [routerLink]="'/profile/' + user.id">
-    <img class="card-img-top img-fluid" src="{{user.image_url || 'assets/images/blank_user.png'}}" alt="Card image" />
+    <img class="card-img-top img-fluid" src="{{user.image_url || 'assets/images/blank_user.png'}}" onError="this.src='assets/images/blank_user.png';" alt="Card image" />
   </a>
   <div class="card-body">
     <h6 class="card-title bold ff-headers">{{user.username}}</h6>

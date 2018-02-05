@@ -96,7 +96,7 @@
         <div class="form-row" *ngFor="let flavor of recipe.flavors; index as i">
           <div class="form-group col-xs-12 col-sm-8">
             <label>{{flavor.manufacturer}}</label>
-            <input type="text" class="form-control" [editable]="false" [ngbTypeahead]="searchFlavor" [ngModel]="flavor" (selectItem)="flavorSelected($event,i)" placeholder="Flavor" [resultTemplate]="flavorTemplate" [inputFormatter]="formatter" [disabled]="isViewRecipe"
+            <input type="text" class="form-control" [showHint]="false" [editable]="false" [ngbTypeahead]="searchFlavor" [ngModel]="flavor" (selectItem)="flavorSelected($event,i)" placeholder="Flavor" [resultTemplate]="flavorTemplate" [inputFormatter]="formatter" [disabled]="isViewRecipe"
             />
 
             <ng-template #flavorTemplate let-r="result">
@@ -117,7 +117,7 @@
         <div class="form-row" *ngIf="isCreateRecipe || isUpdateRecipe">
           <div class="form-group">
             <div class="col-12 mt-3">
-              <button type="button" class="btn btn-primary" (click)="addAnotherFlavor()">Add Flavor</button>
+              <button type="button" class="btn btn-primary" (click)="addAnotherFlavor()">Add A Flavor</button>
             </div>
           </div>
         </div>
@@ -139,7 +139,7 @@
       <div class="card-header">PROPORTIONS</div>
       <div class="card-body">
         <div>
-          <ngx-charts-pie-chart class="chart-container" [scheme]="colorScheme" [(results)]="chartData" [legend]="false" [labels]="true" [doughnut]="true" [arcWidth]="0.25" [tooltipDisabled]="true">
+          <ngx-charts-pie-chart class="chart-container" [scheme]="colorScheme" [(results)]="chartData" [legend]="false" [labels]="true" [doughnut]="true" [arcWidth]="0.25" [tooltipDisabled]="false">
           </ngx-charts-pie-chart>
         </div>
       </div>
@@ -172,7 +172,7 @@
                 -->
               </tr>
             </thead>
-            <tbody class="table-hover">
+            <tbody>
               <tr class="table-success">
                 <td data-title="Item">
                   Propylene Glycol (PG)

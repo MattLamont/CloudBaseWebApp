@@ -70,7 +70,10 @@ export class AppComponent {
           }
         },
         (error) => {
-
+          this.sessionStorage.clear('user');
+          this.sessionStorage.clear('token');
+          this.localStorage.clear('user');
+          this.localStorage.clear('token');
         });
     }
 

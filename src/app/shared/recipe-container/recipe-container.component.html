@@ -24,7 +24,7 @@
         <tr *ngFor="let recipe of recipes">
           <td>
             <a [routerLink]="[ '/recipe' , recipe.id ]">
-              <img src="{{recipe.image_url || 'assets/images/recipe-defaults/other.jpg'}}" class="avatar-md rounded" alt="">
+              <img src="{{recipe.image_url || 'assets/images/recipe-defaults/other.jpg'}}" onError="this.src='assets/images/recipe-defaults/other.jpg';" class="avatar-md rounded" alt="">
             </a>
           </td>
           <td data-title="Name">

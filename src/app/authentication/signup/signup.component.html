@@ -11,28 +11,39 @@
           Enter your email
         </label>
         <input type="text" class="form-control" placeholder="email" [formControl]="form.controls['email']" [ngClass]="{'form-control-danger': form.controls['email'].hasError('required') && form.controls['email'].touched}"/>
-        <div class="form-control-feedback" *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched">Email is required.</div>
+        <div class="form-control-feedback" *ngIf="(form.controls['email'].hasError('required') || form.controls['email'].hasError('email')) && form.controls['email'].touched">
+          <p class="text-danger mb-0">Email is required</p>
+        </div>
       </fieldset>
       <fieldset class="form-group" [ngClass]="{'has-danger': form.controls['uname'].hasError('required') && form.controls['uname'].touched}">
         <label for="username">
           Enter a username
         </label>
-        <input type="text" class="form-control" placeholder="username" [formControl]="form.controls['uname']" [ngClass]="{'form-control-danger': form.controls['uname'].hasError('required') && form.controls['uname'].touched}"/>
-        <div class="form-control-feedback" *ngIf="form.controls['uname'].hasError('required') && form.controls['uname'].touched">Username is required.</div>
+        <input type="text" class="form-control" minLength=3 maxLength=30 placeholder="username" [formControl]="form.controls['uname']" [ngClass]="{'form-control-danger': (form.controls['uname'].hasError('minlength') || form.controls['uname'].hasError('required')) && form.controls['uname'].touched}"/>
+        <div class="form-control-feedback" *ngIf="form.controls['uname'].hasError('required') && form.controls['uname'].touched">
+          <p class="text-danger mb-0">Username is required</p>
+        </div>
+        <div class="form-control-feedback" *ngIf="form.controls['uname'].hasError('minlength') && form.controls['uname'].touched">
+          <p class="text-danger mb-0">Username must be at least 3 characters</p>
+        </div>
       </fieldset>
       <fieldset class="form-group" [ngClass]="{'has-danger': form.controls['password'].hasError('required') && form.controls['password'].touched}">
         <label for="password">
           Enter your password
         </label>
         <input type="password" class="form-control" placeholder="********" [formControl]="form.controls['password']" [ngClass]="{'form-control-danger': form.controls['password'].hasError('required') && form.controls['password'].touched}"/>
-        <div class="form-control-feedback" *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched">Password is required.</div>
+        <div class="form-control-feedback" *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched">
+          <p class="text-danger mb-0">Password is required</p>
+        </div>
       </fieldset>
       <fieldset class="form-group" [ngClass]="{'has-danger': form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].touched}">
         <label for="password">
           Confirm your password
         </label>
         <input type="password" class="form-control" placeholder="********" [formControl]="form.controls['confirmPassword']" [ngClass]="{'form-control-danger': form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].touched}"/>
-        <div class="form-control-feedback" *ngIf="form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].touched">Confirm your password.</div>
+        <div class="form-control-feedback" *ngIf="form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].touched">
+          <p class="text-danger mb-0">Confirm your password</p>
+        </div>
       </fieldset>
 
       <!--

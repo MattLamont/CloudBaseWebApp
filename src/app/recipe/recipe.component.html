@@ -2,14 +2,14 @@
 
   <div class="col-lg-6 col-xs-12">
     <div class="card">
-      <img class="card-img-top img-fluid" src="{{recipe.image_url || 'assets/images/recipe-defaults/other.jpg'}}" alt="Card image cap" />
+      <img class="card-img-top img-fluid" src="{{recipe.image_url || 'assets/images/recipe-defaults/other.jpg'}}" onError="this.src='assets/images/recipe-defaults/other.jpg';" alt="Card image cap" />
       <div class="card-body">
         <h4 class="card-title ff-headers">
           {{recipe.name}}
         </h4>
         <div class="card card-body card-widget no-shadow">
           <a [routerLink]="['/profile/' + recipe.owner.id]">
-            <img src="{{recipe.owner.image_url || 'assets/images/blank_user.png'}}" class="avatar-sm rounded-circle" alt="">
+            <img src="{{recipe.owner.image_url || 'assets/images/blank_user.png'}}" onError="this.src='assets/images/blank_user.png';" class="avatar-sm rounded-circle" alt="">
           </a>
           <div class="pl-3 pr-3">
             <p class="ff-headers mb-0">{{recipe.owner.username}}</p>
@@ -69,31 +69,38 @@
 
   <div class="col-lg-6 col-xs-12">
 
-    <div class="card card-body card-widget bg-blue card-inverse text-center">
+    <div class="card card-body card-widget bg-teal card-inverse text-center">
       <div class="d-block" style="width: 100%;">
         <h3 class="fw-300 mb-0">{{recipe.category}}</h3>
-        <small>Category</small>
+        <p>Category</p>
       </div>
     </div>
 
     <div class="card card-body card-widget bg-green card-inverse text-center">
       <div class="d-block" style="width: 100%;">
         <h3 class="fw-300 mb-0">{{recipe.pg_percent}}%</h3>
-        <small>Propylene Glycol</small>
+        <p>Propylene Glycol</p>
       </div>
     </div>
 
-    <div class="card card-body card-widget bg-teal card-inverse text-center">
+    <div class="card card-body card-widget bg-blue card-inverse text-center">
       <div class="d-block" style="width: 100%;">
         <h3 class="fw-300 mb-0">{{recipe.vg_percent}}%</h3>
-        <small>Vegetable Glycerin</small>
+        <p>Vegetable Glycerin</p>
+      </div>
+    </div>
+
+    <div class="card card-body card-widget bg-red card-inverse text-center">
+      <div class="d-block" style="width: 100%;">
+        <h3 class="fw-300 mb-0">{{recipe.dilutant}}%</h3>
+        <p>Dilutant</p>
       </div>
     </div>
 
     <div class="card card-body card-widget bg-purple card-inverse text-center">
       <div class="d-block" style="width: 100%;">
         <h3 class="fw-300 mb-0">{{recipe.steep_time}} days</h3>
-        <small>Steep Time</small>
+        <p>Steep Time</p>
       </div>
     </div>
 
@@ -107,12 +114,12 @@
 
 </div>
 
-<p class="ff-headers text-uppercase mb-3 mt-3 fw-600">Flavors</p>
+<p class="ff-headers text-uppercase mb-3 mt-3 fw-600">Recipe Flavors</p>
 <div class="row" *ngIf="recipe">
       <div *ngFor="let flavor of recipe.flavors" class="col-xl-3 col-lg-4 col-sm-6 mb-3">
         <div class="card flavor-card h-100">
           <a href="{{flavor.link}}" class="mt-2">
-            <img class="card-img-top center-cropped" src="{{flavor.image_url || 'assets/images/recipe-defaults/other.jpg'}}" alt="Card image" />
+            <img class="card-img-top center-cropped" src="{{flavor.image_url || 'assets/images/recipe-defaults/other.jpg'}}" onError="this.src='assets/images/recipe-defaults/other.jpg';" alt="Card image" />
           </a>
           <div class="card-body">
             <h5 class="card-title">
@@ -138,7 +145,7 @@
           <div (click)="selectedReview = review" *ngFor="let review of recipe.reviews; let i = index" [class.selected]="review.id == selectedReview.id" class="list-group-item list-group-item-action border-bottom-0 border-left-0 border-right-1 border-top-0 flex-column align-items-start">
             <a class="d-flex b-b w-100">
               <div>
-                <img alt="" class="avatar-sm rounded-circle" src="{{review.owner.image_url || 'assets/images/blank_user.png'}}" />
+                <img alt="" class="avatar-sm rounded-circle" src="{{review.owner.image_url || 'assets/images/blank_user.png'}}" onError="this.src='assets/images/blank_user.png';" />
               </div>
               <div class="pl-3 w-100">
                 <div class="d-flex justify-content-between align-items-center">
@@ -189,7 +196,7 @@
         <div class="pr-5 pt-3 pb-3 col-12 d-none d-md-block" *ngIf="!isWritingReview && selectedReview">
           <div>
             <div class="d-flex align-items-center mb-3">
-              <img alt="" class="avatar-lg rounded-circle" src="{{selectedReview.owner.image_url || 'assets/images/blank_user.png'}}" />
+              <img alt="" class="avatar-lg rounded-circle" src="{{selectedReview.owner.image_url || 'assets/images/blank_user.png'}}" onError="this.src='assets/images/blank_user.png';" />
               <div class="pl-3">
                 <div class="date">
                   {{selectedReview.updatedAt | date: 'fullDate'}}
@@ -210,7 +217,7 @@
         <div class="col-12 d-md-none" *ngIf="!isWritingReview && selectedReview">
           <div *ngFor="let review of recipe.reviews">
             <div class="d-flex align-items-center mb-3">
-              <img alt="" class="avatar-lg rounded-circle" src="{{review.owner.image_url || 'assets/images/blank_user.png'}}" />
+              <img alt="" class="avatar-lg rounded-circle" src="{{review.owner.image_url || 'assets/images/blank_user.png'}}" onError="this.src='assets/images/blank_user.png';" />
               <div class="pl-3">
                 <div class="date">
                   {{review.updatedAt | date: 'fullDate'}}

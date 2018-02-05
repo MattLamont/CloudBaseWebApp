@@ -85,7 +85,7 @@ export class CreateRecipeComponent {
 
   colorScheme = {
     domain: [
-      '#0099cc', '#2ECC71', '#4cc3d9', '#ffc65d', '#d96557', '#ba68c8'
+      '#f0ad4e', '#2ECC71', '#4cc3d9', '#651fff', '#d96557', '#ba68c8'
     ]
   };
 
@@ -503,6 +503,11 @@ export class CreateRecipeComponent {
       newRecipe.flavors.push( flavor.id );
       newRecipe.flavor_percents.push( this.recipe.flavor_percents[i] );
     });
+
+    if( newRecipe.flavors.length == 0 ){
+      this.submitErrorMessage = 'Error: No flavors selected or no flavor percentage detected';
+      return;
+    }
 
     //Validate recipe description
     if ( this.quill.getLength() > 1 ){
