@@ -69,31 +69,38 @@
 
   <div class="col-lg-6 col-xs-12">
 
-    <div class="card card-body card-widget bg-blue card-inverse text-center">
+    <div class="card card-body card-widget bg-teal card-inverse text-center">
       <div class="d-block" style="width: 100%;">
         <h3 class="fw-300 mb-0">{{recipe.category}}</h3>
-        <small>Category</small>
+        <p>Category</p>
       </div>
     </div>
 
     <div class="card card-body card-widget bg-green card-inverse text-center">
       <div class="d-block" style="width: 100%;">
         <h3 class="fw-300 mb-0">{{recipe.pg_percent}}%</h3>
-        <small>Propylene Glycol</small>
+        <p>Propylene Glycol</p>
       </div>
     </div>
 
-    <div class="card card-body card-widget bg-teal card-inverse text-center">
+    <div class="card card-body card-widget bg-blue card-inverse text-center">
       <div class="d-block" style="width: 100%;">
         <h3 class="fw-300 mb-0">{{recipe.vg_percent}}%</h3>
-        <small>Vegetable Glycerin</small>
+        <p>Vegetable Glycerin</p>
+      </div>
+    </div>
+
+    <div class="card card-body card-widget bg-red card-inverse text-center">
+      <div class="d-block" style="width: 100%;">
+        <h3 class="fw-300 mb-0">{{recipe.dilutant}}%</h3>
+        <p>Dilutant</p>
       </div>
     </div>
 
     <div class="card card-body card-widget bg-purple card-inverse text-center">
       <div class="d-block" style="width: 100%;">
         <h3 class="fw-300 mb-0">{{recipe.steep_time}} days</h3>
-        <small>Steep Time</small>
+        <p>Steep Time</p>
       </div>
     </div>
 
@@ -107,7 +114,7 @@
 
 </div>
 
-<p class="ff-headers text-uppercase mb-3 mt-3 fw-600">Flavors</p>
+<p class="ff-headers text-uppercase mb-3 mt-3 fw-600">Recipe Flavors</p>
 <div class="row" *ngIf="recipe">
       <div *ngFor="let flavor of recipe.flavors" class="col-xl-3 col-lg-4 col-sm-6 mb-3">
         <div class="card flavor-card h-100">

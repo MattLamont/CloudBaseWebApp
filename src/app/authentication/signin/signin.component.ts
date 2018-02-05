@@ -20,7 +20,7 @@ export class SigninComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group ( {
-      uname: [null , Validators.compose ( [ Validators.required ] )] ,
+      uname: [null , Validators.compose ( [ Validators.required , Validators.email ] )] ,
       password: [null , Validators.compose ( [ Validators.required ] )]
     } );
   }
@@ -45,7 +45,7 @@ export class SigninComponent implements OnInit {
         (error) => {
 
           if ( error.message == 'invalidLogin' ){
-            this.errorMessage = 'Invalid email or password. Try Again';
+            this.errorMessage = 'We didn\'t recognize that email or password.';
           }
           else{
             this.errorMessage = 'Unknown Error. Please try again later';

@@ -10,15 +10,19 @@
         <label for="username" class="form-control-label">
           Enter your email
         </label>
-        <input type="text" class="form-control" placeholder="email" [formControl]="form.controls['uname']" [ngClass]="{'form-control-danger': form.controls['uname'].hasError('required') && form.controls['uname'].touched}"/>
-        <div class="form-control-feedback" *ngIf="form.controls['uname'].hasError('required') && form.controls['uname'].touched">Email is required.</div>
+        <input type="email" class="form-control" placeholder="email" [formControl]="form.controls['uname']" [ngClass]="{'form-control-danger': form.controls['uname'].hasError('required') && form.controls['uname'].touched}"/>
+        <div class="form-control-feedback" *ngIf="(form.controls['uname'].hasError('required') || form.controls['uname'].hasError('email')) && form.controls['uname'].touched">
+          <p class="text-danger mb-0">Email is required</p>
+        </div>
       </fieldset>
       <fieldset class="form-group" [ngClass]="{'has-danger': form.controls['password'].hasError('required') && form.controls['password'].touched}">
         <label for="password" class="form-control-label">
           Enter your password
         </label>
         <input type="password" class="form-control" placeholder="********" [formControl]="form.controls['password']" [ngClass]="{'form-control-danger': form.controls['password'].hasError('required') && form.controls['password'].touched}"/>
-        <div class="form-control-feedback" *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched">Password is required.</div>
+        <div class="form-control-feedback" *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched">
+          <p class="text-danger mb-0">Password is required.</p>
+        </div>
 
         <!--<a [routerLink]="['/authentication/forgot']" class="form-text"><small>Recover password</small></a>-->
 
@@ -33,6 +37,6 @@
       <a class="btn btn-outline-primary btn-link" [routerLink]="['/authentication/signup']">Create an account!</a>
     </form>
 
-    <ngb-alert type="danger" *ngIf="errorMessage" (close)="errorMessage = ''" class="mt-3">{{ errorMessage }}</ngb-alert>
+    <ngb-alert type="danger" *ngIf="errorMessage" (close)="errorMessage = ''" class="mt-3">{{ errorMessage }} <p class="mb-0"><a [routerLink]="['/authentication/signup']">Create an account!</a></p></ngb-alert>
   </div>
 </div>
