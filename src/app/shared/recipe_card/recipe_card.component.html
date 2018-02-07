@@ -18,19 +18,18 @@
     <img class="card-img-top img-fluid" src="{{recipe.image_url || 'assets/images/recipe-defaults/other.jpg'}}" onError="this.src='assets/images/recipe-defaults/other.jpg';" alt="Card image" />
   </a>
   <div class="card-body recipe-body">
-    <h6 class="card-title bold ff-headers">{{recipe.name}}</h6>
+    <p class="card-title bold ff-headers">{{recipe.name}}</p>
   </div>
-  <div class="card-body recipe-body">
+  <div class="card-body recipe-body pt-0 pb-0">
     <p class="ff-headers text-muted">{{recipe.category}}</p>
   </div>
-  <div class="likes-saves-header card-block ml-2" *ngIf="recipe.likes_count != null && recipe.saves_count != null">
-    <div class="widget-icon rounded-circle text-blue icon icon-arrows-circle-up">
-    </div>
-    <span>{{ recipe.likes_count }}</span>
-    <span class="text-muted text-uppercase ml-1">likes</span>
-    <div class="widget-icon rounded-circle text-red icon icon-basic-heart" (click)="onSaveButtonClick()" [ngClass]="{'saved': isRecipeSaved}">
-    </div>
-    <span>{{ recipe.saves_count }}</span>
-    <span class="text-muted text-uppercase ml-1">saves</span>
+  <div class="likes-saves-header card-body pt-0 pb-1" *ngIf="recipe.likes_count != null && recipe.saves_count != null">
+    <i class="mr-1 text-blue icon-arrows-circle-up" style="line-height: 1;"></i>
+    <small>{{ recipe.likes_count }}</small>
+    <small class="text-muted text-uppercase ml-1">likes</small>
+    <i class="mr-1 ml-2 text-red icon-basic-heart" style="line-height: 1;">
+    </i>
+    <small>{{ recipe.saves_count }}</small>
+    <small class="text-muted text-uppercase ml-1">saves</small>
   </div>
 </div>

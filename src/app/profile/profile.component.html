@@ -51,51 +51,49 @@
       </div>
     </div>
     <div class="col-sm-8">
-      <div class="card">
 
-        <ngb-tabset type="pills" class="m-3">
-          <ngb-tab title="Recipes" *ngIf="user.recipes.length > 0">
-            <ng-template ngbTabContent>
-              <div class="mt-3">
-                <app-recipe-container [recipes]="user.recipes" [type]="'cards'" [gridClass]="'col-xl-4 col-lg-6'" (onLoadMoreClick)="getUserRecipes()" [showLoadMoreButton]="recipesLoadButton" [showLoadingSpinner]="recipesLoadingSpinner"></app-recipe-container>
-              </div>
-            </ng-template>
-          </ngb-tab>
+      <ngb-tabset type="pills">
+        <ngb-tab title="Recipes" *ngIf="user.recipes.length > 0">
+          <ng-template ngbTabContent>
+            <div class="mt-3">
+              <app-recipe-container [recipes]="user.recipes" [type]="'cards'" [gridClass]="'col-xl-4 col-lg-6'" (onLoadMoreClick)="getUserRecipes()" [showLoadMoreButton]="recipesLoadButton" [showLoadingSpinner]="recipesLoadingSpinner"></app-recipe-container>
+            </div>
+          </ng-template>
+        </ngb-tab>
 
-          <ngb-tab title="Saved">
-            <ng-template ngbTabContent>
-              <div class="mt-3">
-                <app-recipe-container [recipes]="user.saved_recipes" [type]="'cards'" [gridClass]="'col-xl-4 col-lg-6'" (onLoadMoreClick)="getSavedRecipes()" [showLoadMoreButton]="savedLoadButton" [showLoadingSpinner]="savedLoadingSpinner"></app-recipe-container>
-              </div>
-            </ng-template>
-          </ngb-tab>
+        <ngb-tab title="Saved">
+          <ng-template ngbTabContent>
+            <div class="mt-3">
+              <app-recipe-container [recipes]="user.saved_recipes" [type]="'cards'" [gridClass]="'col-xl-4 col-lg-6'" (onLoadMoreClick)="getSavedRecipes()" [showLoadMoreButton]="savedLoadButton" [showLoadingSpinner]="savedLoadingSpinner"></app-recipe-container>
+            </div>
+          </ng-template>
+        </ngb-tab>
 
-          <ngb-tab title="Liked">
-            <ng-template ngbTabContent>
-              <div class="mt-3">
-                <app-recipe-container [recipes]="user.liked_recipes" [type]="'cards'" [gridClass]="'col-xl-4 col-lg-6'" (onLoadMoreClick)="getLikedRecipes()" [showLoadMoreButton]="likedLoadButton" [showLoadingSpinner]="likedLoadingSpinner"></app-recipe-container>
-              </div>
-            </ng-template>
-          </ngb-tab>
+        <ngb-tab title="Liked">
+          <ng-template ngbTabContent>
+            <div class="mt-3">
+              <app-recipe-container [recipes]="user.liked_recipes" [type]="'cards'" [gridClass]="'col-xl-4 col-lg-6'" (onLoadMoreClick)="getLikedRecipes()" [showLoadMoreButton]="likedLoadButton" [showLoadingSpinner]="likedLoadingSpinner"></app-recipe-container>
+            </div>
+          </ng-template>
+        </ngb-tab>
 
-          <ngb-tab title="Followers">
-            <ng-template ngbTabContent>
-              <div class="mt-3">
-                <app-user-container [users]="user.followers" [type]="'cards'" [gridClass]="'col-xl-4 col-lg-6'" (onLoadMoreClick)="getFollowers()" [showLoadMoreButton]="followersLoadButton" [showLoadingSpinner]="followersLoadingSpinner"></app-user-container>
-              </div>
-            </ng-template>
-          </ngb-tab>
+        <ngb-tab title="Followers">
+          <ng-template ngbTabContent>
+            <div class="mt-3">
+              <app-user-container [users]="user.followers" [type]="'cards'" [gridClass]="'col-xl-4 col-lg-6 col-md-6'" (onLoadMoreClick)="getFollowers()" [showLoadMoreButton]="followersLoadButton" [showLoadingSpinner]="followersLoadingSpinner"></app-user-container>
+            </div>
+          </ng-template>
+        </ngb-tab>
 
-          <ngb-tab title="Following">
-            <ng-template ngbTabContent>
-              <div class="mt-3">
-                <app-user-container [users]="user.following" [type]="'cards'" [gridClass]="'col-xl-4 col-lg-6'" (onLoadMoreClick)="getFollowing()" [showLoadMoreButton]="followingLoadButton" [showLoadingSpinner]="followingLoadingSpinner"></app-user-container>
-              </div>
-            </ng-template>
-          </ngb-tab>
+        <ngb-tab title="Following">
+          <ng-template ngbTabContent>
+            <div class="mt-3">
+              <app-user-container [users]="user.following" [type]="'cards'" [gridClass]="'col-xl-4 col-lg-6 col-md-6'" (onLoadMoreClick)="getFollowing()" [showLoadMoreButton]="followingLoadButton" [showLoadingSpinner]="followingLoadingSpinner"></app-user-container>
+            </div>
+          </ng-template>
+        </ngb-tab>
 
-        </ngb-tabset>
-      </div>
+      </ngb-tabset>
     </div>
   </div>
 </div>

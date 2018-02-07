@@ -1,10 +1,7 @@
-<div class="row" *ngIf="type == 'cards'">
-  <div class="card-deck-wrapper">
-    <div class="card-deck">
-      <app-user-card *ngFor="let user of users" class="{{gridClass}} mb-3" [user]="user"></app-user-card>
-    </div>
-  </div>
+<div class="card-deck" *ngIf="type == 'cards'">
+  <app-user-card *ngFor="let user of users" class="{{gridClass}} pl-0 mb-3" [user]="user"></app-user-card>
 </div>
+
 
 
 <div class="card" *ngIf="type == 'table'">

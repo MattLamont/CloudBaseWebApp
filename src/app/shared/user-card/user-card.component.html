@@ -1,13 +1,19 @@
-<div class="card">
+<div class="card h-100">
   <a [routerLink]="'/profile/' + user.id">
     <img class="card-img-top img-fluid" src="{{user.image_url || 'assets/images/blank_user.png'}}" onError="this.src='assets/images/blank_user.png';" alt="Card image" />
   </a>
-  <div class="card-body">
-    <h6 class="card-title bold ff-headers">{{user.username}}</h6>
-      <!--
-    <p class="card-text">
-      {{flavor.manufacturer}}
-    </p>
-  -->
+  <div class="card-body pb-0">
+    <p class="card-title bold ff-headers">{{user.username}}</p>
+  </div>
+
+  <div class="recipes-followers-footer card-body pb-1 pt-0">
+
+    <i class="mr-1 icon-basic-todo-pencil text-blue" style="line-height: 1;"></i>
+    <small>{{ user.recipe_count }}</small>
+    <small class="text-muted text-uppercase ml-1">recipe</small>
+
+    <i class="ml-2 mr-1 icon-people text-green" style="line-height: 1;"></i>
+    <small>{{ user.followers_count }}</small>
+    <small class="text-muted text-uppercase ml-1">follow</small>
   </div>
 </div>
